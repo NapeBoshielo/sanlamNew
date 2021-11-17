@@ -118,11 +118,11 @@ namespace ILR_TestSuite
         {
          
 
-            _driver.Url = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
+            _driver.Url = "https://ilr-ppe.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrppe/run.w?";
 
-            _userName = "";//TODO add your user name and password
+            _userName = "G992127";//TODO add your user name and password
 
-            _password = "";
+            _password = "P@$$word47";
 
             _driver.Manage().Window.Maximize();
 
@@ -137,21 +137,15 @@ namespace ILR_TestSuite
             IWebElement loginBtn = _driver.FindElement(By.CssSelector("#GBLbl-1 > span > a"));
             
             loginTextBox.SendKeys(_userName);
+            System.Threading.Thread.Sleep(2000);
             passwordTextBox.SendKeys(_password);
             System.Threading.Thread.Sleep(2000);
             loginBtn.Click();
             System.Threading.Thread.Sleep(2000);
-
-        
-
-
             return _driver;
-
-
-
         }
 
-
+     
 
         public void DisconnectBrowser()
 
