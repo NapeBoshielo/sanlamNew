@@ -13,9 +13,8 @@ using System.IO;
 using System;
 
 using OpenQA.Selenium.Firefox;
-
-
-
+using System.Data.OleDb;
+using System.Data;
 
 namespace ILR_TestSuite
 
@@ -36,6 +35,8 @@ namespace ILR_TestSuite
         private string _password;
 
         public string _screenShotFolder;
+
+        public string _connString;
 
 
 
@@ -135,7 +136,6 @@ namespace ILR_TestSuite
             IWebElement loginTextBox = _driver.FindElement(By.XPath("/html/body/center/center/form[2]/div/table/tbody/tr/td/span/table/tbody/tr[2]/td/div/center/div/table/tbody/tr[4]/td[2]/span/table/tbody/tr[2]/td[2]/input"));
             IWebElement passwordTextBox = _driver.FindElement(By.CssSelector("#CntContentsDiv2 > table > tbody > tr:nth-child(3) > td:nth-child(2) > input[type=password]"));
             IWebElement loginBtn = _driver.FindElement(By.CssSelector("#GBLbl-1 > span > a"));
-            
             loginTextBox.SendKeys(_userName);
             System.Threading.Thread.Sleep(2000);
             passwordTextBox.SendKeys(_password);
@@ -145,7 +145,107 @@ namespace ILR_TestSuite
             return _driver;
         }
 
-     
+
+        public string GetPolicyNoFromExcell(string sheet, string function)
+        {
+
+            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/Rate_Table_Safrican Just Funeral.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+
+            string conRef = "";
+            using (OleDbConnection conn = new OleDbConnection(_connString))
+            {
+                try
+                {
+
+                    // Open connection
+                    conn.Open();
+                    string cmdQuery = "SELECT * FROM [" + sheet + "$]";
+
+                    OleDbCommand cmd = new OleDbCommand(cmdQuery, conn);
+
+                    // Create new OleDbDataAdapter
+                    OleDbDataAdapter oleda = new OleDbDataAdapter();
+
+                    oleda.SelectCommand = cmd;
+
+                    // Create a DataSet which will hold the data extracted from the worksheet.
+                    DataSet ds = new DataSet();
+
+                    // Fill the DataSet from the data extracted from the worksheet.
+                    oleda.Fill(ds, "Policies");
+
+
+
+                    foreach (var row in ds.Tables[0].DefaultView)
+                    {
+
+                        var func = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
+
+                        if (func == function)
+                        {
+                            conRef = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+                        }
+                    }
+
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    conn.Close();
+                    conn.Dispose();
+                }
+            }
+
+            return conRef;
+
+        }
+
+        public void writeResultsToExcell(string results, string sheet , string function)
+        {
+
+            string connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/Rate_Table_Safrican Just Funeral.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+
+
+            using (OleDbConnection conn = new OleDbConnection(connString))
+            {
+                try
+                {
+
+                    // Open connection
+                    conn.Open();
+                    OleDbCommand cmd = conn.CreateCommand();
+
+                    var testDate = DateTime.Now.ToString();
+
+                    //Test_Date
+                    cmd.CommandText = $"UPDATE [{sheet}$] SET Test_Date = '{testDate}' WHERE Function = '{function}';";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = $"UPDATE [{sheet}$] SET Test_Results  = '{results}' WHERE Function = '{function}';";
+                    cmd.ExecuteNonQuery();
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    conn.Close();
+                    conn.Dispose();
+                }
+            }
+
+
+
+
+        }
+
 
         public void DisconnectBrowser()
 
