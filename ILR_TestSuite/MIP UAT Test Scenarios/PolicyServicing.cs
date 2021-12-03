@@ -59,16 +59,33 @@ namespace PolicyServicing
             Delay(2);
             //Click on Miain
             _driver.FindElement(By.Name("CBWeb")).Click();
-            Delay(2);
-            ChangeBeneficiary();
-            CancelPolicy();
-
+            // Delay(2);
+            // ChangeBeneficiary();
+            // CancelPolicy();
+            DecreaseSumAssured();
 
 
             Delay(20);
 
         }
+        private void DecreaseSumAssured()
+        {
+            try
+            {
+                string contRef = base.GetPolicyNoFromExcell(sheet, "DecreaseSumAssured");
 
+                string results = "";
+                policySearch(contRef);
+                Delay(2);
+                _driver.FindElement(By.Name("fcRoleEntityLink1"));
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         private void ChangeBeneficiary()
         {
             try
@@ -251,12 +268,6 @@ namespace PolicyServicing
 
                 throw ex;
             }
-        }
-
-        [Category("Decrease Sum Assured")]
-        private void SumAssured ()
-        {
-
         }
 
 
