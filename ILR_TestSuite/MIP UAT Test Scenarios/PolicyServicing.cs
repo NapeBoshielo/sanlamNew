@@ -1,13 +1,9 @@
 ﻿using NUnit.Framework;
 
 using static ILR_TestSuite.TestBase;
-
 using OpenQA.Selenium;
-
 using OpenQA.Selenium.Interactions;
-
 using System;
-
 using System.Collections.Generic;
 using ILR_TestSuite;
 using System.Linq;
@@ -62,22 +58,161 @@ namespace PolicyServicing
             // Delay(2);
             // ChangeBeneficiary();
             // CancelPolicy();
-            DecreaseSumAssured();
+            //IncreaseSumAssuredAge();
+            //ReInstate();
+            //IncreaseSumAssured();
+            ChangeCollectionM();
+
+
+
+
 
 
             Delay(20);
 
         }
-        private void DecreaseSumAssured()
+        private void IncreaseSumAssuredAge()
         {
             try
             {
-                string contRef = base.GetPolicyNoFromExcell(sheet, "DecreaseSumAssured");
+
+                String test_url_3 = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
+                String test_url_4_title = "DateTime Picker";
+                IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
+
+                string contRef = base.GetPolicyNoFromExcell(sheet, "IncreaseSumAssuredAge");
 
                 string results = "";
+
+                string date = DateTime.Today.ToString("g");
+
+
                 policySearch(contRef);
+
+                Delay(3);
+
+                //Click on user under component
+                _driver.FindElement(By.Name("fccComponentDescription1")).Click();
                 Delay(2);
-                _driver.FindElement(By.Name("fcRoleEntityLink1"));
+
+
+
+                IWebElement policyOptionElement = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
+
+
+                //Creating object of an Actions class
+                Actions action = new Actions(_driver);
+
+
+
+                //Performing the mouse hover action on the target element.
+                action.MoveToElement(policyOptionElement).Perform();
+
+                //Click on options
+                _driver.FindElement(By.XPath("//*[@id='m0t0']/tbody/tr[1]/td/div/div[3]/a/img")).Click();
+
+                Delay(5);
+
+                SelectElement oSelect4 = new SelectElement(_driver.FindElement(By.Name("frmSPAmount")));
+
+                oSelect4.SelectByValue("50000");
+                Delay(2);
+
+
+
+                //Click on next
+                _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[2]/td[2]/a/span/img")).Click();
+                Delay(2);
+
+
+
+                Assert.AreEqual(2, _driver.WindowHandles.Count);
+
+                var newWindowHandle = _driver.WindowHandles[1];
+                Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle));
+
+                /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?"); */
+                string expectedNewWindowTitle = test_url_4_title;
+                Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle).Title, expectedNewWindowTitle);
+
+
+
+                //Click on next
+                _driver.FindElement(By.Id("aIncYear")).Click();
+                Delay(2);
+
+                //Click on next
+                _driver.FindElement(By.Name("fcCal1")).Click();
+                Delay(2);
+
+
+                /* Return to the window with handle = 0 */
+                _driver.SwitchTo().Window(_driver.WindowHandles[0]);
+                Delay(4);
+
+
+
+                //Click on next
+                _driver.FindElement(By.Name("btncbmcc13")).Click();
+                Delay(2);
+
+                //Click on roleplayer
+                _driver.FindElement(By.Name("frmRolePlayers")).Click();
+                Delay(2);
+
+
+                SelectElement oSelect = new SelectElement(_driver.FindElement(By.Name("frmRolePlayers")));
+
+                oSelect.SelectByValue("966829447.488");
+
+                //Click on next
+                _driver.FindElement(By.Name("btncbmcc17")).Click();
+                Delay(2);
+
+
+
+                // Click on finish
+                _driver.FindElement(By.Name("btncbmcc23")).Click();
+                Delay(5);
+
+
+                // Click on contract summa
+                _driver.FindElement(By.Name("2000175333.8")).Click();
+                Delay(5);
+
+
+
+
+                IJavaScriptExecutor js3 = (IJavaScriptExecutor)_driver;
+                js3.ExecuteScript("window.scrollTo(0, 250)");
+
+
+                // Switch the control of 'driver' to the Alert from main Window
+                IAlert simpleAlert1 = _driver.SwitchTo().Alert();
+
+                // '.Accept()' is used to accept the alert '(click on the Ok button)'
+                simpleAlert1.Accept();
+
+                Delay(2);
+
+                //2000175333.8
+                _driver.FindElement(By.Name("2000175333.8_expand")).Click();
+                Delay(2);
+
+                _driver.FindElement(By.Name("ICF_00000648")).Click();
+                Delay(2);
+                var movementType = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv1']/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[1]")).Text;
+
+
+                //*[@id="CntContentsDiv9"]/table/tbody/tr[5]/td[2]
+
+
+
+                //Assert.Pass("The policy was succesfully cancelled");
+                results = "Passed";
+
+
+                base.writeResultsToExcell(results, sheet, "IncreaseSumAssured");
 
             }
             catch (Exception)
@@ -288,7 +423,7 @@ namespace PolicyServicing
 
                 policySearch(contRef);
             
-                Delay(3);
+                Delay(5);
 
 
 
@@ -354,8 +489,482 @@ namespace PolicyServicing
             }
 
         }
+        [Category("ReInstate")]
+
+        public void ReInstate()
+
+        {
+
+            try
+
+            {
+
+                String test_url_1 = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
+                String test_url_1_title = "MIP - Sanlam ARL - Warpspeed Lookup Window";
+                IJavaScriptExecutor js = (IJavaScriptExecutor)_driver;
+
+                String test_url_3 = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
+                String test_url_4_title = "DateTime Picker";
+                IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
+
+                string contRef = base.GetPolicyNoFromExcell(sheet, "ReInstate");
+
+                string results = "";
+
+                string date = DateTime.Today.ToString("g");
 
 
+                policySearch(contRef);
+
+                Delay(5);
+
+
+                //Hover on policy options
+                IWebElement policyOptionElement = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
+
+
+                //Creating object of an Actions class
+                Actions action = new Actions(_driver);
+
+
+                //Performing the mouse hover action on the target element.
+                action.MoveToElement(policyOptionElement).Perform();
+                Delay(2);
+
+                //Click on Cancel
+                _driver.FindElement(By.XPath("//*[@id='m0t0']/tbody/tr[1]/td/div/div[3]/a/img")).Click();
+                Delay(4);
+
+                SelectElement oSelect1 = new SelectElement(_driver.FindElement(By.Name("frmCancelReason")));
+
+                oSelect1.SelectByValue("Got Better Offer");
+                Delay(4);
+
+                //Click on calender
+                _driver.FindElement(By.XPath("//*[@id='CntContentsDiv4']/table/tbody/tr[6]/td[2]/span/span/img")).Click();
+                Delay(2);
+
+
+
+                Assert.AreEqual(2, _driver.WindowHandles.Count);
+
+
+
+                var newWindowHandle = _driver.WindowHandles[1];
+                Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle));
+
+
+
+                /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?"); */
+                string expectedNewWindowTitle = test_url_4_title;
+                Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle).Title, expectedNewWindowTitle);
+
+
+
+                //Click on arrow
+                _driver.FindElement(By.Id("aDecYear")).Click();
+                Delay(2);
+
+
+
+
+                //Click on Date
+                _driver.FindElement(By.Name("fcCal1")).Click();
+                Delay(2);
+
+
+
+
+                /* Return to the window with handle = 0 */
+                _driver.SwitchTo().Window(_driver.WindowHandles[0]);
+                Delay(4);
+
+                //cancel  
+                _driver.FindElement(By.Name("btnSubmit")).Click();
+                Delay(2);
+
+                // Switch the control of 'driver' to the Alert from main Window
+                IAlert simpleAlert1 = _driver.SwitchTo().Alert();
+
+                // '.Text' is used to get the text from the Alert
+                String alertText2 = simpleAlert1.Text;
+                Console.WriteLine("Alert text is " + alertText2);
+
+                // '.Accept()' is used to accept the alert '(click on the Ok button)'
+                simpleAlert1.Accept();
+
+                Delay(2);
+
+
+                //Contract Status validation 
+
+                var StatusNotTakenUp = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[2]/td[2]/u/font")).Text;
+
+
+
+                IWebElement policyOptionElement3 = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
+
+
+                //Creating object of an Actions class
+                Actions action2 = new Actions(_driver);
+
+
+
+                //Performing the mouse hover action on the target element.
+                action2.MoveToElement(policyOptionElement3).Perform();
+                Delay(2);
+
+                //Click on Reinstate
+                _driver.FindElement(By.XPath("//*[@id='m0t0']/tbody/tr[10]/td/div/div[3]/a/img")).Click();
+                Delay(2);
+
+
+
+                
+                 SelectElement oSelect2 = new SelectElement(_driver.FindElement(By.Name("frmReason")));
+
+                oSelect2.SelectByValue("ReinstateReason2");
+                Delay(2);
+
+
+                //Click submit
+                _driver.FindElement(By.Name("btnctcrereinstatecsu5")).Click();
+                Delay(4);
+
+
+                //Click submit
+                _driver.FindElement(By.Name("btnctcrereinstatecsu2")).Click();
+                Delay(5);
+
+
+
+                //Contract Status validation 
+
+                var StatusInForce = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[2]/td[2]/u/font")).Text;
+
+                
+                
+               Assert.IsTrue(StatusInForce.Equals("In-Force", StringComparison.CurrentCultureIgnoreCase));
+                 
+                Delay(3);
+
+                if (StatusInForce == "In-Force")
+                {
+                    results = "Passed";
+                }
+                else
+                {
+                    results = "Failed";
+                }
+
+
+             
+
+
+                base.writeResultsToExcell(results, sheet, "ReInstate");
+
+
+            }
+
+            catch (Exception ex)
+   
+            {
+
+                DisconnectBrowser();
+
+                throw ex;
+
+            }
+
+        }
+        [Category("IncreaseSumAssured")]
+        private void IncreaseSumAssured()
+        {
+
+            try
+
+            {
+                String test_url_3 = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
+                String test_url_4_title = "DateTime Picker";
+                IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
+
+                string contRef = base.GetPolicyNoFromExcell(sheet, "IncreaseSumAssured");
+
+                string results = "";
+
+                string date = DateTime.Today.ToString("g");
+
+
+                policySearch(contRef);
+
+                Delay(3);
+
+                var contractPrem = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[2]")).Text;
+
+
+
+                //Click on user  component
+                _driver.FindElement(By.Name("fccComponentDescription1")).Click();
+                Delay(2);
+
+
+
+                IWebElement policyOptionElement = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
+
+
+                //Creating object of an Actions class
+                Actions action = new Actions(_driver);
+
+                   
+
+                //Performing the mouse hover action on the target element.
+                action.MoveToElement(policyOptionElement).Perform();
+
+                //Click on options
+                _driver.FindElement(By.XPath("//*[@id='m0t0']/tbody/tr[1]/td/div/div[3]/a/img")).Click();
+
+                Delay(5);
+
+                SelectElement oSelect4 = new SelectElement(_driver.FindElement(By.Name("frmSPAmount")));
+
+                oSelect4.SelectByValue("40000");
+                Delay(2);
+
+                //Click on calender
+                _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[2]/td[2]/a/span/img")).Click();
+                Delay(2);
+
+
+
+                Assert.AreEqual(2, _driver.WindowHandles.Count);
+
+
+
+                var newWindowHandle = _driver.WindowHandles[1];
+                Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle));
+
+
+
+                /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?"); */
+                string expectedNewWindowTitle = test_url_4_title;
+                Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle).Title, expectedNewWindowTitle);
+
+
+
+                //Click on arrow
+                _driver.FindElement(By.Id("aIncYear")).Click();
+                Delay(2);
+
+
+
+
+                //Click on Date
+                _driver.FindElement(By.Name("fcCal1")).Click();
+                Delay(2);
+
+
+
+
+                /* Return to the window with handle = 0 */
+                _driver.SwitchTo().Window(_driver.WindowHandles[0]);
+                Delay(4);
+
+
+
+                //Click on next
+                _driver.FindElement(By.Name("btncbmcc13")).Click();
+                Delay(2);
+
+
+                //Click on next
+                _driver.FindElement(By.Name("btncbmcc17")).Click();
+                Delay(2);
+
+                // Click on finish
+                _driver.FindElement(By.Name("btncbmcc23")).Click();
+                Delay(5);
+
+
+                //Arrange
+                var expectedamount = "40,000.00";
+
+                //find the result
+                string actualResult2 = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv5']/table/tbody/tr[2]/td[9]")).Text;
+                Assert.IsTrue(expectedamount.Equals(actualResult2, StringComparison.CurrentCultureIgnoreCase));
+
+                Delay(3);
+
+
+                var newPrem = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr/td[2]")).Text;
+
+
+
+                //// Click on contract summa
+                //_driver.FindElement(By.Name("cb_User_cbmct")).Click();
+                //Delay(5);
+
+
+                //// Click on contract summa
+                //_driver.FindElement(By.Name("cb_User_cbmct")).Click();
+                //Delay(5);
+
+                if (Convert.ToDecimal(newPrem) > Convert.ToDecimal(contractPrem) )
+                {
+                    results = "Passed";
+                }
+                else
+                {
+                    results = "Failed";
+                }
+
+
+                base.writeResultsToExcell(results, sheet, "IncreaseSumAssured");
+
+            }
+
+            catch (Exception ex)
+
+            {
+
+                DisconnectBrowser();
+
+                throw ex;
+
+            }
+
+        }
+
+        [Category("ChangeCollectionM")]
+        private void ChangeCollectionM()
+        {
+
+            try
+
+            {
+
+                String test_url_1 = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
+                String test_url_2_title = "MIP - Sanlam ARL - Warpspeed Lookup Window";
+                IJavaScriptExecutor js = (IJavaScriptExecutor)_driver;
+
+
+                string contRef = base.GetPolicyNoFromExcell(sheet, "ChangeCollectionM");
+
+                string results = "";
+
+                string date = DateTime.Today.ToString("g");
+
+
+                policySearch(contRef);
+
+                Delay(3);
+
+
+
+                //click on policy payer  
+                _driver.FindElement(By.Name("fcRoleEntityLink3")).Click();
+
+
+
+                IWebElement policyOptionElement = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
+
+
+                //Creating object of an Actions class
+                Actions action = new Actions(_driver);
+
+
+
+                //Performing the mouse hover action on the target element.
+                action.MoveToElement(policyOptionElement).Perform();
+
+
+                //Click on options
+                _driver.FindElement(By.XPath("//*[@id='m0t0']/tbody/tr[3]/td/div/div[3]/a/img")).Click();
+
+
+                SelectElement oSelect4 = new SelectElement(_driver.FindElement(By.Name("fcCollectionMethod")));
+
+                oSelect4.SelectByValue("108978.19");
+                Delay(5);
+
+                //Click on EMPLOYEE NUMBER
+                _driver.FindElement(By.Name("fcEmployeeNumber")).Click();
+                Delay(5);
+
+                //Click on EMPLOYEE NUMBER
+                _driver.FindElement(By.Name("fcEmployeeNumber")).SendKeys("23452345");
+                Delay(5);
+
+
+                //Search employee
+                _driver.FindElement(By.Name("fcEmployerButton")).Click();
+
+
+                Assert.AreEqual(2, _driver.WindowHandles.Count);
+
+                var newWindowHandle = _driver.WindowHandles[1];
+                Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle));
+
+                /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?"); */
+                string expectedNewWindowTitle = test_url_2_title;
+                Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle).Title, expectedNewWindowTitle);
+
+
+
+                //Search employee
+                _driver.FindElement(By.XPath("//*[@id='lkpResultsTable']/tbody/tr[17]")).Click();
+
+
+                /* Return to the window with handle = 0 */
+                _driver.SwitchTo().Window(_driver.WindowHandles[0]);
+                Delay(4);
+
+
+
+                //Click on options
+                _driver.FindElement(By.Id("GBLbl-1")).Click();
+                Delay(5);
+
+                //Click on contract summary
+                _driver.FindElement(By.Name("PF_User_Menu")).Click();
+                
+                //Click on contract summary
+                _driver.FindElement(By.Name("cb_User_cbmct")).Click();
+                
+
+
+                var expectedcollectionM = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[5]/td[2]")).Text;
+
+               
+               // Assert.IsTrue(expectedcollectionM.Equals("Stop Order", StringComparison.CurrentCultureIgnoreCase));
+
+                Delay(3);
+
+                if (expectedcollectionM == "DebiCheck")
+                {
+                    results = "Passed";
+                }
+                else
+                {
+                    results = "Failed";
+                }
+
+
+                base.writeResultsToExcell(results, sheet, "ChangeCollectionM");
+
+
+            }
+
+            catch (Exception ex)
+
+            {
+
+                DisconnectBrowser();
+
+                throw ex;
+
+            }
+
+        }
         [Category("Policy Search")]
         public void policySearch( string contractRef = "")
         {
