@@ -119,7 +119,7 @@ namespace ILR_TestSuite
         {
          
 
-            _driver.Url = "https://ilr-ppe.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrppe/run.w?";
+            _driver.Url = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
 
             _userName = "G992127";//TODO add your user name and password
 
@@ -205,6 +205,68 @@ namespace ILR_TestSuite
             return conRef;
 
         }
+        public Decimal getPremuimFromRateTable(string age, string rolePlayer, string sumAsured, string product)
+        {
+            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/Rate_Table_Safrican Just Funeral.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            var premium="";
+            
+            using (OleDbConnection conn = new OleDbConnection(_connString))
+            {
+                try
+                {
+
+                    var cover = rolePlayer + "_" + sumAsured;
+                    // Open connection
+                    conn.Open();
+                    string cmdQuery = $"SELECT ALB, {cover} FROM [{product}$]";
+
+                    OleDbCommand cmd = new OleDbCommand(cmdQuery, conn);
+
+                    // Create new OleDbDataAdapter
+                    OleDbDataAdapter oleda = new OleDbDataAdapter();
+
+                    oleda.SelectCommand = cmd;
+
+                    // Create a DataSet which will hold the data extracted from the worksheet.
+                    DataSet ds = new DataSet();
+
+                    // Fill the DataSet from the data extracted from the worksheet.
+                    oleda.Fill(ds, "Policies");
+
+
+
+                    foreach (var row in ds.Tables[0].DefaultView)
+                    {
+
+                        var excellAge = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+                        if (excellAge == age)
+                        {
+                            premium = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
+                        }
+
+
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    conn.Close();
+                    conn.Dispose();
+                }
+                
+
+            }
+            return Convert.ToDecimal(premium);
+
+
+
+
+        }
+
 
         public void writeResultsToExcell(string results, string sheet , string function)
         {
