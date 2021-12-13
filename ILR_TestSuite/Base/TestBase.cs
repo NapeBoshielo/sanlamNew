@@ -121,9 +121,9 @@ namespace ILR_TestSuite
 
             _driver.Url = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
 
-            _userName = "G992107";//TODO add your user name and password
+            _userName = "G992127";//TODO add your user name and password
 
-            _password = "G992107/d";
+            _password = "P@$$word47";
 
             _driver.Manage().Window.Maximize();
 
@@ -149,7 +149,7 @@ namespace ILR_TestSuite
         public string GetPolicyNoFromExcell(string sheet, string function)
         {
 
-            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/Rate_Table_Safrican Just Funeral.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/Rate_Table_Safrican Just Funeral.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
 
             string conRef = "";
             using (OleDbConnection conn = new OleDbConnection(_connString))
@@ -173,6 +173,8 @@ namespace ILR_TestSuite
 
                     // Fill the DataSet from the data extracted from the worksheet.
                     oleda.Fill(ds, "Policies");
+
+
 
                     foreach (var row in ds.Tables[0].DefaultView)
                     {
@@ -205,7 +207,7 @@ namespace ILR_TestSuite
         }
         public Decimal getPremuimFromRateTable(string age, string rolePlayer, string sumAsured, string product)
         {
-            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/Rate_Table_Safrican Just Funeral.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/Rate_Table_Safrican Just Funeral.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
             var premium="";
             
             using (OleDbConnection conn = new OleDbConnection(_connString))
@@ -269,7 +271,7 @@ namespace ILR_TestSuite
         public void writeResultsToExcell(string results, string sheet , string function)
         {
 
-            string connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/Rate_Table_Safrican Just Funeral.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            string connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/Rate_Table_Safrican Just Funeral.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
 
 
             using (OleDbConnection conn = new OleDbConnection(connString))
