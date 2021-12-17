@@ -1,0 +1,18 @@
+﻿Build started...
+1>------ Build started: Project: ILR_TestSuite, Configuration: Debug Any CPU ------
+1>Skipping analyzers to speed up the build. You can execute 'Build' or 'Rebuild' command to run analyzers.
+1>C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\MIP UAT Test Scenarios\Claims.cs(25,28,25,35): warning CS0108: 'Claims._driver' hides inherited member 'TestBase._driver'. Use the new keyword if hiding was intended.
+1>C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\MIP UAT Test Scenarios\NewBusiness.cs(25,28,25,35): warning CS0108: 'NewBusiness._driver' hides inherited member 'TestBase._driver'. Use the new keyword if hiding was intended.
+1>C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\MIP UAT Test Scenarios\PolicyServicing.cs(510,24,510,34): warning CS0219: The variable 'test_url_1' is assigned but its value is never used
+1>C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\MIP UAT Test Scenarios\PolicyServicing.cs(511,24,511,40): warning CS0219: The variable 'test_url_1_title' is assigned but its value is never used
+1>C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\MIP UAT Test Scenarios\PolicyServicing.cs(514,24,514,34): warning CS0219: The variable 'test_url_3' is assigned but its value is never used
+1>C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\MIP UAT Test Scenarios\PolicyServicing.cs(515,24,515,40): warning CS0219: The variable 'test_url_4_title' is assigned but its value is never used
+1>C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\MIP UAT Test Scenarios\PolicyServicing.cs(613,24,613,34): warning CS0219: The variable 'test_url_3' is assigned but its value is never used
+1>C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\MIP UAT Test Scenarios\PolicyServicing.cs(764,24,764,34): warning CS0219: The variable 'test_url_1' is assigned but its value is never used
+1>C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\MIP UAT Test Scenarios\PolicyServicing.cs(1129,24,1129,34): warning CS0219: The variable 'test_url_4' is assigned but its value is never used
+1>C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\MIP UAT Test Scenarios\PolicyServicing.cs(1133,24,1133,34): warning CS0219: The variable 'test_url_3' is assigned but its value is never used
+1>C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\MIP UAT Test Scenarios\PolicyServicing.cs(1134,24,1134,40): warning CS0219: The variable 'test_url_4_title' is assigned but its value is never used
+1>C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\Base\TestBase.cs(29,31,29,45): warning CS0169: The field 'TestBase._chromeOptions' is never used
+1>ILR_TestSuite -> C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\bin\Debug\netcoreapp3.1\ILR_TestSuite.dll
+1>Done building project "ILR_TestSuite.csproj".
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========
