@@ -57,26 +57,19 @@ namespace PolicyServicing
 
 
             Delay(2);
-            ////Click on Miain
-            //_driver.FindElement(By.Name("CBWeb")).Click();
-            //Delay(3);
-            //IncreaseSumAssured();
-            //Click on Miain
-            //_driver.FindElement(By.Name("CBWeb")).Click();
-            //Delay(2);
-            //DecreaseSumAssured();
             //Click on Miain
             _driver.FindElement(By.Name("CBWeb")).Click();
             Delay(3);
-            //ReInstate();
-            //Delay(3);
-            ////Click on Miain
-            //_driver.FindElement(By.Name("CBWeb")).Click();
-            //Delay(3);
-            //ChangeCollectionM();
-            ////Click on Miain
-            //_driver.FindElement(By.Name("CBWeb")).Click();
-            //Delay(3);
+            IncreaseSumAssured();
+            //Click on Miain
+            _driver.FindElement(By.Name("CBWeb")).Click();
+            Delay(2);
+            DecreaseSumAssured();
+            Delay(3);
+            ReInstate();
+            Delay(3);
+            ChangeCollectionM();
+            Delay(3);
             AddRolePlayer();
 
 
@@ -620,6 +613,9 @@ namespace PolicyServicing
 
                 string date = DateTime.Today.ToString("g");
 
+                var currentSumAssured = "";
+
+
 
                 policySearch(contRef);
 
@@ -631,10 +627,14 @@ namespace PolicyServicing
 
                 //Click on user  component
                 _driver.FindElement(By.Name("fccComponentDescription1")).Click();
+                
+
+                Delay(4);
+                //Get The current Sum Assured for the life assured
+                currentSumAssured = _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[8]/td[4]")).Text;
+
+
                 Delay(2);
-
-
-
                 IWebElement policyOptionElement = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
 
 
@@ -649,12 +649,24 @@ namespace PolicyServicing
                 //Click on options
                 _driver.FindElement(By.XPath("//*[@id='m0t0']/tbody/tr[1]/td/div/div[3]/a/img")).Click();
 
+                
+
                 Delay(5);
 
-                SelectElement oSelect4 = new SelectElement(_driver.FindElement(By.Name("frmSPAmount")));
+                var newSumAssured = "";
+                //Do a  upgrade on current sum assured by 5000
+                if (Convert.ToInt32(currentSumAssured) > 10000 || Convert.ToInt32(currentSumAssured) == 10000)
+                {
+                    newSumAssured = (Convert.ToInt32(currentSumAssured) + 10000).ToString();
+                }
+                else
+                {
+                    newSumAssured = (60000).ToString();
+                }
 
-                oSelect4.SelectByValue("50000");
-                Delay(2);
+                SelectElement oSelect = new SelectElement(_driver.FindElement(By.Name("frmSPAmount")));
+
+                oSelect.SelectByValue(newSumAssured);
 
                 //Click on calender
                 _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[2]/td[2]/a/span/img")).Click();
@@ -711,15 +723,7 @@ namespace PolicyServicing
                 Delay(5);
 
 
-                //Arrange
-                var expectedamount = "50,000.00";
-
-                //find the result
-                string actualResult2 = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv5']/table/tbody/tr[2]/td[9]")).Text;
-                Assert.IsTrue(expectedamount.Equals(actualResult2, StringComparison.CurrentCultureIgnoreCase));
-
-                Delay(3);
-
+              
 
                 var newPrem = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr/td[2]")).Text;
 
@@ -831,27 +835,23 @@ namespace PolicyServicing
 
                 //Search employee
                 _driver.FindElement(By.XPath("//*[@id='lkpResultsTable']/tbody/tr[17]")).Click();
+                Delay(5);
 
 
                 /* Return to the window with handle = 0 */
                 _driver.SwitchTo().Window(_driver.WindowHandles[0]);
-                Delay(4);
+                Delay(5);
 
 
-
-                //Click on options
+                //Click on submit
                 _driver.FindElement(By.Id("GBLbl-1")).Click();
                 Delay(5);
 
-                //Click on contract summary
-                _driver.FindElement(By.Name("PF_User_Menu")).Click();
-
-                //Click on contract summary
-                _driver.FindElement(By.Name("cb_User_cbmct")).Click();
+               
 
 
 
-                var expectedcollectionM = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[5]/td[2]")).Text;
+                var expectedcollectionM = _driver.FindElement(By.XPath("//*[@id='frmCbmre']/tbody/tr[8]/td[4]")).Text;
 
 
                 // Assert.IsTrue(expectedcollectionM.Equals("Stop Order", StringComparison.CurrentCultureIgnoreCase));
@@ -920,7 +920,7 @@ namespace PolicyServicing
                 //clickback
                 Actions act = new Actions(_driver);
                 IWebElement ele = _driver.FindElement(By.XPath("//*[@id='aIncYear']/img"));
-                act.MoveToElement(ele).Click().Build().Perform();
+                //   act.MoveToElement(ele).Click().Build().Perform();
 
                 _driver.FindElement(By.XPath("//a[@name='fcCal1']")).Click();
 
@@ -934,14 +934,10 @@ namespace PolicyServicing
 
                 string url = _driver.Url;
                 Assert.AreEqual(url, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
-
-
                 using (OleDbConnection con = new OleDbConnection(base._connString))
                 {
-
                     try
                     {
-                        //open
                         con.Open();
 
                         String command = "SELECT * FROM [AddRolePlayer$]";
@@ -953,8 +949,6 @@ namespace PolicyServicing
 
                         DataSet ds = new DataSet("policies");
                         adapt.Fill(ds);
-
-
                         foreach (var row in ds.Tables[0].DefaultView)
                         {
 
@@ -1004,7 +998,8 @@ namespace PolicyServicing
 
                 IWebElement relationship = _driver.FindElement(By.Name("frmRelationshipCodeObj"));
                 SelectElement select = new SelectElement(relationship);
-                select.SelectByIndex(4);
+
+                select.SelectByIndex(12);
 
                 Delay(2);
 
@@ -1047,7 +1042,7 @@ namespace PolicyServicing
                 //  select component
                 IWebElement component = _driver.FindElement(By.Name("frmComponentObj"));
                 SelectElement selecComp = new SelectElement(component);
-                selecComp.SelectByIndex(1);
+                selecComp.SelectByIndex(0);
 
                 Delay(2);
 
