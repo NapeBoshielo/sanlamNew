@@ -586,7 +586,7 @@ namespace PolicyServicing
                 //Click on submit
                 _driver.FindElement(By.Name("btncbmcc31")).Click();
                 Delay(3);
-                newPremium = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[4]")).Text;
+                newPremium = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr/td[2]")).Text;
                 Delay(3);
                 results = Convert.ToDouble(newPremium) < Convert.ToDouble(currentPremium) ? "Passed" : "Failed";
                 Delay(3);
