@@ -546,6 +546,7 @@ namespace PolicyServicing
                 throw ex;
             }
         }
+
         [Category("Removal of Non-Compulsory life")]
         private void RemovalOfNonCompulsoryLife()
         {
@@ -557,6 +558,9 @@ namespace PolicyServicing
                 var newPremium = "";
                 policySearch(contRef);
                 Delay(2);
+                //Get commencemet data
+                var commDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
+                Delay(2);
                 //Get Current premium
                 currentPremium = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[2]")).Text;
                 Delay(4);
@@ -566,10 +570,22 @@ namespace PolicyServicing
                 //Click on the terminate btn
                 _driver.FindElement(By.Name("btncbmcc29")).Click();
                 Delay(3);
+                var commSplit = commDate.Split('/');
+                commDate = "";
+                foreach (var item in commSplit)
+                {
+                    commDate += item;
+                }
+                Delay(3);
+
+                _driver.FindElement(By.Name("frmCCEndDate")).Clear();
+                Delay(3);
+                _driver.FindElement(By.Name("frmCCEndDate")).SendKeys(commDate);
+                Delay(3);
                 //Click on submit
                 _driver.FindElement(By.Name("btncbmcc31")).Click();
                 Delay(3);
-                newPremium = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[4]")).Text;
+                newPremium = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr/td[2]")).Text;
                 Delay(3);
                 results = Convert.ToDouble(newPremium) < Convert.ToDouble(currentPremium) ? "Passed" : "Failed";
                 Delay(3);
@@ -580,6 +596,7 @@ namespace PolicyServicing
                 throw ex;
             }
         }
+
 
 
         [Category("Cancel Policy")]
