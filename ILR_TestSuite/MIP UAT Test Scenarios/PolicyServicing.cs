@@ -54,13 +54,14 @@ namespace PolicyServicing
         {
 
 
-
+           
 
             Delay(2);
             //Click on Miain
             _driver.FindElement(By.Name("CBWeb")).Click();
             Delay(3);
-            IncreaseSumAssuredAge();
+            addBeneficiary();
+            //IncreaseSumAssuredAge();
             //Click on Miain
             _driver.FindElement(By.Name("CBWeb")).Click();
             Delay(3);
@@ -90,6 +91,73 @@ namespace PolicyServicing
             Delay(20);
 
         }
+
+        [Category("Add Beneficiary")]
+        private void addBeneficiary()
+        {
+            var results = "Failed";
+            string contRef = base.GetPolicyNoFromExcell(sheet, "AddBeneficiary");
+            policySearch(contRef);
+            Delay(2);
+            var commDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
+            _driver.FindElement(By.Name("btnAddRolePlayer")).Click();
+            Delay(3);
+            //Select role
+            SelectElement oSelect = new SelectElement(_driver.FindElement(By.Name("frmRoleObj")));
+
+            oSelect.SelectByValue("41667.19");
+            Delay(2);
+            //Effective date
+            _driver.FindElement(By.Name("frmEffectiveFromDate")).Clear();
+            Delay(2);
+            _driver.FindElement(By.Name("frmEffectiveFromDate")).SendKeys(commDate);
+
+            _driver.FindElement(By.Name("btncbmre7")).Click();
+            Delay(3);
+            _driver.FindElement(By.Name("frmIDNumber")).SendKeys("8604225772087");
+            //8604225772087
+            Delay(3);
+            _driver.FindElement(By.Name("btncbmre13")).Click();
+            Delay(10);
+
+            oSelect = new SelectElement(_driver.FindElement(By.Name("frmRelationshipCodeObj")));
+
+            oSelect.SelectByValue("905324144.488");
+            Delay(3);
+            _driver.FindElement(By.Name("btncbmre16")).Click();
+            Delay(3);
+            _driver.FindElement(By.Id("t0_749")).Click();
+            Delay(3);
+            _driver.FindElement(By.Name("2000175333.8")).Click();
+            Delay(3);
+            var row = 2;
+            var maxRows = 23;
+            for (int i = row; i < maxRows; i++)
+            {
+
+                string xpath = "//*[@id='CntContentsDiv11']/table/tbody/tr[" + i + "]/td[1]";
+                try
+                {
+                    var role = _driver.FindElement(By.XPath(xpath)).Text;
+                    if (role == "Beneficiary")
+                    {
+                        results = "Passed";
+                        break;
+                    }
+                }
+                catch (Exception)
+                {
+                    break;
+                }
+
+
+            }
+            Delay(3);
+
+            base.writeResultsToExcell(results, sheet, "AddBenefeciary");
+
+        }
+
         private void DecreaseSumAssured()
         {
             try
