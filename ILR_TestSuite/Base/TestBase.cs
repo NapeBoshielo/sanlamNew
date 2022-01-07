@@ -149,7 +149,7 @@ namespace ILR_TestSuite
         public string GetPolicyNoFromExcell(string sheet, string function)
         {
 
-            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
 
             string conRef = "";
             using (OleDbConnection conn = new OleDbConnection(_connString))
@@ -207,7 +207,7 @@ namespace ILR_TestSuite
         }
         public Decimal getPremuimFromRateTable(string age, string rolePlayer, string sumAsured, string product)
         {
-            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
             var premium="";
             
             using (OleDbConnection conn = new OleDbConnection(_connString))
@@ -271,7 +271,7 @@ namespace ILR_TestSuite
         public void writeResultsToExcell(string results, string sheet , string function)
         {
 
-            string connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            string connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
 
 
             using (OleDbConnection conn = new OleDbConnection(connString))
