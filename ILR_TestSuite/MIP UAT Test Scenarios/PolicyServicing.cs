@@ -54,20 +54,24 @@ namespace PolicyServicing
         {
 
 
-           
+
 
             Delay(2);
             //Click on Miain
-            _driver.FindElement(By.Name("CBWeb")).Click();
-            Delay(3);
-            addBeneficiary();
-            //IncreaseSumAssuredAge();
+           // _driver.FindElement(By.Name("CBWeb")).Click();
+          //  Delay(3);
+           // addBeneficiary();
+            IncreaseSumAssuredAge();
             //Click on Miain
             _driver.FindElement(By.Name("CBWeb")).Click();
             Delay(3);
-            //AddRolePlayer();
-            //Delay(3);
-            //TerminateRolePlayer();
+            AddRolePlayer();
+            Delay(3);
+            TerminateRolePlayer();
+            Delay(3);
+            AddRole_NextMonth();
+            Delay(3);
+            TerminateRoleNext_month();
             //Delay(3);
             //IncreaseSumAssured();
             //Delay(2);
@@ -83,7 +87,7 @@ namespace PolicyServicing
             //Delay(3);
             //ChangeLifeAssured();
             //Delay(3);
-            AddaLife();
+           // AddaLife();
             Delay(3);
 
 
@@ -91,6 +95,999 @@ namespace PolicyServicing
             Delay(20);
 
         }
+        private void AddRolePlayer()
+        {
+
+            try
+            {
+                IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
+
+                string contRef = base.GetPolicyNoFromExcell(sheet, "AddRolePlayer");
+
+                string results = "";
+                string title = "", first_name = "", surname = "", initials = "", dob = "", gender = "", id_number = "", relationship = "";
+
+
+                policySearch(contRef);
+
+                //Redate
+                redate();
+
+
+                Delay(3);
+
+                //click add role player
+
+                _driver.FindElement(By.Name("btnAddRolePlayer")).Click();
+
+                //Select role
+                IWebElement selectRole = _driver.FindElement(By.Name("frmRoleObj"));
+                SelectElement s = new SelectElement(selectRole);
+                s.SelectByIndex(4);
+                Delay(3);
+                //Click calendar
+
+                _driver.FindElement(By.XPath("//*[@id='frmCbmre']/tbody/tr[2]/td[2]/a")).Click();
+                Delay(3);
+                Assert.AreEqual(2, _driver.WindowHandles.Count);
+
+                //switch to window
+                var childwindow = _driver.WindowHandles[1];
+                _driver.SwitchTo().Window(childwindow);
+
+
+
+                // click calendar month
+                Actions act = new Actions(_driver);
+                IWebElement ele = _driver.FindElement(By.XPath("//*[@id='aIncYear']/img"));
+                act.Click(ele).Perform();
+                _driver.FindElement(By.XPath("//*[@id='aIncYear']")).Click();
+
+                _driver.FindElement(By.XPath("//a[@name='fcCal1']")).Click();
+
+
+                var parent = _driver.WindowHandles[0];
+                _driver.SwitchTo().Window(parent);
+                Delay(4);
+
+
+                _driver.FindElement(By.XPath("//*[@id='GBLbl-4']/span/a")).Click();
+                //assert
+                string url = _driver.Url;
+                Assert.AreEqual(url, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
+
+                //click next to enter new role player
+                _driver.FindElement(By.XPath("//*[@id='GBLbl-5']/span/a")).Click();
+
+                using (OleDbConnection con = new OleDbConnection(base._connString))
+                {
+                    try
+                    {
+                        con.Open();
+
+                        String command = "SELECT * FROM [AddRolePlayer$]";
+
+                        OleDbCommand cmd = new OleDbCommand(command, con);
+
+                        OleDbDataAdapter adapt = new OleDbDataAdapter();
+                        adapt.SelectCommand = cmd;
+
+                        DataSet ds = new DataSet("policies");
+                        adapt.Fill(ds);
+                        foreach (var row in ds.Tables[0].DefaultView)
+                        {
+
+                            title = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+                            first_name = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
+                            surname = ((System.Data.DataRowView)row).Row.ItemArray[2].ToString();
+                            initials = ((System.Data.DataRowView)row).Row.ItemArray[3].ToString();
+                            dob = ((System.Data.DataRowView)row).Row.ItemArray[4].ToString();
+                            gender = ((System.Data.DataRowView)row).Row.ItemArray[5].ToString();
+                            id_number = ((System.Data.DataRowView)row).Row.ItemArray[6].ToString();
+                            relationship = ((System.Data.DataRowView)row).Row.ItemArray[7].ToString();
+                            break;
+                        }
+
+
+                    }
+                    catch (Exception ex)
+
+                    {
+                        throw ex;
+
+                    }
+                    con.Close();
+                    con.Dispose();
+
+                }
+
+                //enter id from excel
+                /*  _driver.FindElement(By.Name("frmIDNumber")).SendKeys(idno);
+                  Delay(2);
+                  _driver.FindElement(By.Name("frmPersonObjLkpImg")).Click();
+
+                  Delay(4);
+
+                  var child = _driver.WindowHandles[1];
+                  _driver.SwitchTo().Window(child);
+                  Delay(2);
+
+                  _driver.FindElement(By.XPath(" //*[@id='lkpResultsTable']/tbody/tr[2]")).Click();
+
+                  Delay(2);
+                  var parentt = _driver.WindowHandles[0];
+                  _driver.SwitchTo().Window(parentt);
+
+                  Delay(2);
+                //click next
+
+                  _driver.FindElement(By.XPath("//*[@id='GBLbl-5']/span/a")).Click();
+                  Delay(2);
+                */
+
+                //enter initials
+                _driver.FindElement(By.Name("frmPersonInitials")).Clear();
+                _driver.FindElement(By.Name("frmPersonInitials")).SendKeys(initials);
+                Delay(2);
+                //enter name
+                _driver.FindElement(By.Name("frmPersonFirstName")).Clear();
+                _driver.FindElement(By.Name("frmPersonFirstName")).SendKeys(first_name);
+                Delay(2);
+                //enter surname
+                _driver.FindElement(By.Name("frmPersonLastName")).Clear();
+                _driver.FindElement(By.Name("frmPersonLastName")).SendKeys(surname);
+                Delay(2);
+                //enter
+
+
+                _driver.FindElement(By.Name("frmPersonIDNumber")).SendKeys(id_number);
+                Delay(2);
+                //enter
+                _driver.FindElement(By.Name("frmPersonDateOfBirth")).SendKeys(dob);
+                Delay(2);
+                //marital status
+                IWebElement merital = _driver.FindElement(By.Name("frmPersonMaritalStatus"));
+                SelectElement iselect = new SelectElement(merital);
+                iselect.SelectByIndex(1);
+
+
+                //Select gender
+                IList<IWebElement> rdos = _driver.FindElements(By.XPath("//input[@name='frmPersonGender']"));
+
+                foreach (IWebElement radio in rdos)
+                {
+
+                    if (radio.GetAttribute("value").Equals("er_AcPerGenMal"))
+                    {
+
+                        radio.Click();
+                        break;
+
+                    }
+                    else
+                    {
+
+                        radio.FindElement(By.XPath("//*[@id='frmSubCbmre']/tbody/tr[1]/td[4]/table/tbody/tr/td[3]/input")).Click();
+
+                    }
+
+
+                }
+
+                //Select Relationship
+                var V_relationship = "";
+                switch (relationship)
+                {
+
+                    case "Additional parent":
+                        V_relationship = "951372577.488";
+                        break;
+                    case "Spouse":
+                        V_relationship = "854651144.248";
+                        break;
+                    case "Additional child":
+                        V_relationship = "905324120.488";
+                        break;
+                    case "Child":
+                        V_relationship = "905324138.488";
+                        break;
+                    case "Parent":
+                        V_relationship = "347901097.188";
+                        break;
+
+                    case "Brother":
+                        V_relationship = "951371842.488";
+                        break;
+
+                }
+
+                IWebElement relation = _driver.FindElement(By.Name("frmRelationshipCodeObj"));
+                SelectElement oselect = new SelectElement(relation);
+                oselect.SelectByValue(V_relationship);
+                //Title
+                var value = "";
+                switch (title)
+                {
+                    case "Mr":
+                        value = "er_AcPerTitleMr";
+                        break;
+                    case "Mrs":
+                        value = "er_AcPerTitleMrs";
+                        break;
+
+                    case "Ms":
+                        value = "er_AcPerTitleMs";
+                        break;
+
+                    case "Prf":
+                        value = "er_AcPerTitlePrf";
+                        break;
+                    case "Dr":
+                        value = "er_AcPerTitleDoc";
+                        break;
+
+                    case "Adm":
+                        value = "er_AcPerTitleADM";
+                        break;
+
+                    case "Miss":
+                        value = "er_AcPerTitleMiss";
+                        break;
+
+                    default:
+                        break;
+                }
+
+                SelectElement oSelect = new SelectElement(_driver.FindElement(By.Name("frmPersonTitle")));
+                oSelect.SelectByValue(value);
+
+
+
+
+                string url2 = _driver.Url;
+                Assert.AreEqual(url2, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
+
+                Delay(2);
+                //save
+                _driver.FindElement(By.XPath(" //*[@id='GBLbl-5']/span/a")).Click();
+                Delay(2);
+                //Roleplayer ID
+                var LifeA_ID = _driver.FindElement(By.XPath(" //*[@id='frmSubCbmre']/tbody/tr[4]/td[4]")).Text;
+
+                //validation
+                if (id_number == LifeA_ID)
+                {
+                    results = "Passed";
+
+                }
+                else
+
+                {
+                    results = "Fail";
+
+                }
+
+                base.writeResultsToExcell(results, sheet, "AddRolePlayer");
+             
+               
+
+                Delay(2);
+                //click contract summary
+                _driver.FindElement(By.XPath(" //*[@id='t0_754']/table/tbody/tr/td[3]/a")).Click();
+
+                //*[@id="t0_754"]/table/tbody/tr/td[3]/a
+                Delay(2);
+                //click on add componet
+                _driver.FindElement(By.XPath("   //*[@id='GBLbl-5']/span/a")).Click();
+
+
+                //Delay(2);
+                //  select component
+                // IWebElement component = _driver.FindElement(By.Name("frmComponentObj"));
+                //SelectElement selecComp = new SelectElement(component);
+                //selecComp.SelectByIndex(1);
+
+                Delay(2);
+
+                IWebElement parentcomponent = _driver.FindElement(By.Name("frmParentComponentObj"));
+                SelectElement selecCom = new SelectElement(parentcomponent);
+                selecCom.SelectByIndex(1);
+                Delay(2);
+
+                _driver.FindElement(By.XPath("//*[@id='GBLbl-6']/span/a")).Click();
+
+
+                Delay(2);
+
+                _driver.FindElement(By.XPath("//*[@id='GB-6']")).Click();
+
+
+                //Select date
+                // click 
+                // _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[2]/td[2]/a/span/img")).Click();
+
+
+                //Delay(2);
+
+                //var compchild = _driver.WindowHandles[1];
+                //_driver.SwitchTo().Window(compchild);
+                //  Delay(2);
+                //_driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[4]/td/table/tbody/tr[2]/td[4]/a")).Click();
+                // Delay(2);
+                // var cparent = _driver.WindowHandles[0];
+                // _driver.SwitchTo().Window(cparent);
+
+                // Delay(3);
+
+                //select sumassured
+                //string url3 = _driver.Url;
+                //Assert.AreEqual(url3, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
+
+
+
+                //IWebElement sumassured = _driver.FindElement(By.Name("frmSPAmount"));
+                //SelectElement sum = new SelectElement(sumassured);
+                //sum.SelectByIndex(3);
+
+                //Delay(3);
+
+                //  _driver.FindElement(By.XPath("//*[@id='GBLbl-6']/span/a")).Click();
+                // Delay(3);
+
+                //click role player
+                //Actions acts = new Actions(_driver);
+                //IWebElement elem = _driver.FindElement(By.Name("frmRolePlayers"));
+                //act.DoubleClick(elem).Perform();
+
+
+
+                IWebElement elem = _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[6]/td[2]/select"));
+                SelectElement roleP = new SelectElement(elem);
+                roleP.SelectByIndex(0);
+                Delay(3);
+
+
+                //next
+                _driver.FindElement(By.XPath(" //*[@id='GBLbl-7']/span/a")).Click();
+
+                //Validate roleplayer ID number
+                Delay(2);
+
+                var RoleINno = _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[9]/td[2]")).Text;
+
+                var Ridno = RoleINno.Split(" ")[RoleINno.Split(" ").Length - 1].ToString();
+                var ID = Ridno.Substring(1, 13);
+
+                Assert.AreEqual(id_number, ID);
+
+                Delay(2);
+
+                _driver.FindElement(By.XPath("//*[@id='GBLbl-7']/span/a")).Click();
+
+                Delay(2);
+
+            }
+            catch (Exception) { throw; }
+
+
+
+
+        }
+        private void TerminateRolePlayer()
+        {
+
+            try
+            {
+
+                IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
+
+                string contRef = base.GetPolicyNoFromExcell(sheet, "TerminateRoleP");
+
+                string results = "";
+
+                // _driver.FindElement(By.Name("CBWeb")).Click();
+                // _driver.FindElement(By.XPath(" //*[@id='t0_754']/table/tbody/tr/td[3]/a")).Click();
+                Delay(2);
+                policySearch(contRef);
+
+                for (int i = 2; i < 23; i++)
+                {
+                    var txt = _driver.FindElement(By.XPath($"//*[@id='CntContentsDiv11']/table/tbody/tr[{i.ToString()}]/td[1]/span")).Text;
+                    var relationship = _driver.FindElement(By.XPath($"//*[@id='CntContentsDiv11']/table/tbody/tr[{i.ToString()}]/td[3]")).Text;
+
+                    if (txt == "Life Assured" && relationship != "Self")
+                    {
+                        _driver.FindElement(By.XPath($"//*[@id='CntContentsDiv11']/table/tbody/tr[{i.ToString()}]/td[1]/span")).Click();
+                        break;
+                    }
+
+                }
+                Delay(3);
+
+                // SS44244430
+
+
+                String expected = "Are you sure you want to terminate this role";
+
+                _driver.FindElement(By.Name("btnTerminate")).Click();
+
+                String alerttext = _driver.SwitchTo().Alert().Text;
+                _driver.SwitchTo().Alert().Accept();
+                Assert.AreEqual(expected, alerttext);
+
+                //change effective to date
+                Delay(2);
+                var effectivefrom = _driver.FindElement(By.Name("frmEffectiveFromDate"));
+                var effectvalue = effectivefrom.GetAttribute("value");
+
+                Delay(1);
+                _driver.FindElement(By.Name("frmEffectiveToDate")).Clear();
+                _driver.FindElement(By.Name("frmEffectiveToDate")).SendKeys(effectvalue);
+
+                Delay(2);
+                //click terminate
+
+                _driver.FindElement(By.Name("btnTerminate")).Click();
+
+                //validation
+                if (_driver.Url == "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?")
+                {
+                    results = "Passed";
+
+                }
+                else
+
+                {
+                    results = "Fail";
+
+                }
+
+                base.writeResultsToExcell(results, sheet, "TerminateRoleP");
+
+
+
+
+
+            }
+            catch (Exception) { throw; }
+
+
+        }
+
+        private void redate()
+        {
+
+            string redate_date = "";
+            //click on policy options
+            var policyele = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
+
+            Actions act = new Actions(_driver);
+
+            act.MoveToElement(policyele).Perform();
+
+            Delay(3);
+            //click on redate policy
+            _driver.FindElement(By.XPath("//*[@id='m0t0']/tbody/tr[4]/td/div/div[3]/a/img")).Click();
+
+            //get value of attribute 
+            Delay(3);
+            var element_value = _driver.FindElement(By.XPath("//*[@id='frmCommencementDate']"));
+            string rdat = element_value.GetAttribute("value");
+
+            using (OleDbConnection con = new OleDbConnection(base._connString))
+            {
+                try
+                {
+                    con.Open();
+
+                    String command = "SELECT * FROM [AddRolePlayer$]";
+
+                    OleDbCommand cmd = new OleDbCommand(command, con);
+
+                    OleDbDataAdapter adapt = new OleDbDataAdapter();
+                    adapt.SelectCommand = cmd;
+
+                    DataSet ds = new DataSet("policies");
+                    adapt.Fill(ds);
+                    foreach (var row in ds.Tables[0].DefaultView)
+                    {
+
+                        redate_date = ((System.Data.DataRowView)row).Row.ItemArray[8].ToString();
+                        //next date
+                        if (redate_date == rdat)
+                        {
+
+                            _driver.FindElement(By.XPath("//*[@id='GBLbl-3']/span/a")).Click();
+
+                        }
+                        else
+                        {
+                            //current month
+                            _driver.FindElement(By.XPath("//*[@id='frmctcremaint']/tbody/tr[7]/td[2]/a/span/img")).Click();
+
+
+
+                            var cal = _driver.WindowHandles[1];
+                            _driver.SwitchTo().Window(cal);
+
+                            _driver.FindElement(By.XPath("//*[@id='aDecYear']/img")).Click();
+
+
+
+
+
+                            _driver.FindElement(By.XPath("//a[@name='fcCal1']")).Click();
+
+                            var cal2 = _driver.WindowHandles[0];
+                            _driver.SwitchTo().Window(cal2);
+
+                            Delay(2);
+                            _driver.FindElement(By.Name("btnctcremik5")).Click();
+
+                        }
+
+                    }
+
+
+                }
+                catch (Exception ex)
+
+                {
+                    throw ex;
+
+                }
+                con.Close();
+                con.Dispose();
+
+            }
+
+        }
+
+        private void AddRole_NextMonth()
+        {
+
+            try
+            {
+                IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
+
+                string contRef = base.GetPolicyNoFromExcell(sheet, "AddRoleNext_month");
+                string title = "", first_name = "", surname = "", initials = "", dob = "", gender = "", id_number = "", relationship = "";
+                string results = "";
+                string idno = "";
+                policySearch(contRef);
+                Delay(2);
+
+                //click add role
+
+                _driver.FindElement(By.Name("btnAddRolePlayer")).Click();
+
+
+                //Select role
+                IWebElement selectRole = _driver.FindElement(By.Name("frmRoleObj"));
+                SelectElement s = new SelectElement(selectRole);
+                s.SelectByIndex(4);
+                Delay(3);
+                //Click calendar
+
+                //_driver.FindElement(By.XPath("//*[@id='frmCbmre']/tbody/tr[2]/td[2]/a")).Click();
+                // Delay(3);
+                // Assert.AreEqual(2, _driver.WindowHandles.Count);
+
+                // var childwindow = _driver.WindowHandles[1];
+                // _driver.SwitchTo().Window(childwindow);
+                //Delay(2);
+                //click
+                //Actions act = new Actions(_driver);
+                //IWebElement ele = _driver.FindElement(By.XPath("//*[@id='aIncYear']/img"));
+                //act.DoubleClick(ele).Perform();
+                //_driver.FindElement(By.XPath("//*[@id='aIncYear']")).Click();
+                //_driver.FindElement(By.XPath("//a[@name='fcCal1']")).Click();
+                //var parent = _driver.WindowHandles[0];
+                //_driver.SwitchTo().Window(parent);
+                //Delay(4);
+
+                //click next
+                _driver.FindElement(By.XPath("//*[@id='GBLbl-4']/span/a")).Click();
+
+                string url = _driver.Url;
+                Assert.AreEqual(url, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
+
+                //click next to enter new role player
+                _driver.FindElement(By.XPath("//*[@id='GBLbl-5']/span/a")).Click();
+
+                using (OleDbConnection con = new OleDbConnection(base._connString))
+                {
+                    try
+                    {
+                        con.Open();
+
+                        String command = "SELECT * FROM [AddRoleNext_month$]";
+
+                        OleDbCommand cmd = new OleDbCommand(command, con);
+
+                        OleDbDataAdapter adapt = new OleDbDataAdapter();
+                        adapt.SelectCommand = cmd;
+
+                        DataSet ds = new DataSet("policies");
+                        adapt.Fill(ds);
+                        foreach (var row in ds.Tables[0].DefaultView)
+                        {
+
+                            title = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+                            first_name = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
+                            surname = ((System.Data.DataRowView)row).Row.ItemArray[2].ToString();
+                            initials = ((System.Data.DataRowView)row).Row.ItemArray[3].ToString();
+                            dob = ((System.Data.DataRowView)row).Row.ItemArray[4].ToString();
+                            gender = ((System.Data.DataRowView)row).Row.ItemArray[5].ToString();
+                            id_number = ((System.Data.DataRowView)row).Row.ItemArray[6].ToString();
+                            relationship = ((System.Data.DataRowView)row).Row.ItemArray[7].ToString();
+                            break;
+                        }
+
+
+                    }
+                    catch (Exception ex)
+
+                    {
+                        throw ex;
+
+                    }
+                    con.Close();
+                    con.Dispose();
+
+                }
+
+                //enter id from excel
+                /*  _driver.FindElement(By.Name("frmIDNumber")).SendKeys(idno);
+                  Delay(2);
+                  _driver.FindElement(By.Name("frmPersonObjLkpImg")).Click();
+
+                  Delay(4);
+
+                  var child = _driver.WindowHandles[1];
+                  _driver.SwitchTo().Window(child);
+                  Delay(2);
+
+                  _driver.FindElement(By.XPath(" //*[@id='lkpResultsTable']/tbody/tr[2]")).Click();
+
+                  Delay(2);
+                  var parentt = _driver.WindowHandles[0];
+                  _driver.SwitchTo().Window(parentt);
+
+                  Delay(2);
+                //click next
+
+                  _driver.FindElement(By.XPath("//*[@id='GBLbl-5']/span/a")).Click();
+                  Delay(2);
+                */
+                ///click next
+
+
+                //enter initials
+                _driver.FindElement(By.Name("frmPersonInitials")).Clear();
+                _driver.FindElement(By.Name("frmPersonInitials")).SendKeys(initials);
+                Delay(2);
+                //enter name
+                _driver.FindElement(By.Name("frmPersonFirstName")).Clear();
+                _driver.FindElement(By.Name("frmPersonFirstName")).SendKeys(first_name);
+                Delay(2);
+                //enter surname
+                _driver.FindElement(By.Name("frmPersonLastName")).Clear();
+                _driver.FindElement(By.Name("frmPersonLastName")).SendKeys(surname);
+                Delay(2);
+                //enter
+
+
+                _driver.FindElement(By.Name("frmPersonIDNumber")).SendKeys(id_number);
+                Delay(2);
+                //enter
+                _driver.FindElement(By.Name("frmPersonDateOfBirth")).SendKeys(dob);
+                Delay(2);
+                //marital status
+                IWebElement merital = _driver.FindElement(By.Name("frmPersonMaritalStatus"));
+                SelectElement iselect = new SelectElement(merital);
+                iselect.SelectByIndex(1);
+
+
+                //Select gender
+                IList<IWebElement> rdos = _driver.FindElements(By.XPath("//input[@name='frmPersonGender']"));
+
+                foreach (IWebElement radio in rdos)
+                {
+
+                    if (radio.GetAttribute("value").Equals("er_AcPerGenMal"))
+                    {
+
+                        radio.Click();
+                        break;
+
+                    }
+                    else
+                    {
+
+                        radio.FindElement(By.XPath("//*[@id='frmSubCbmre']/tbody/tr[1]/td[4]/table/tbody/tr/td[3]/input")).Click();
+
+                    }
+
+
+                }
+
+                //Select Relationship
+                var V_relationship = "";
+                switch (relationship)
+                {
+
+                    case "Additional parent":
+                        V_relationship = "951372577.488";
+                        break;
+                    case "Spouse":
+                        V_relationship = "854651144.248";
+                        break;
+                    case "Additional child":
+                        V_relationship = "905324120.488";
+                        break;
+                    case "Child":
+                        V_relationship = "905324138.488";
+                        break;
+                    case "Parent":
+                        V_relationship = "347901097.188";
+                        break;
+
+                    case "Brother":
+                        V_relationship = "951371842.488";
+                        break;
+
+                }
+
+                IWebElement relation = _driver.FindElement(By.Name("frmRelationshipCodeObj"));
+                SelectElement oselect = new SelectElement(relation);
+                oselect.SelectByValue(V_relationship);
+                //Title
+                var value = "";
+                switch (title)
+                {
+                    case "Mr":
+                        value = "er_AcPerTitleMr";
+                        break;
+                    case "Mrs":
+                        value = "er_AcPerTitleMrs";
+                        break;
+
+                    case "Ms":
+                        value = "er_AcPerTitleMs";
+                        break;
+
+                    case "Prf":
+                        value = "er_AcPerTitlePrf";
+                        break;
+                    case "Dr":
+                        value = "er_AcPerTitleDoc";
+                        break;
+
+                    case "Adm":
+                        value = "er_AcPerTitleADM";
+                        break;
+
+                    case "Miss":
+                        value = "er_AcPerTitleMiss";
+                        break;
+
+                    default:
+                        break;
+                }
+
+                SelectElement oSelect = new SelectElement(_driver.FindElement(By.Name("frmPersonTitle")));
+                oSelect.SelectByValue(value);
+
+
+
+
+                string url2 = _driver.Url;
+                Assert.AreEqual(url2, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
+
+
+
+
+
+                Delay(2);
+                //save
+                _driver.FindElement(By.XPath(" //*[@id='GBLbl-5']/span/a")).Click();
+                Delay(2);
+                //Roleplayer ID
+                var LifeA_ID = _driver.FindElement(By.XPath(" //*[@id='frmSubCbmre']/tbody/tr[4]/td[4]")).Text;
+
+                //validation
+                if (id_number == LifeA_ID)
+                {
+                    results = "Passed";
+
+                }
+                else
+
+                {
+                    results = "Fail";
+
+                }
+
+                base.writeResultsToExcell(results, sheet, "AddRoleNext_month");
+
+
+               
+                //click contract summary
+                Delay(3);
+                _driver.FindElement(By.XPath(" //*[@id='t0_754']/table/tbody/tr/td[3]/a")).Click();
+
+
+                Delay(2);
+                //click on componet
+                _driver.FindElement(By.XPath("   //*[@id='GBLbl-5']/span/a")).Click();
+
+
+                //Delay(2);
+                ////  select component
+                //IWebElement component = _driver.FindElement(By.Name("frmComponentObj"));
+                //SelectElement selecComp = new SelectElement(component);
+                //selecComp.SelectByIndex(1);
+
+                Delay(2);
+
+                IWebElement parentcomponent = _driver.FindElement(By.Name("frmParentComponentObj"));
+                SelectElement selecCom = new SelectElement(parentcomponent);
+                selecCom.SelectByIndex(1);
+                Delay(2);
+
+                _driver.FindElement(By.XPath("//*[@id='GBLbl-6']/span/a")).Click();
+
+
+                Delay(2);
+                //Select date
+                // click 
+                //_driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[2]/td[2]/a/span/img")).Click();
+
+
+                //Delay(2);
+
+                //var compchild = _driver.WindowHandles[1];
+                //_driver.SwitchTo().Window(compchild);
+                //Delay(2);
+                //_driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[4]/td/table/tbody/tr[2]/td[4]/a")).Click();
+                //Delay(2);
+                //var cparent = _driver.WindowHandles[0];
+                //_driver.SwitchTo().Window(cparent);
+
+                //Delay(3);
+
+                ////select sumassured
+                //string url3 = _driver.Url;
+                //Assert.AreEqual(url3, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
+
+
+
+                //IWebElement sumassured = _driver.FindElement(By.Name("frmSPAmount"));
+                //SelectElement sum = new SelectElement(sumassured);
+                //sum.SelectByIndex(3);
+
+                //Delay(3);
+
+                //next 
+                _driver.FindElement(By.XPath("//*[@id='GBLbl-6']/span/a")).Click();
+                Delay(3);
+
+                //click role player
+                IWebElement elem = _driver.FindElement(By.Name("frmRolePlayers"));
+                SelectElement roleP = new SelectElement(elem);
+                roleP.SelectByIndex(0);
+                Delay(3);
+                //next
+                _driver.FindElement(By.XPath(" //*[@id='GBLbl-7']/span/a")).Click();
+
+                //Validate roleplayer ID number
+
+
+                var RoleINno = _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[9]/td[2]")).Text;
+
+                var Ridno = RoleINno.Split(" ")[RoleINno.Split(" ").Length - 1].ToString();
+                var ID = Ridno.Substring(1, 13);
+
+                Assert.AreEqual(id_number, ID);
+
+                _driver.FindElement(By.XPath("  //*[@id='GBLbl-7']/span/a")).Click();
+
+
+
+            }
+            catch (Exception) { throw; }
+
+
+        }
+
+
+
+
+        private void TerminateRoleNext_month()
+        {
+
+            try
+            {
+
+                IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
+
+                string contRef = base.GetPolicyNoFromExcell(sheet, "TerminateRoleP_next");
+
+                string results = "";
+
+                // _driver.FindElement(By.Name("CBWeb")).Click();
+                // _driver.FindElement(By.XPath(" //*[@id='t0_754']/table/tbody/tr/td[3]/a")).Click();
+                Delay(2);
+                policySearch(contRef);
+
+                for (int i = 2; i < 23; i++)
+                {
+                    var txt = _driver.FindElement(By.XPath($"//*[@id='CntContentsDiv11']/table/tbody/tr[{i.ToString()}]/td[1]/span")).Text;
+                    var relationship = _driver.FindElement(By.XPath($"//*[@id='CntContentsDiv11']/table/tbody/tr[{i.ToString()}]/td[3]")).Text;
+
+                    if (txt == "Life Assured" && relationship != "Self")
+                    {
+                        _driver.FindElement(By.XPath($"//*[@id='CntContentsDiv11']/table/tbody/tr[{i.ToString()}]/td[1]/span")).Click();
+                        break;
+                    }
+
+                }
+                Delay(3);
+
+                
+
+
+                String expected = "Are you sure you want to terminate this role";
+
+                _driver.FindElement(By.Name("btnTerminate")).Click();
+
+                String alerttext = _driver.SwitchTo().Alert().Text;
+                _driver.SwitchTo().Alert().Accept();
+                Assert.AreEqual(expected, alerttext);
+
+                //change effective to date
+                Delay(2);
+                var effectivefrom = _driver.FindElement(By.Name("frmEffectiveFromDate"));
+                var effectvalue = effectivefrom.GetAttribute("value");
+
+                Delay(1);
+                _driver.FindElement(By.Name("frmEffectiveToDate")).Clear();
+                _driver.FindElement(By.Name("frmEffectiveToDate")).SendKeys(effectvalue);
+
+                Delay(2);
+                //click terminate
+
+                _driver.FindElement(By.Name("btnTerminate")).Click();
+
+                //validation
+                if (_driver.Url == "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?")
+                {
+                    results = "Passed";
+
+                }
+                else
+
+                {
+                    results = "Fail";
+
+                }
+
+                base.writeResultsToExcell(results, sheet, "TerminateRoleP_next");
+
+
+
+
+
+            }
+            catch (Exception) { throw; }
+
+
+        }
+
+
+
+
 
         [Category("Add Beneficiary")]
         private void addBeneficiary()
@@ -346,11 +1343,11 @@ namespace PolicyServicing
 
                 Delay(2);
                 var oldMartialStatus = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv4']/table/tbody/tr[2]/td[4]")).Text;
-                
+
 
                 //click oN Change
                 _driver.FindElement(By.Name("btnChangePerson")).Click();
-                
+
 
 
                 var value = "";
@@ -433,10 +1430,10 @@ namespace PolicyServicing
                 Delay(2);
 
                 //Insert MaritalStatus
-                
+
                 switch (MaritalStatus)
                 {
-                   
+
 
                     case ("Single"):
                         value = "er_AcStaMarSin";
@@ -501,7 +1498,7 @@ namespace PolicyServicing
                 }
 
                 SelectElement oSelect1 = new SelectElement(_driver.FindElement(By.Name("fcEducationLevel")));
-                
+
                 //Select title
                 oSelect1.SelectByValue(value);
                 Delay(2);
@@ -573,7 +1570,7 @@ namespace PolicyServicing
                     case ("Pilot"):
                         value = "PLT";
                         break;
-                
+
                     default:
                         break;
                 }
@@ -594,7 +1591,7 @@ namespace PolicyServicing
                 //Vaidation based Martial stat
 
                 if ((oldMartialStatus) != (newMartialStatus))
-               {
+                {
                     //Details sucessfully changed);
                     results = "Passed";
                 }
@@ -1066,7 +2063,7 @@ namespace PolicyServicing
                 oSelect4.SelectByValue("962357173.488");
                 Delay(5);
 
-                
+
 
                 //Click on submit
                 _driver.FindElement(By.Id("GBLbl-1")).Click();
@@ -1237,429 +2234,7 @@ namespace PolicyServicing
             }
 
         }
-        private void AddRolePlayer()
-        {
 
-            try
-            {
-                IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
-
-                string contRef = base.GetPolicyNoFromExcell(sheet, "AddRolePlayer");
-
-                string results = "";
-                string title = "", first_name = "", surname = "", initials = "", dob = "", gender = "", id_number = "", relationship = "";
-
-                policySearch(contRef);
-
-                
-
-
-                //click add policy
-
-                _driver.FindElement(By.XPath("//*[@id='GBLbl-1']/span/a")).Click();
-
-                //Select role
-                IWebElement selectRole = _driver.FindElement(By.Name("frmRoleObj"));
-                SelectElement s = new SelectElement(selectRole);
-                s.SelectByIndex(4);
-                Delay(3);
-                //Click calendar
-
-                _driver.FindElement(By.XPath("//*[@id='frmCbmre']/tbody/tr[2]/td[2]/a")).Click();
-                Delay(3);
-                Assert.AreEqual(2, _driver.WindowHandles.Count);
-
-                //switch to window
-                var childwindow = _driver.WindowHandles[1];
-                _driver.SwitchTo().Window(childwindow);
-
-                Delay(2);
-
-                //clickback
-                Actions act = new Actions(_driver);
-                IWebElement ele = _driver.FindElement(By.XPath("//*[@id='aIncYear']/img"));
-                //   act.MoveToElement(ele).Click().Build().Perform();
-
-                _driver.FindElement(By.XPath("//a[@name='fcCal1']")).Click();
-
-
-                var parent = _driver.WindowHandles[0];
-                _driver.SwitchTo().Window(parent);
-                Delay(4);
-
-
-                _driver.FindElement(By.XPath("//*[@id='GBLbl-4']/span/a")).Click();
-                //assert
-                string url = _driver.Url;
-                Assert.AreEqual(url, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
-
-                //click next to enter new role player
-                _driver.FindElement(By.XPath("//*[@id='GBLbl-5']/span/a")).Click();
-
-                using (OleDbConnection con = new OleDbConnection(base._connString))
-                {
-                    try
-                    {
-                        con.Open();
-
-                        String command = "SELECT * FROM [AddRolePlayer$]";
-
-                        OleDbCommand cmd = new OleDbCommand(command, con);
-
-                        OleDbDataAdapter adapt = new OleDbDataAdapter();
-                        adapt.SelectCommand = cmd;
-
-                        DataSet ds = new DataSet("policies");
-                        adapt.Fill(ds);
-                        foreach (var row in ds.Tables[0].DefaultView)
-                        {
-
-                            title = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
-                            first_name = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
-                            surname = ((System.Data.DataRowView)row).Row.ItemArray[2].ToString();
-                            initials = ((System.Data.DataRowView)row).Row.ItemArray[3].ToString();
-                            dob = ((System.Data.DataRowView)row).Row.ItemArray[4].ToString();
-                            gender = ((System.Data.DataRowView)row).Row.ItemArray[5].ToString();
-                            id_number = ((System.Data.DataRowView)row).Row.ItemArray[6].ToString();
-                            relationship = ((System.Data.DataRowView)row).Row.ItemArray[7].ToString();
-
-                        }
-
-
-                    }
-                    catch (Exception ex)
-
-                    {
-                        throw ex;
-
-                    }
-                    con.Close();
-                    con.Dispose();
-
-                }
-
-
-
-                //enter initials
-                _driver.FindElement(By.Name("frmPersonInitials")).Clear();
-                _driver.FindElement(By.Name("frmPersonInitials")).SendKeys(initials);
-                Delay(2);
-                //enter name
-                _driver.FindElement(By.Name("frmPersonFirstName")).Clear();
-                _driver.FindElement(By.Name("frmPersonFirstName")).SendKeys(first_name);
-                Delay(2);
-                //enter surname
-                _driver.FindElement(By.Name("frmPersonLastName")).Clear();
-                _driver.FindElement(By.Name("frmPersonLastName")).SendKeys(surname);
-                Delay(2);
-                //enter
-
-
-                _driver.FindElement(By.Name("frmPersonIDNumber")).SendKeys(id_number);
-                Delay(2);
-                //enter
-                _driver.FindElement(By.Name("frmPersonDateOfBirth")).SendKeys(dob);
-                Delay(2);
-                //marital status
-                IWebElement merital = _driver.FindElement(By.Name("frmPersonMaritalStatus"));
-                SelectElement iselect = new SelectElement(merital);
-                iselect.SelectByIndex(1);
-
-
-                //Select gender
-                IList<IWebElement> rdos = _driver.FindElements(By.XPath("//input[@name='frmPersonGender']"));
-
-                foreach (IWebElement radio in rdos)
-                {
-
-                    if (radio.GetAttribute("value").Equals("er_AcPerGenMal"))
-                    {
-
-                        radio.Click();
-                        break;
-
-                    }
-                    else
-                    {
-
-                        radio.FindElement(By.XPath("//*[@id='frmSubCbmre']/tbody/tr[1]/td[4]/table/tbody/tr/td[3]/input")).Click();
-
-                    }
-
-
-                }
-
-                //Select Relationship
-                var V_relationship = "";
-                switch (relationship)
-                {
-
-                    case "Additional parent":
-                        V_relationship = "951372577.488";
-                        break;
-                    case "Spouse":
-                        V_relationship = "854651144.248";
-                        break;
-                    case "Additional child":
-                        V_relationship = "905324120.488";
-                        break;
-                    case "Child":
-                        V_relationship = "905324138.488";
-                        break;
-                    case "Parent":
-                        V_relationship = "347901097.188";
-                        break;
-
-                    case "Brother":
-                        V_relationship = "951371842.488";
-                        break;
-
-                }
-
-                IWebElement relation = _driver.FindElement(By.Name("frmRelationshipCodeObj"));
-                SelectElement oselect = new SelectElement(relation);
-                oselect.SelectByValue(V_relationship);
-                //Title
-                var value = "";
-                switch (title)
-                {
-                    case "Mr":
-                        value = "er_AcPerTitleMr";
-                        break;
-                    case "Mrs":
-                        value = "er_AcPerTitleMrs";
-                        break;
-
-                    case "Ms":
-                        value = "er_AcPerTitleMs";
-                        break;
-
-                    case "Prf":
-                        value = "er_AcPerTitlePrf";
-                        break;
-                    case "Dr":
-                        value = "er_AcPerTitleDoc";
-                        break;
-
-                    case "Adm":
-                        value = "er_AcPerTitleADM";
-                        break;
-
-                    case "Miss":
-                        value = "er_AcPerTitleMiss";
-                        break;
-
-                    default:
-                        break;
-                }
-
-                SelectElement oSelect = new SelectElement(_driver.FindElement(By.Name("frmPersonTitle")));
-                oSelect.SelectByValue(value);
-
-                string url2 = _driver.Url;
-                Assert.AreEqual(url2, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
-
-
-
-                Delay(2);
-                //save
-                _driver.FindElement(By.XPath(" //*[@id='GBLbl-5']/span/a")).Click();
-                Delay(2);
-
-                var LifeA_ID = _driver.FindElement(By.XPath(" //*[@id='frmSubCbmre']/tbody/tr[4]/td[4]")).Text;
-
-                //validation
-                if (id_number == LifeA_ID)
-                {
-                    results = "Passed";
-
-                }
-                else
-
-                {
-                    results = "Fail";
-
-                }
-
-                base.writeResultsToExcell(results, sheet, "AddRolePlayer");
-
-                Delay(6);
-
-
-                //click contract summary
-                _driver.FindElement(By.XPath(" //*[@id='t0_756']/table/tbody/tr/td[3]/a")).Click();
-
-
-                Delay(2);
-                //click on componet
-                _driver.FindElement(By.XPath("//*[@id='GBLbl-5']/span/a")).Click();
-
-                //Delay(2);
-                //  select component
-                // IWebElement component = _driver.FindElement(By.Name("frmComponentObj"));
-                //SelectElement selecComp = new SelectElement(component);
-                //selecComp.SelectByIndex(1);
-
-                Delay(2);
-
-                IWebElement parentcomponent = _driver.FindElement(By.Name("frmParentComponentObj"));
-                SelectElement selecCom = new SelectElement(parentcomponent);
-                selecCom.SelectByIndex(1);
-                Delay(2);
-
-                _driver.FindElement(By.XPath("//*[@id='GBLbl-6']/span/a")).Click();
-
-
-                Delay(2);
-                //Select date
-                // click 
-                _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[2]/td[2]/a/span/img")).Click();
-
-
-                Delay(2);
-
-                var compchild = _driver.WindowHandles[1];
-                _driver.SwitchTo().Window(compchild);
-                Delay(2);
-                _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[4]/td/table/tbody/tr[2]/td[4]/a")).Click();
-                Delay(2);
-                var cparent = _driver.WindowHandles[0];
-                _driver.SwitchTo().Window(cparent);
-
-                Delay(3);
-
-                //select sumassured
-                string url3 = _driver.Url;
-                Assert.AreEqual(url3, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
-
-
-
-                IWebElement sumassured = _driver.FindElement(By.Name("frmSPAmount"));
-                SelectElement sum = new SelectElement(sumassured);
-                sum.SelectByIndex(3);
-
-                Delay(3);
-
-                _driver.FindElement(By.XPath("//*[@id='GBLbl-6']/span/a")).Click();
-                Delay(3);
-
-                //click role player
-                Actions doubleclick = new Actions(_driver);
-                IWebElement elem = _driver.FindElement(By.Name("frmRolePlayers"));
-                SelectElement roleP = new SelectElement(elem);
-
-                roleP.SelectByIndex(0);
-                Delay(3);
-                //next
-                _driver.FindElement(By.XPath(" //*[@id='GBLbl-7']/span/a")).Click();
-
-                //Validate roleplayer ID number
-                Delay(2);
-
-                var RoleINno = _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[9]/td[2]")).Text;
-
-                var Ridno = RoleINno.Split(" ")[RoleINno.Split(" ").Length - 1].ToString();
-                var ID = Ridno.Substring(1, 13);
-
-                Assert.AreEqual(id_number, ID);
-
-                Delay(2);
-
-                _driver.FindElement(By.XPath("//*[@id='GBLbl-7']/span/a")).Click();
-
-                Delay(2);
-
-            }
-            catch (Exception) { throw; }
-
-
-        }
-        private void TerminateRolePlayer()
-        {
-
-            try
-            {
-
-                IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
-
-                string contRef = base.GetPolicyNoFromExcell(sheet, "TerminateRoleP");
-
-                string results = "";
-
-                Delay(2);
-                policySearch(contRef);
-
-                for (int i = 2; i < 23; i++)
-                {
-                    var txt = _driver.FindElement(By.XPath($"//*[@id='CntContentsDiv11']/table/tbody/tr[{i.ToString()}]/td[1]/span")).Text;
-                    var relationship = _driver.FindElement(By.XPath($"//*[@id='CntContentsDiv11']/table/tbody/tr[{i.ToString()}]/td[3]")).Text;
-
-                    if (txt == "Life Assured" && relationship != "Self")
-                    {
-                        _driver.FindElement(By.XPath($"//*[@id='CntContentsDiv11']/table/tbody/tr[{i.ToString()}]/td[1]/span")).Click();
-                        break;
-                    }
-
-                }
-                Delay(3);
-
-                String expected = "Are you sure you want to terminate this role";
-                _driver.FindElement(By.Name("btnTerminate")).Click();
-                String alerttext = _driver.SwitchTo().Alert().Text;
-                _driver.SwitchTo().Alert().Accept();
-                Assert.AreEqual(expected, alerttext);
-
-                Delay(2);
-
-                //effective to 
-
-                _driver.FindElement(By.XPath("//*[@id='frmCbmre']/tbody/tr[5]/td[4]/a/span/img")).Click();
-
-                //switch to window
-                var childwindow = _driver.WindowHandles[1];
-                _driver.SwitchTo().Window(childwindow);
-
-                Delay(2);
-
-                //clickback
-                Actions act = new Actions(_driver);
-                IWebElement ele = _driver.FindElement(By.XPath("//*[@id='aIncYear']/img"));
-                act.MoveToElement(ele).Click().Build().Perform();
-
-                _driver.FindElement(By.XPath("//a[@name='fcCal1']")).Click();
-
-
-                var parent = _driver.WindowHandles[0];
-                _driver.SwitchTo().Window(parent);
-                Delay(2);
-                //click terminate
-
-                _driver.FindElement(By.Name("btnTerminate")).Click();
-
-               
-
-                //validation
-                if (_driver.Url == "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?")
-                {
-                    results = "Passed";
-
-                }
-                else
-
-                {
-                    results = "Fail";
-
-                }
-
-                base.writeResultsToExcell(results, sheet, "TerminateRoleP");
-
-
-
-            }
-            catch (Exception) { throw; }
-
-
-        }
         [Category("AddaLife")]
         private void AddaLife()
         {
@@ -1667,13 +2242,13 @@ namespace PolicyServicing
             try
 
             {
-                 IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
+                IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
 
                 string contRef = base.GetPolicyNoFromExcell(sheet, "AddaLife");
 
                 string results = "";
                 string title = "", first_name = "", surname = "", initials = "", dob = "", gender = "", id_number = "", relationship = "";
-                
+
                 policySearch(contRef);
 
 
@@ -1906,7 +2481,7 @@ namespace PolicyServicing
 
 
 
-                
+
 
 
                 //click contract summary
@@ -1917,7 +2492,7 @@ namespace PolicyServicing
                 //click on componet
                 _driver.FindElement(By.XPath("//*[@id='GBLbl-5']/span/a")).Click();
 
-         
+
                 Delay(2);
 
                 IWebElement parentcomponent = _driver.FindElement(By.Name("frmParentComponentObj"));
@@ -1928,7 +2503,7 @@ namespace PolicyServicing
                 _driver.FindElement(By.XPath("//*[@id='GBLbl-6']/span/a")).Click();
 
 
-                
+
 
 
 
@@ -1957,7 +2532,7 @@ namespace PolicyServicing
 
                 var newPrem = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr/td[2]")).Text;
 
-                
+
 
                 IJavaScriptExecutor js3 = (IJavaScriptExecutor)_driver;
                 js3.ExecuteScript("window.scrollTo(0, 250)");
