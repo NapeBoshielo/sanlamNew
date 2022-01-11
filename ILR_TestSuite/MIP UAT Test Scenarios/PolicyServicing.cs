@@ -58,20 +58,22 @@ namespace PolicyServicing
 
             Delay(2);
             //Click on Miain
-           // _driver.FindElement(By.Name("CBWeb")).Click();
-          //  Delay(3);
-           // addBeneficiary();
-            IncreaseSumAssuredAge();
-            //Click on Miain
             _driver.FindElement(By.Name("CBWeb")).Click();
             Delay(3);
-            AddRolePlayer();
-            Delay(3);
-            TerminateRolePlayer();
-            Delay(3);
-            AddRole_NextMonth();
-            Delay(3);
-            TerminateRoleNext_month();
+            //PostDatedDowngrade();
+            PostDatedUpgrade();
+           // addBeneficiary();
+           // IncreaseSumAssuredAge();
+            //Click on Miain
+            //_driver.FindElement(By.Name("CBWeb")).Click();
+            //Delay(3);
+            //AddRolePlayer();
+            //Delay(3);
+            //TerminateRolePlayer();
+            //Delay(3);
+            //AddRole_NextMonth();
+            //Delay(3);
+            //TerminateRoleNext_month();
             //Delay(3);
             //IncreaseSumAssured();
             //Delay(2);
@@ -94,6 +96,261 @@ namespace PolicyServicing
 
             Delay(20);
 
+        }
+
+        private void PostDatedDowngrade()
+        {
+            try
+            {
+                string contRef = base.GetPolicyNoFromExcell(sheet, "PostDatedDowngrade");
+
+                string results = "";
+
+                string date = DateTime.Today.ToString("g");
+
+                var currentSumAssured = "";
+
+
+
+                policySearch(contRef);
+
+                Delay(3);
+
+                var contractPrem = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[2]")).Text;
+
+
+
+                //Click on user  component
+                _driver.FindElement(By.Name("fccComponentDescription1")).Click();
+
+
+                Delay(4);
+                //Get The current Sum Assured for the life assured
+                currentSumAssured = _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[8]/td[4]")).Text;
+
+
+                Delay(2);
+                IWebElement policyOptionElement = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
+
+
+                //Creating object of an Actions class
+                Actions action = new Actions(_driver);
+
+
+
+                //Performing the mouse hover action on the target element.
+                action.MoveToElement(policyOptionElement).Perform();
+
+                //Click on options
+                _driver.FindElement(By.XPath("//*[@id='m0t0']/tbody/tr[1]/td/div/div[3]/a/img")).Click();
+
+
+
+                Delay(3);
+                var year = DateTime.Now.Year;
+                var month = ((DateTime.Now.Month) + 1).ToString();
+
+                if (month == "13")
+                {
+                    month = "01";
+
+                }
+                else if (Convert.ToInt32(month) < 10)
+                {
+                    month = "0" + month;
+                }
+
+
+                var day = "01";
+                var dt = "" + year + month + day;
+                _driver.FindElement(By.Name("frmCCStartDate")).Clear();
+                Delay(3);
+                _driver.FindElement(By.Name("frmCCStartDate")).SendKeys(dt);
+                var newSumAssured = "";
+        
+
+                if (Convert.ToInt32(currentSumAssured) > 10000 || Convert.ToInt32(currentSumAssured) == 10000)
+                {
+                    newSumAssured = (Convert.ToInt32(currentSumAssured) - 10000).ToString();
+                }
+                else
+                {
+                    newSumAssured = (5000).ToString();
+                }
+
+                SelectElement oSelect = new SelectElement(_driver.FindElement(By.Name("frmSPAmount")));
+
+                oSelect.SelectByValue(newSumAssured);
+
+
+
+                //Click on next
+                _driver.FindElement(By.Name("btncbmcc13")).Click();
+                Delay(2);
+
+
+                //Click on next
+                _driver.FindElement(By.Name("btncbmcc17")).Click();
+                Delay(2);
+
+                // Click on finish
+                _driver.FindElement(By.Name("btncbmcc23")).Click();
+                Delay(3);
+
+
+
+                var expectedPrem = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[4]")).Text;
+
+                var eventDescription = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[3]")).Text;
+
+
+
+                if (Convert.ToDecimal(expectedPrem) < Convert.ToDecimal(contractPrem) && eventDescription == "Post Dated Downgrade")
+                {
+                    results = "Passed";
+                }
+                else
+                {
+                    results = "Failed";
+                }
+
+
+                base.writeResultsToExcell(results, sheet, "PostDatedDowngrade");
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        private void PostDatedUpgrade()
+        {
+            try
+            {
+                string contRef = base.GetPolicyNoFromExcell(sheet, "PostDatedUpgrade");
+
+                string results = "";
+
+                string date = DateTime.Today.ToString("g");
+
+                var currentSumAssured = "";
+
+
+
+                policySearch(contRef);
+
+                Delay(3);
+
+                var contractPrem = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[2]")).Text;
+
+
+
+                //Click on user  component
+                _driver.FindElement(By.Name("fccComponentDescription1")).Click();
+
+
+                Delay(4);
+                //Get The current Sum Assured for the life assured
+                currentSumAssured = _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[8]/td[4]")).Text;
+
+
+                Delay(2);
+                IWebElement policyOptionElement = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
+
+
+                //Creating object of an Actions class
+                Actions action = new Actions(_driver);
+
+
+
+                //Performing the mouse hover action on the target element.
+                action.MoveToElement(policyOptionElement).Perform();
+
+                //Click on options
+                _driver.FindElement(By.XPath("//*[@id='m0t0']/tbody/tr[1]/td/div/div[3]/a/img")).Click();
+
+
+
+                Delay(3);
+                var year =  DateTime.Now.Year;
+                var month =  ((DateTime.Now.Month) + 1).ToString();
+
+                if (month == "13")
+                {
+                    month = "01";
+
+                }
+                else if(Convert.ToInt32(month) < 10 )
+                {
+                    month = "0" + month;
+                }
+                var day = "01";
+                var dt = ""+ year + month + day;
+                _driver.FindElement(By.Name("frmCCStartDate")).Clear();
+                Delay(3);
+                _driver.FindElement(By.Name("frmCCStartDate")).SendKeys(dt);
+                var newSumAssured = "";
+                //Do a  upgrade on current sum assured by 5000
+                if (Convert.ToInt32(currentSumAssured) > 10000 || Convert.ToInt32(currentSumAssured) == 10000)
+                {
+                    newSumAssured = (Convert.ToInt32(currentSumAssured) + 10000).ToString();
+                }
+                else
+                {
+                    newSumAssured = (10000).ToString();
+                }
+
+                SelectElement oSelect = new SelectElement(_driver.FindElement(By.Name("frmSPAmount")));
+
+                oSelect.SelectByValue(newSumAssured);
+
+               
+
+                //Click on next
+                _driver.FindElement(By.Name("btncbmcc13")).Click();
+                Delay(2);
+
+
+                //Click on next
+                _driver.FindElement(By.Name("btncbmcc17")).Click();
+                Delay(2);
+
+                // Click on finish
+                _driver.FindElement(By.Name("btncbmcc23")).Click();
+                Delay(5);
+
+
+
+
+                var expectedPrem = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[4]")).Text;
+
+                var eventDescription = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[3]")).Text;
+
+
+
+                if (Convert.ToDecimal(expectedPrem) > Convert.ToDecimal(contractPrem) && eventDescription == "Post Dated Upgrade")
+                {
+                    results = "Passed";
+                }
+                else
+                {
+                    results = "Failed";
+                }
+
+
+
+                base.writeResultsToExcell(results, sheet, "PostDatedUpgrade");
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
         private void AddRolePlayer()
         {
@@ -2708,11 +2965,9 @@ namespace PolicyServicing
             Delay(2);
 
 
-            //Click on product
-            _driver.FindElement(By.Name("frmProductCode")).Click();
-            Delay(2);
+       
 
-            //Type in contract ref if there is any 
+            //Type in contract ref 
 
             _driver.FindElement(By.Name("frmContractReference")).SendKeys(contractRef);
 
