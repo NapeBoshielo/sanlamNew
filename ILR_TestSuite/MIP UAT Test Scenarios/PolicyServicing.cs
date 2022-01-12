@@ -59,13 +59,6 @@ namespace PolicyServicing
             Delay(2);
             //Click on Miain
             _driver.FindElement(By.Name("CBWeb")).Click();
-            Delay(3);
-            //PostDatedDowngrade();
-            PostDatedUpgrade();
-           // addBeneficiary();
-           // IncreaseSumAssuredAge();
-            //Click on Miain
-            //_driver.FindElement(By.Name("CBWeb")).Click();
             //Delay(3);
             //AddRolePlayer();
             //Delay(3);
@@ -75,22 +68,35 @@ namespace PolicyServicing
             //Delay(3);
             //TerminateRoleNext_month();
             //Delay(3);
-            //IncreaseSumAssured();
-            //Delay(2);
-            //DecreaseSumAssured();
-            //Delay(3);
-            //RemovalOfNonCompulsoryLife();
-            //Delay(3);
-            //ChangeCollectionMeth();
-            //Delay(3);
-            //ChangeCollectionM();
-            //Delay(3);
-            //ReInstate();
-            //Delay(3);
-            //ChangeLifeAssured();
-            //Delay(3);
-           // AddaLife();
+            // PostDatedDowngrade();
+            // Delay(3);
+            //// Click on Miain
+            // _driver.FindElement(By.Name("CBWeb")).Click();
+            // PostDatedUpgrade();
+            // Delay(3);
+            // IncreaseSumAssuredAge();
             Delay(3);
+            IncreaseSumAssured();
+            Delay(2);
+            DecreaseSumAssured();
+            // Delay(3);
+            // RemovalOfNonCompulsoryLife();
+
+
+            // Delay(3);
+            //  ChangeCollectionMeth();
+            //  Delay(3);
+            //  ChangeCollectionM();
+            // Delay(3);
+
+
+            //ReInstate();
+            Delay(3);
+            ChangeLifeAssured();
+            // Delay(3);
+            // AddaLife();
+            // Delay(3);
+            // addBeneficiary();
 
 
 
@@ -167,7 +173,7 @@ namespace PolicyServicing
                 Delay(3);
                 _driver.FindElement(By.Name("frmCCStartDate")).SendKeys(dt);
                 var newSumAssured = "";
-        
+
 
                 if (Convert.ToInt32(currentSumAssured) > 10000 || Convert.ToInt32(currentSumAssured) == 10000)
                 {
@@ -275,20 +281,20 @@ namespace PolicyServicing
 
 
                 Delay(3);
-                var year =  DateTime.Now.Year;
-                var month =  ((DateTime.Now.Month) + 1).ToString();
+                var year = DateTime.Now.Year;
+                var month = ((DateTime.Now.Month) + 1).ToString();
 
                 if (month == "13")
                 {
                     month = "01";
 
                 }
-                else if(Convert.ToInt32(month) < 10 )
+                else if (Convert.ToInt32(month) < 10)
                 {
                     month = "0" + month;
                 }
                 var day = "01";
-                var dt = ""+ year + month + day;
+                var dt = "" + year + month + day;
                 _driver.FindElement(By.Name("frmCCStartDate")).Clear();
                 Delay(3);
                 _driver.FindElement(By.Name("frmCCStartDate")).SendKeys(dt);
@@ -307,7 +313,7 @@ namespace PolicyServicing
 
                 oSelect.SelectByValue(newSumAssured);
 
-               
+
 
                 //Click on next
                 _driver.FindElement(By.Name("btncbmcc13")).Click();
@@ -364,9 +370,10 @@ namespace PolicyServicing
                 string results = "";
                 string title = "", first_name = "", surname = "", initials = "", dob = "", gender = "", id_number = "", relationship = "";
 
-
+                Delay(3);
                 policySearch(contRef);
 
+                Delay(3);
                 //Redate
                 redate();
 
@@ -625,8 +632,9 @@ namespace PolicyServicing
                 }
 
                 base.writeResultsToExcell(results, sheet, "AddRolePlayer");
-             
-               
+
+                //Click on Miain
+                _driver.FindElement(By.Name("CBWeb")).Click();
 
                 Delay(2);
                 //click contract summary
@@ -822,7 +830,7 @@ namespace PolicyServicing
 
             act.MoveToElement(policyele).Perform();
 
-            Delay(3);
+            Delay(1);
             //click on redate policy
             _driver.FindElement(By.XPath("//*[@id='m0t0']/tbody/tr[4]/td/div/div[3]/a/img")).Click();
 
@@ -1169,7 +1177,7 @@ namespace PolicyServicing
                 base.writeResultsToExcell(results, sheet, "AddRoleNext_month");
 
 
-               
+
                 //click contract summary
                 Delay(3);
                 _driver.FindElement(By.XPath(" //*[@id='t0_754']/table/tbody/tr/td[3]/a")).Click();
@@ -1292,7 +1300,7 @@ namespace PolicyServicing
                 }
                 Delay(3);
 
-                
+
 
 
                 String expected = "Are you sure you want to terminate this role";
@@ -1887,7 +1895,7 @@ namespace PolicyServicing
                 currentPremium = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[2]")).Text;
                 Delay(4);
                 //Click on the component we want to terminate
-                _driver.FindElement(By.XPath("//*[@id='CntContentsDiv14']/table/tbody/tr[3]/td[1]")).Click();
+                _driver.FindElement(By.Name("fccComponentDescription2")).Click();
                 Delay(3);
                 //Click on the terminate btn
                 _driver.FindElement(By.Name("btncbmcc29")).Click();
@@ -2520,30 +2528,30 @@ namespace PolicyServicing
                 IWebElement selectRole = _driver.FindElement(By.Name("frmRoleObj"));
                 SelectElement s = new SelectElement(selectRole);
                 s.SelectByIndex(4);
-                Delay(3);
+                // Delay(3);
 
                 //Click calendar
 
-                _driver.FindElement(By.XPath("//*[@id='frmCbmre']/tbody/tr[2]/td[2]/a")).Click();
-                Delay(3);
-                Assert.AreEqual(2, _driver.WindowHandles.Count);
+                //_driver.FindElement(By.XPath("//*[@id='frmCbmre']/tbody/tr[2]/td[2]/a")).Click();
+                //Delay(3);
+                //Assert.AreEqual(2, _driver.WindowHandles.Count);
 
                 //switch to window
-                var childwindow = _driver.WindowHandles[1];
-                _driver.SwitchTo().Window(childwindow);
+                //var childwindow = _driver.WindowHandles[1];
+                //_driver.SwitchTo().Window(childwindow);
 
-                Delay(2);
+                //Delay(2);
 
-                //clickback
-                Actions act = new Actions(_driver);
-                IWebElement ele = _driver.FindElement(By.XPath("//*[@id='aIncYear']/img"));
-                act.MoveToElement(ele).Click().Build().Perform();
+                ////clickback
+                //Actions act = new Actions(_driver);
+                //IWebElement ele = _driver.FindElement(By.XPath("//*[@id='aIncYear']/img"));
+                //act.MoveToElement(ele).Click().Build().Perform();
 
-                _driver.FindElement(By.XPath("//a[@name='fcCal1']")).Click();
+                //_driver.FindElement(By.XPath("//a[@name='fcCal1']")).Click();
 
 
-                var parent = _driver.WindowHandles[0];
-                _driver.SwitchTo().Window(parent);
+                //var parent = _driver.WindowHandles[0];
+                //_driver.SwitchTo().Window(parent);
                 Delay(4);
 
 
@@ -2965,7 +2973,7 @@ namespace PolicyServicing
             Delay(2);
 
 
-       
+
 
             //Type in contract ref 
 
