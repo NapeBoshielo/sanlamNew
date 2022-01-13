@@ -57,9 +57,8 @@ namespace PolicyServicing
 
 
             Delay(2);
-            //Click on Miain
-            _driver.FindElement(By.Name("CBWeb")).Click();
-            //Delay(3);
+            clickOnMainMenu();
+            Delay(3);
             //AddRolePlayer();
             //Delay(3);
             //TerminateRolePlayer();
@@ -102,6 +101,20 @@ namespace PolicyServicing
 
             Delay(20);
 
+        }
+        private void clickOnMainMenu()
+        {
+            try
+            {
+                //find the contract search option
+                var search = _driver.FindElement(By.Name("alf-ICF8_00000222"));
+            }
+            catch
+            {
+                //clickOnMainMenu
+                _driver.FindElement(By.Name("CBWeb")).Click();
+                
+            }
         }
 
         private void PostDatedDowngrade()
