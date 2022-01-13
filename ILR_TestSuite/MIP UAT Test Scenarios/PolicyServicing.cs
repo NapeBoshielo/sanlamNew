@@ -53,46 +53,80 @@ namespace PolicyServicing
 
         {
 
-
-
-
+           
+            clickOnMainMenu();
+            Delay(2);
+            AddRolePlayer();
             Delay(2);
             clickOnMainMenu();
-            Delay(3);
-            //AddRolePlayer();
-            //Delay(3);
-            //TerminateRolePlayer();
-            //Delay(3);
-            //AddRole_NextMonth();
-            //Delay(3);
-            //TerminateRoleNext_month();
-            //Delay(3);
-            // PostDatedDowngrade();
-            // Delay(3);
-            //// Click on Miain
-            // _driver.FindElement(By.Name("CBWeb")).Click();
-            // PostDatedUpgrade();
-            // Delay(3);
-            // IncreaseSumAssuredAge();
-            //Delay(3);
+            Delay(4);
+            TerminateRolePlayer();
+            Delay(2);
+            clickOnMainMenu();
+            Delay(4);
             IncreaseSumAssured();
             Delay(2);
+            clickOnMainMenu();
+            Delay(4);
             DecreaseSumAssured();
-            Delay(3);
-            // RemovalOfNonCompulsoryLife();
-            //Delay(3);
+            Delay(2);
+            clickOnMainMenu();
+            Delay(4);
+            AddRole_NextMonth();
+            Delay(2);
+            clickOnMainMenu();
+            Delay(4);
+            TerminateRoleNext_month();
+            Delay(2);
+            clickOnMainMenu();
+            Delay(4);
+            PostDatedDowngrade();
+            Delay(2);
+            clickOnMainMenu();
+            Delay(4);
+            PostDatedUpgrade();
+            Delay(2);
+            clickOnMainMenu();
+            Delay(4);
+            IncreaseSumAssuredAge();
+            Delay(2);
+            clickOnMainMenu();
+            Delay(4);
+            IncreaseSumAssured();
+            Delay(2);
+            clickOnMainMenu();
+            Delay(4);
+            DecreaseSumAssured();
+            Delay(2);
+            clickOnMainMenu();
+            Delay(4);
+            RemovalOfNonCompulsoryLife();
+            Delay(2);
+            clickOnMainMenu();
+            Delay(4);
             ChangeCollectionMeth();
-            Delay(3);
+            Delay(2);
+            clickOnMainMenu();
+            Delay(4);
             ChangeCollectionM();
-            Delay(3);
-            //ReInstate();
-            //Delay(3);
-            //ChangeLifeAssured();
-            // Delay(3);
-            // AddaLife();
-            // Delay(3);
-            // addBeneficiary();
-
+            Delay(2);
+            clickOnMainMenu();
+            Delay(2);
+            ReInstate();
+            Delay(4);
+            clickOnMainMenu();
+            Delay(2);
+            ChangeLifeAssured();
+            Delay(2);
+            clickOnMainMenu();
+            Delay(4);
+            AddaLife();
+            Delay(2);
+            clickOnMainMenu();
+            Delay(2);
+            addBeneficiary();
+            Delay(4);
+           
 
 
             Delay(20);
@@ -642,8 +676,8 @@ namespace PolicyServicing
 
                 base.writeResultsToExcell(results, sheet, "AddRolePlayer");
 
-                //Click on Miain
-                _driver.FindElement(By.Name("CBWeb")).Click();
+
+                clickOnMainMenu();
 
                 Delay(2);
                 //click contract summary
@@ -1185,6 +1219,8 @@ namespace PolicyServicing
 
                 base.writeResultsToExcell(results, sheet, "AddRoleNext_month");
 
+
+                clickOnMainMenu();
 
 
                 //click contract summary
@@ -2320,7 +2356,7 @@ namespace PolicyServicing
                 Delay(5);
 
                 //Click on EMPLOYEE NUMBER
-                _driver.FindElement(By.Name("fcEmployeeNumber")).SendKeys("23983345");
+                _driver.FindElement(By.Name("fcEmployeeNumber")).SendKeys("21983345");
                 Delay(5);
 
 
@@ -2764,7 +2800,7 @@ namespace PolicyServicing
 
 
 
-
+                clickOnMainMenu();
 
 
 
