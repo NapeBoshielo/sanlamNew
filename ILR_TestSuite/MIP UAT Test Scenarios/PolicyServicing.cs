@@ -74,24 +74,20 @@ namespace PolicyServicing
             // PostDatedUpgrade();
             // Delay(3);
             // IncreaseSumAssuredAge();
-            Delay(3);
+            //Delay(3);
             IncreaseSumAssured();
             Delay(2);
             DecreaseSumAssured();
-            // Delay(3);
-            // RemovalOfNonCompulsoryLife();
-
-
-            // Delay(3);
-            //  ChangeCollectionMeth();
-            //  Delay(3);
-            //  ChangeCollectionM();
-            // Delay(3);
-
-
-            //ReInstate();
             Delay(3);
-            ChangeLifeAssured();
+            // RemovalOfNonCompulsoryLife();
+            //Delay(3);
+            ChangeCollectionMeth();
+            Delay(3);
+            ChangeCollectionM();
+            Delay(3);
+            //ReInstate();
+            //Delay(3);
+            //ChangeLifeAssured();
             // Delay(3);
             // AddaLife();
             // Delay(3);
@@ -2147,12 +2143,24 @@ namespace PolicyServicing
                 string date = DateTime.Today.ToString("g");
 
                 var currentSumAssured = "";
+                var commDate = "";
 
 
 
                 policySearch(contRef);
 
                 Delay(3);
+
+                //Get the Commencement date from contract summary screen
+                commDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
+                //Scroll Down
+                Delay(2);
+
+                IJavaScriptExecutor js = (IJavaScriptExecutor)_driver;
+
+
+                Delay(4);
+
 
                 var contractPrem = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[2]")).Text;
 
@@ -2182,7 +2190,13 @@ namespace PolicyServicing
                 //Click on options
                 _driver.FindElement(By.XPath("//*[@id='m0t0']/tbody/tr[1]/td/div/div[3]/a/img")).Click();
 
+;
 
+                //Date selection
+                Delay(4);
+                _driver.FindElement(By.Name("frmCCStartDate")).Clear();
+                Delay(2);
+                _driver.FindElement(By.Name("frmCCStartDate")).SendKeys(commDate);
 
                 Delay(5);
 
@@ -2200,46 +2214,6 @@ namespace PolicyServicing
                 SelectElement oSelect = new SelectElement(_driver.FindElement(By.Name("frmSPAmount")));
 
                 oSelect.SelectByValue(newSumAssured);
-
-                //Click on calender
-                _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[2]/td[2]/a/span/img")).Click();
-                Delay(2);
-
-
-
-                Assert.AreEqual(2, _driver.WindowHandles.Count);
-
-
-
-                var newWindowHandle = _driver.WindowHandles[1];
-                Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle));
-
-
-
-                /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?"); */
-                string expectedNewWindowTitle = test_url_4_title;
-                Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle).Title, expectedNewWindowTitle);
-
-
-
-                //Click on arrow
-                _driver.FindElement(By.Id("aIncYear")).Click();
-                Delay(2);
-
-
-
-
-                //Click on Date
-                _driver.FindElement(By.Name("fcCal1")).Click();
-                Delay(2);
-
-
-
-
-                /* Return to the window with handle = 0 */
-                _driver.SwitchTo().Window(_driver.WindowHandles[0]);
-                Delay(4);
-
 
 
                 //Click on next
@@ -2302,7 +2276,7 @@ namespace PolicyServicing
                 IJavaScriptExecutor js = (IJavaScriptExecutor)_driver;
 
 
-                string contRef = base.GetPolicyNoFromExcell(sheet, "ChangeCollectionMeth");
+                string contRef = base.GetPolicyNoFromExcell(sheet, "ChangeCollectionM");
 
                 string results = "";
 
@@ -2338,9 +2312,41 @@ namespace PolicyServicing
 
                 SelectElement oSelect4 = new SelectElement(_driver.FindElement(By.Name("fcCollectionMethod")));
 
-                oSelect4.SelectByValue("962357173.488");
+                oSelect4.SelectByValue("108978.19");
                 Delay(5);
 
+                //Click on EMPLOYEE NUMBER
+                _driver.FindElement(By.Name("fcEmployeeNumber")).Click();
+                Delay(5);
+
+                //Click on EMPLOYEE NUMBER
+                _driver.FindElement(By.Name("fcEmployeeNumber")).SendKeys("23983345");
+                Delay(5);
+
+
+                //Search employee
+                _driver.FindElement(By.Name("fcEmployerButton")).Click();
+
+
+                Assert.AreEqual(2, _driver.WindowHandles.Count);
+
+                var newWindowHandle = _driver.WindowHandles[1];
+                Assert.IsTrue(!string.IsNullOrEmpty(newWindowHandle));
+
+                /* Assert.AreEqual(driver.SwitchTo().Window(newWindowHandle).Url, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?"); */
+                string expectedNewWindowTitle = test_url_2_title;
+                Assert.AreEqual(_driver.SwitchTo().Window(newWindowHandle).Title, expectedNewWindowTitle);
+
+
+
+                //Search employee
+                _driver.FindElement(By.XPath("//*[@id='lkpResultsTable']/tbody/tr[17]")).Click();
+                Delay(5);
+
+
+                /* Return to the window with handle = 0 */
+                _driver.SwitchTo().Window(_driver.WindowHandles[0]);
+                Delay(5);
 
 
                 //Click on submit
@@ -2368,7 +2374,7 @@ namespace PolicyServicing
                 }
 
 
-                base.writeResultsToExcell(results, sheet, "ChangeCollectionMeth");
+                base.writeResultsToExcell(results, sheet, "ChangeCollectionM");
 
 
             }
@@ -2486,7 +2492,7 @@ namespace PolicyServicing
 
                 Delay(3);
 
-                if (expectedcollectionM == "DebiCheck")
+                if (expectedcollectionM == "Stop Order")
                 {
                     results = "Passed";
                 }
