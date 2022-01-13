@@ -54,82 +54,82 @@ namespace PolicyServicing
         {
 
            
-            clickOnMainMenu();
-            Delay(2);
-            AddRolePlayer();
-            Delay(2);
-            clickOnMainMenu();
-            Delay(4);
-            TerminateRolePlayer();
-            Delay(2);
-            clickOnMainMenu();
-            Delay(4);
-            IncreaseSumAssured();
-            Delay(2);
-            clickOnMainMenu();
-            Delay(4);
-            DecreaseSumAssured();
-            Delay(2);
-            clickOnMainMenu();
-            Delay(4);
-            AddRole_NextMonth();
-            Delay(2);
-            clickOnMainMenu();
-            Delay(4);
-            TerminateRoleNext_month();
-            Delay(2);
-            clickOnMainMenu();
-            Delay(4);
-            PostDatedDowngrade();
-            Delay(2);
-            clickOnMainMenu();
-            Delay(4);
-            PostDatedUpgrade();
-            Delay(2);
-            clickOnMainMenu();
-            Delay(4);
-            IncreaseSumAssuredAge();
-            Delay(2);
-            clickOnMainMenu();
-            Delay(4);
-            IncreaseSumAssured();
-            Delay(2);
-            clickOnMainMenu();
-            Delay(4);
-            DecreaseSumAssured();
-            Delay(2);
-            clickOnMainMenu();
-            Delay(4);
-            RemovalOfNonCompulsoryLife();
-            Delay(2);
-            clickOnMainMenu();
-            Delay(4);
-            ChangeCollectionMeth();
-            Delay(2);
-            clickOnMainMenu();
-            Delay(4);
-            ChangeCollectionM();
-            Delay(2);
-            clickOnMainMenu();
-            Delay(2);
-            ReInstate();
-            Delay(4);
-            clickOnMainMenu();
-            Delay(2);
-            ChangeLifeAssured();
-            Delay(2);
-            clickOnMainMenu();
-            Delay(4);
-            AddaLife();
-            Delay(2);
-            clickOnMainMenu();
-            Delay(2);
-            addBeneficiary();
-            Delay(4);
+            //clickOnMainMenu();
+            //Delay(2);
+            //AddRolePlayer();
+            //Delay(2);
+            //clickOnMainMenu();
+            //Delay(4);
+            //TerminateRolePlayer();
+            //Delay(2);
+            //clickOnMainMenu();
+            //Delay(4);
+            //IncreaseSumAssured();
+            //Delay(2);
+            //clickOnMainMenu();
+            //Delay(4);
+            //DecreaseSumAssured();
+            //Delay(2);
+            //clickOnMainMenu();
+            //Delay(4);
+            //AddRole_NextMonth();
+            //Delay(2);
+            //clickOnMainMenu();
+            //Delay(4);
+            //TerminateRoleNext_month();
+            //Delay(2);
+           // clickOnMainMenu();
+            //Delay(4);
+            //PostDatedDowngrade();
+            //Delay(2);
+            //clickOnMainMenu();
+            //Delay(4);
+            //PostDatedUpgrade();
+            //Delay(2);
+            ////clickOnMainMenu();
+            //Delay(4);
+            //IncreaseSumAssuredAge();
+            //Delay(2);
+            //clickOnMainMenu();
+            //Delay(4);
+            //IncreaseSumAssured();
+            //Delay(2);
+            //clickOnMainMenu();
+            //Delay(4);
+            //DecreaseSumAssured();
+            //Delay(2);
+            //clickOnMainMenu();
+            //Delay(4);
+            //RemovalOfNonCompulsoryLife();
+            //Delay(2);
+            //clickOnMainMenu();
+            //Delay(4);
+            //ChangeCollectionMeth();
+            //Delay(2);
+            //clickOnMainMenu();
+            //Delay(4);
+            //ChangeCollectionM();
+            //Delay(2);
+            //clickOnMainMenu();
+            //Delay(2);
+            //ReInstate();
+            //Delay(4);
+            //clickOnMainMenu();
+            //Delay(2);
+            //ChangeLifeAssured();
+            //Delay(2);
+            //clickOnMainMenu();
+            //Delay(4);
+            //AddaLife();
+            //Delay(2);
+            ////clickOnMainMenu();
+            ////Delay(2);
+            ////addBeneficiary();
+            ////Delay(4);
            
 
 
-            Delay(20);
+           
 
         }
         private void clickOnMainMenu()
@@ -317,7 +317,7 @@ namespace PolicyServicing
 
                 //Performing the mouse hover action on the target element.
                 action.MoveToElement(policyOptionElement).Perform();
-
+                Delay(4);
                 //Click on options
                 _driver.FindElement(By.XPath("//*[@id='m0t0']/tbody/tr[1]/td/div/div[3]/a/img")).Click();
 
@@ -1435,6 +1435,8 @@ namespace PolicyServicing
             Delay(3);
             _driver.FindElement(By.Id("t0_749")).Click();
             Delay(3);
+            clickOnMainMenu();
+            Delay(3);
             _driver.FindElement(By.Name("2000175333.8")).Click();
             Delay(3);
             var row = 2;
@@ -1483,7 +1485,7 @@ namespace PolicyServicing
                 //Get the Commencement date from contract summary screen
                 commDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
                 //Scroll Down
-                Delay(2);
+                Delay(3);
 
                 IJavaScriptExecutor js = (IJavaScriptExecutor)_driver;
 
@@ -2987,8 +2989,8 @@ namespace PolicyServicing
 
 
                 //var rateTablePremium = base.getPremuimFromRateTable();
-
-
+                Delay(2);
+                clickOnMainMenu();
                 Delay(4);
                 //Go Back to contract summary
                 _driver.FindElement(By.Name("PF_User_Menu")).Click();
