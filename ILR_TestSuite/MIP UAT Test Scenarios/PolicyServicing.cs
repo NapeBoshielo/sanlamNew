@@ -53,7 +53,7 @@ namespace PolicyServicing
 
         {
 
-           
+
             //clickOnMainMenu();
             //Delay(2);
             //AddRolePlayer();
@@ -78,7 +78,7 @@ namespace PolicyServicing
             //Delay(4);
             //TerminateRoleNext_month();
             //Delay(2);
-           // clickOnMainMenu();
+            //clickOnMainMenu();
             //Delay(4);
             //PostDatedDowngrade();
             //Delay(2);
@@ -86,7 +86,7 @@ namespace PolicyServicing
             //Delay(4);
             //PostDatedUpgrade();
             //Delay(2);
-            ////clickOnMainMenu();
+            //clickOnMainMenu();
             //Delay(4);
             //IncreaseSumAssuredAge();
             //Delay(2);
@@ -102,13 +102,9 @@ namespace PolicyServicing
             //Delay(4);
             //RemovalOfNonCompulsoryLife();
             //Delay(2);
-            //clickOnMainMenu();
-            //Delay(4);
-            //ChangeCollectionMeth();
-            //Delay(2);
-            //clickOnMainMenu();
-            //Delay(4);
-            //ChangeCollectionM();
+            clickOnMainMenu();
+            Delay(4);
+            ChangeCollectionMeth();
             //Delay(2);
             //clickOnMainMenu();
             //Delay(2);
@@ -122,14 +118,17 @@ namespace PolicyServicing
             //Delay(4);
             //AddaLife();
             //Delay(2);
-            ////clickOnMainMenu();
-            ////Delay(2);
-            ////addBeneficiary();
-            ////Delay(4);
-           
+            //clickOnMainMenu();
+            //Delay(2);
+            //addBeneficiary();
+            Delay(4);
+            clickOnMainMenu();
+            Delay(4);
+            ChangeCollectionM();
 
 
-           
+
+
 
         }
         private void clickOnMainMenu()
@@ -1437,6 +1436,7 @@ namespace PolicyServicing
             Delay(3);
             clickOnMainMenu();
             Delay(3);
+
             _driver.FindElement(By.Name("2000175333.8")).Click();
             Delay(3);
             var row = 2;
@@ -2320,6 +2320,7 @@ namespace PolicyServicing
 
                 string date = DateTime.Today.ToString("g");
 
+                string title = "", employee_number = "";
 
                 policySearch(contRef);
 
@@ -2358,7 +2359,7 @@ namespace PolicyServicing
                 Delay(5);
 
                 //Click on EMPLOYEE NUMBER
-                _driver.FindElement(By.Name("fcEmployeeNumber")).SendKeys("21983345");
+                _driver.FindElement(By.Name("fcEmployeeNumber")).SendKeys(employee_number);
                 Delay(5);
 
 
@@ -2448,6 +2449,7 @@ namespace PolicyServicing
 
                 string date = DateTime.Today.ToString("g");
 
+                string title = "", employee_number = "";
 
                 policySearch(contRef);
 
@@ -2481,12 +2483,49 @@ namespace PolicyServicing
                 oSelect4.SelectByValue("108978.19");
                 Delay(5);
 
+                using (OleDbConnection con = new OleDbConnection(base._connString))
+                {
+                    try
+                    {
+                        con.Open();
+
+                        String command = "SELECT * FROM [CollectionM$]";
+
+                        OleDbCommand cmd = new OleDbCommand(command, con);
+
+                        OleDbDataAdapter adapt = new OleDbDataAdapter();
+                        adapt.SelectCommand = cmd;
+
+                        DataSet ds = new DataSet("policies");
+                        adapt.Fill(ds);
+                        foreach (var row in ds.Tables[0].DefaultView)
+                        {
+
+                         
+                            employee_number = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
+                            
+                            break;
+                        }
+
+
+                    }
+                    catch (Exception ex)
+
+                    {
+                        throw ex;
+
+                    }
+                    con.Close();
+                    con.Dispose();
+
+                }
+
                 //Click on EMPLOYEE NUMBER
                 _driver.FindElement(By.Name("fcEmployeeNumber")).Click();
                 Delay(5);
 
                 //Click on EMPLOYEE NUMBER
-                _driver.FindElement(By.Name("fcEmployeeNumber")).SendKeys("23452345");
+                _driver.FindElement(By.Name("fcEmployeeNumber")).SendKeys(employee_number);
                 Delay(5);
 
 
@@ -2526,7 +2565,7 @@ namespace PolicyServicing
                 var expectedcollectionM = _driver.FindElement(By.XPath("//*[@id='frmCbmre']/tbody/tr[8]/td[4]")).Text;
 
 
-                // Assert.IsTrue(expectedcollectionM.Equals("Stop Order", StringComparison.CurrentCultureIgnoreCase));
+                
 
                 Delay(3);
 
