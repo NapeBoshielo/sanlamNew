@@ -4869,6 +4869,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "Microsoft.CodeCoverage >= 16.11.0",
       "Microsoft.NET.Test.Sdk >= 16.11.0",
       "NUnit >= 3.13.2",
       "NUnit3TestAdapter >= 4.0.0",
@@ -4879,23 +4880,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\G992107\\.nuget\\packages\\": {},
+    "C:\\Users\\DA003238\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\G992107\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj",
+      "projectUniqueName": "C:\\Users\\DA003238\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj",
       "projectName": "ILR_TestSuite",
-      "projectPath": "C:\\Users\\G992107\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj",
-      "packagesPath": "C:\\Users\\G992107\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\G992107\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\obj\\",
+      "projectPath": "C:\\Users\\DA003238\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj",
+      "packagesPath": "C:\\Users\\DA003238\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\DA003238\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\G992107\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\DA003238\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4922,6 +4923,10 @@
       "netcoreapp3.1": {
         "targetAlias": "netcoreapp3.1",
         "dependencies": {
+          "Microsoft.CodeCoverage": {
+            "target": "Package",
+            "version": "[16.11.0, )"
+          },
           "Microsoft.NET.Test.Sdk": {
             "target": "Package",
             "version": "[16.11.0, )"
