@@ -341,3 +341,5 @@ C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\bin\Debug\netcorea
 C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Security.Principal.Windows.dll
 C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Security.Principal.Windows.dll
 C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.1\System.Windows.Extensions.dll
+C:\Users\DA003238\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\obj\Debug\netcoreapp3.1\ILR_TestSuite.dll
+C:\Users\DA003238\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\obj\Debug\netcoreapp3.1\ILR_TestSuite.pdb

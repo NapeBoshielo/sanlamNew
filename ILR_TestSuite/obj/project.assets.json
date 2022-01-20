@@ -8,7 +8,7 @@
           "build/netstandard1.0/coverlet.collector.targets": {}
         }
       },
-      "Microsoft.CodeCoverage/16.11.0": {
+      "Microsoft.CodeCoverage/17.0.0": {
         "type": "package",
         "compile": {
           "lib/netcoreapp1.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll": {}
@@ -1283,10 +1283,10 @@
         "coverlet.collector.nuspec"
       ]
     },
-    "Microsoft.CodeCoverage/16.11.0": {
-      "sha512": "wf6lpAeCqP0KFfbDVtfL50lr7jY1gq0+0oSphyksfLOEygMDXqnaxHK5LPFtMEhYSEtgXdNyXNnEddOqQQUdlQ==",
+    "Microsoft.CodeCoverage/17.0.0": {
+      "sha512": "+B+09FPYBtf+cXfZOPIgpnP5mzLq5QdlBo+JEFy9CdqBaWHWE/YMY0Mos9uDsZhcgFegJm9GigAgMyqBZyfq+Q==",
       "type": "package",
-      "path": "microsoft.codecoverage/16.11.0",
+      "path": "microsoft.codecoverage/17.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1345,7 +1345,7 @@
         "build/netstandard1.0/zh-Hant/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
         "lib/net45/Microsoft.VisualStudio.CodeCoverage.Shim.dll",
         "lib/netcoreapp1.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll",
-        "microsoft.codecoverage.16.11.0.nupkg.sha512",
+        "microsoft.codecoverage.17.0.0.nupkg.sha512",
         "microsoft.codecoverage.nuspec"
       ]
     },
@@ -4869,7 +4869,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "Microsoft.CodeCoverage >= 16.11.0",
+      "Microsoft.CodeCoverage >= 17.0.0",
       "Microsoft.NET.Test.Sdk >= 16.11.0",
       "NUnit >= 3.13.2",
       "NUnit3TestAdapter >= 4.0.0",
@@ -4925,7 +4925,7 @@
         "dependencies": {
           "Microsoft.CodeCoverage": {
             "target": "Package",
-            "version": "[16.11.0, )"
+            "version": "[17.0.0, )"
           },
           "Microsoft.NET.Test.Sdk": {
             "target": "Package",
