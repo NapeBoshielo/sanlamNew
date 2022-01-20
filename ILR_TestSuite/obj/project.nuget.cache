@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "V92WC9TqcU8GeyNxm69hwlnPFqbcciiQ2nMryvr3EMJv9QwqJ05EZCMjtC3m1ISvuU8UyPhRZtiEbVYu7ve0wg==",
+  "dgSpecHash": "EgfJ/3+6VzEmZryCjoMpq1J5vWt0sbzRrJptE9StvpFOI6Lko9dycvBOZXx3EtiSnH9jDer4W5cw3cYDRr/wUg==",
   "success": true,
   "projectFilePath": "C:\\Users\\DA003238\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\DA003238\\.nuget\\packages\\coverlet.collector\\3.1.0\\coverlet.collector.3.1.0.nupkg.sha512",
-    "C:\\Users\\DA003238\\.nuget\\packages\\microsoft.codecoverage\\16.11.0\\microsoft.codecoverage.16.11.0.nupkg.sha512",
+    "C:\\Users\\DA003238\\.nuget\\packages\\microsoft.codecoverage\\17.0.0\\microsoft.codecoverage.17.0.0.nupkg.sha512",
     "C:\\Users\\DA003238\\.nuget\\packages\\microsoft.csharp\\4.3.0\\microsoft.csharp.4.3.0.nupkg.sha512",
     "C:\\Users\\DA003238\\.nuget\\packages\\microsoft.net.test.sdk\\16.11.0\\microsoft.net.test.sdk.16.11.0.nupkg.sha512",
     "C:\\Users\\DA003238\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
