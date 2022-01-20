@@ -53,79 +53,133 @@ namespace PolicyServicing
 
         {
 
+            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            using (OleDbConnection conn = new OleDbConnection(_connString))
+            {
+                try
+                {
 
-            //clickOnMainMenu();
-            //Delay(2);
-            //AddRolePlayer();
-            //Delay(2);
-            //clickOnMainMenu();
-            //Delay(4);
-            //TerminateRolePlayer();
-            //Delay(2);
-            //clickOnMainMenu();
-            //Delay(4);
-            //IncreaseSumAssured();
-            //Delay(2);
-            //clickOnMainMenu();
-            //Delay(4);
-            //DecreaseSumAssured();
-            //Delay(2);
-            //clickOnMainMenu();
-            //Delay(4);
-            //AddRole_NextMonth();
-            //Delay(2);
-            //clickOnMainMenu();
-            //Delay(4);
-            //TerminateRoleNext_month();
-            //Delay(2);
-            //clickOnMainMenu();
-            //Delay(4);
-            //PostDatedDowngrade();
-            //Delay(2);
-            //clickOnMainMenu();
-            //Delay(4);
-            //PostDatedUpgrade();
-            //Delay(2);
-            //clickOnMainMenu();
-            //Delay(4);
-            //IncreaseSumAssuredAge();
-            //Delay(2);
-            //clickOnMainMenu();
-            //Delay(4);
-            //IncreaseSumAssured();
-            //Delay(2);
-            //clickOnMainMenu();
-            //Delay(4);
-            //DecreaseSumAssured();
-            //Delay(2);
-            //clickOnMainMenu();
-            //Delay(4);
-            //RemovalOfNonCompulsoryLife();
-            //Delay(2);
-           clickOnMainMenu();
-            Delay(4);
-            ChangeCollectionMeth();
-            //Delay(2);
-            //clickOnMainMenu();
-            //Delay(2);
-            //ReInstate();
-            //Delay(4);
-            //clickOnMainMenu();
-            //Delay(2);
-            //ChangeLifeAssured();
-            //Delay(2);
-            //clickOnMainMenu();
-            //Delay(4);
-            //AddaLife();
-            //Delay(2);
-            //clickOnMainMenu();
-            //Delay(2);
-            //addBeneficiary();
-            //Delay(4);
-            clickOnMainMenu();
-            Delay(4);
-            ChangeCollectionM();
+                    // Open connection
+                    conn.Open();
+                    string cmdQuery = "SELECT * FROM [" + sheet + "$]";
 
+                    OleDbCommand cmd = new OleDbCommand(cmdQuery, conn);
+
+                    // Create new OleDbDataAdapter
+                    OleDbDataAdapter oleda = new OleDbDataAdapter();
+
+                    oleda.SelectCommand = cmd;
+
+                    // Create a DataSet which will hold the data extracted from the worksheet.
+                    DataSet ds = new DataSet();
+
+                    // Fill the DataSet from the data extracted from the worksheet.
+                    oleda.Fill(ds, "Policies");
+
+
+
+                    foreach (var row in ds.Tables[0].DefaultView)
+                    {
+                        var contractRef = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString(); ;
+                        var func = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
+
+                        if (contractRef != "" && func != "")
+                        {
+                            Delay(4);
+                            clickOnMainMenu();
+                            try
+                            {
+                                switch (func)
+                                {
+                                    case "AddRolePlayer":
+                                        AddRolePlayer(contractRef);
+                                        break;
+                                    case "TerminateRolePlayer":
+                                        TerminateRolePlayer(contractRef);
+                                        break;
+                                    case "IncreaseSumAssured":
+                                        IncreaseSumAssured(contractRef);
+                                        break;
+                                    case "DecreaseSumAssured":
+                                        DecreaseSumAssured(contractRef);
+                                        break;
+                                    case "AddRole_NextMonth":
+                                        AddRole_NextMonth(contractRef);
+                                        break;
+                                    case "TerminateRoleNext_month":
+                                        TerminateRoleNext_month(contractRef);
+                                        break;
+                                    case "PostDatedDowngrade":
+                                        PostDatedDowngrade(contractRef);
+                                        break;
+                                    case "PostDatedUpgrade":
+                                        PostDatedUpgrade(contractRef);
+                                        break;
+                                    case "IncreaseSumAssuredAge":
+                                        IncreaseSumAssuredAge(contractRef);
+                                        break;
+
+                                    case "RemovalOfNonCompulsoryLife()":
+                                        RemovalOfNonCompulsoryLife(contractRef);
+                                        break;
+                                    case "ChangeCollectionMeth":
+                                        ChangeCollectionMeth(contractRef);
+                                        break;
+                                    case "ReInstate":
+                                        ReInstate(contractRef);
+                                        break;
+                                    case "Cancel":
+                                        CancelPolicy(contractRef);
+                                        break;
+                                    case "ChangeLifeAssured":
+                                        ChangeLifeAssured(contractRef);
+                                        break;
+                                    case "AddaLife":
+                                        AddaLife(contractRef);
+                                        break;
+                                    case "addBeneficiary":
+                                        addBeneficiary(contractRef);
+                                        break;
+                                    case "ChangeCollectionM":
+                                        ChangeCollectionM(contractRef);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                var errMsg = (ex.ToString()).Substring(0, 255);
+                                cmd = conn.CreateCommand();
+                                cmd.CommandText = $"UPDATE [{sheet}$] SET Comments  = '{errMsg}' WHERE Function = '{func}';";
+                                cmd.ExecuteNonQuery();
+                                var testDate = DateTime.Now.ToString();
+
+                                //Test_Date
+                                cmd.CommandText = $"UPDATE [{sheet}$] SET Test_Date = '{testDate}' WHERE Function = '{func}';";
+                                cmd.ExecuteNonQuery();
+                                cmd.CommandText = $"UPDATE [{sheet}$] SET Test_Results  = 'Failed' WHERE Function = '{func}';";
+                                cmd.ExecuteNonQuery();
+                            }
+
+                        }
+
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    conn.Close();
+
+
+                    conn.Dispose();
+                }
+            }
 
 
 
@@ -145,12 +199,9 @@ namespace PolicyServicing
                 
             }
         }
-
-        private void PostDatedDowngrade()
+        private void PostDatedDowngrade(string contractRef)
         {
-            try
-            {
-                string contRef = base.GetPolicyNoFromExcell(sheet, "PostDatedDowngrade");
+           
 
                 string results = "";
 
@@ -160,9 +211,12 @@ namespace PolicyServicing
 
 
 
-                policySearch(contRef);
+                policySearch(contractRef);
+            Delay(2);
 
-                Delay(3);
+            SetproductName("PostDatedDowngrade");
+
+            Delay(3);
 
                 var contractPrem = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[2]")).Text;
 
@@ -266,20 +320,11 @@ namespace PolicyServicing
                 base.writeResultsToExcell(results, sheet, "PostDatedDowngrade");
 
 
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+         
         }
-
-        private void PostDatedUpgrade()
+        private void PostDatedUpgrade(string contractRef)
         {
-            try
-            {
-                string contRef = base.GetPolicyNoFromExcell(sheet, "PostDatedUpgrade");
-
+           
                 string results = "";
 
                 string date = DateTime.Today.ToString("g");
@@ -288,9 +333,13 @@ namespace PolicyServicing
 
 
 
-                policySearch(contRef);
+                policySearch(contractRef);
 
-                Delay(3);
+            Delay(2);
+
+            SetproductName("PostDatedUpgrade");
+
+            Delay(3);
 
                 var contractPrem = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[2]")).Text;
 
@@ -392,30 +441,23 @@ namespace PolicyServicing
 
                 base.writeResultsToExcell(results, sheet, "PostDatedUpgrade");
 
-
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
         }
-        private void AddRolePlayer()
+        private void AddRolePlayer(string contractRef)
         {
 
-            try
-            {
                 IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
-
-                string contRef = base.GetPolicyNoFromExcell(sheet, "AddRolePlayer");
 
                 string results = "";
                 string title = "", first_name = "", surname = "", initials = "", dob = "", gender = "", id_number = "", relationship = "";
 
                 Delay(3);
-                policySearch(contRef);
+                policySearch(contractRef);
 
-                Delay(3);
+            Delay(2);
+
+            SetproductName("AddRolePlayer");
+
+            Delay(3);
                 //Redate
                 redate();
 
@@ -507,29 +549,6 @@ namespace PolicyServicing
 
                 }
 
-                //enter id from excel
-                /*  _driver.FindElement(By.Name("frmIDNumber")).SendKeys(idno);
-                  Delay(2);
-                  _driver.FindElement(By.Name("frmPersonObjLkpImg")).Click();
-
-                  Delay(4);
-
-                  var child = _driver.WindowHandles[1];
-                  _driver.SwitchTo().Window(child);
-                  Delay(2);
-
-                  _driver.FindElement(By.XPath(" //*[@id='lkpResultsTable']/tbody/tr[2]")).Click();
-
-                  Delay(2);
-                  var parentt = _driver.WindowHandles[0];
-                  _driver.SwitchTo().Window(parentt);
-
-                  Delay(2);
-                //click next
-
-                  _driver.FindElement(By.XPath("//*[@id='GBLbl-5']/span/a")).Click();
-                  Delay(2);
-                */
 
                 //enter initials
                 _driver.FindElement(By.Name("frmPersonInitials")).Clear();
@@ -688,12 +707,6 @@ namespace PolicyServicing
                 _driver.FindElement(By.XPath("   //*[@id='GBLbl-5']/span/a")).Click();
 
 
-                //Delay(2);
-                //  select component
-                // IWebElement component = _driver.FindElement(By.Name("frmComponentObj"));
-                //SelectElement selecComp = new SelectElement(component);
-                //selecComp.SelectByIndex(1);
-
                 Delay(2);
 
                 IWebElement parentcomponent = _driver.FindElement(By.Name("frmParentComponentObj"));
@@ -707,46 +720,6 @@ namespace PolicyServicing
                 Delay(2);
 
                 _driver.FindElement(By.XPath("//*[@id='GB-6']")).Click();
-
-
-                //Select date
-                // click 
-                // _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[2]/td[2]/a/span/img")).Click();
-
-
-                //Delay(2);
-
-                //var compchild = _driver.WindowHandles[1];
-                //_driver.SwitchTo().Window(compchild);
-                //  Delay(2);
-                //_driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[4]/td/table/tbody/tr[2]/td[4]/a")).Click();
-                // Delay(2);
-                // var cparent = _driver.WindowHandles[0];
-                // _driver.SwitchTo().Window(cparent);
-
-                // Delay(3);
-
-                //select sumassured
-                //string url3 = _driver.Url;
-                //Assert.AreEqual(url3, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
-
-
-
-                //IWebElement sumassured = _driver.FindElement(By.Name("frmSPAmount"));
-                //SelectElement sum = new SelectElement(sumassured);
-                //sum.SelectByIndex(3);
-
-                //Delay(3);
-
-                //  _driver.FindElement(By.XPath("//*[@id='GBLbl-6']/span/a")).Click();
-                // Delay(3);
-
-                //click role player
-                //Actions acts = new Actions(_driver);
-                //IWebElement elem = _driver.FindElement(By.Name("frmRolePlayers"));
-                //act.DoubleClick(elem).Perform();
-
-
 
                 IWebElement elem = _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[6]/td[2]/select"));
                 SelectElement roleP = new SelectElement(elem);
@@ -773,31 +746,29 @@ namespace PolicyServicing
 
                 Delay(2);
 
-            }
-            catch (Exception) { throw; }
+          
 
 
 
 
         }
-        private void TerminateRolePlayer()
+        private void TerminateRolePlayer(string contractRef)
         {
-
-            try
-            {
 
                 IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
 
-                string contRef = base.GetPolicyNoFromExcell(sheet, "TerminateRoleP");
 
                 string results = "";
 
                 // _driver.FindElement(By.Name("CBWeb")).Click();
                 // _driver.FindElement(By.XPath(" //*[@id='t0_754']/table/tbody/tr/td[3]/a")).Click();
                 Delay(2);
-                policySearch(contRef);
+                policySearch(contractRef);
+            Delay(2);
 
-                for (int i = 2; i < 23; i++)
+            SetproductName("TerminateRolePlayer");
+
+            for (int i = 2; i < 23; i++)
                 {
                     var txt = _driver.FindElement(By.XPath($"//*[@id='CntContentsDiv11']/table/tbody/tr[{i.ToString()}]/td[1]/span")).Text;
                     var relationship = _driver.FindElement(By.XPath($"//*[@id='CntContentsDiv11']/table/tbody/tr[{i.ToString()}]/td[3]")).Text;
@@ -810,9 +781,6 @@ namespace PolicyServicing
 
                 }
                 Delay(3);
-
-                // SS44244430
-
 
                 String expected = "Are you sure you want to terminate this role";
 
@@ -850,17 +818,7 @@ namespace PolicyServicing
                 }
 
                 base.writeResultsToExcell(results, sheet, "TerminateRoleP");
-
-
-
-
-
-            }
-            catch (Exception) { throw; }
-
-
         }
-
         private void redate()
         {
 
@@ -949,20 +907,19 @@ namespace PolicyServicing
             }
 
         }
-
-        private void AddRole_NextMonth()
+        private void AddRole_NextMonth(string contractRef)
         {
 
-            try
-            {
                 IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
 
-                string contRef = base.GetPolicyNoFromExcell(sheet, "AddRoleNext_month");
                 string title = "", first_name = "", surname = "", initials = "", dob = "", gender = "", id_number = "", relationship = "";
                 string results = "";
                 string idno = "";
-                policySearch(contRef);
-                Delay(2);
+                policySearch(contractRef);
+            Delay(2);
+
+            SetproductName("AddRole_NextMonth");
+            Delay(2);
 
                 //click add role
 
@@ -975,23 +932,6 @@ namespace PolicyServicing
                 s.SelectByIndex(4);
                 Delay(3);
                 //Click calendar
-
-                //_driver.FindElement(By.XPath("//*[@id='frmCbmre']/tbody/tr[2]/td[2]/a")).Click();
-                // Delay(3);
-                // Assert.AreEqual(2, _driver.WindowHandles.Count);
-
-                // var childwindow = _driver.WindowHandles[1];
-                // _driver.SwitchTo().Window(childwindow);
-                //Delay(2);
-                //click
-                //Actions act = new Actions(_driver);
-                //IWebElement ele = _driver.FindElement(By.XPath("//*[@id='aIncYear']/img"));
-                //act.DoubleClick(ele).Perform();
-                //_driver.FindElement(By.XPath("//*[@id='aIncYear']")).Click();
-                //_driver.FindElement(By.XPath("//a[@name='fcCal1']")).Click();
-                //var parent = _driver.WindowHandles[0];
-                //_driver.SwitchTo().Window(parent);
-                //Delay(4);
 
                 //click next
                 _driver.FindElement(By.XPath("//*[@id='GBLbl-4']/span/a")).Click();
@@ -1043,31 +983,6 @@ namespace PolicyServicing
                     con.Dispose();
 
                 }
-
-                //enter id from excel
-                /*  _driver.FindElement(By.Name("frmIDNumber")).SendKeys(idno);
-                  Delay(2);
-                  _driver.FindElement(By.Name("frmPersonObjLkpImg")).Click();
-
-                  Delay(4);
-
-                  var child = _driver.WindowHandles[1];
-                  _driver.SwitchTo().Window(child);
-                  Delay(2);
-
-                  _driver.FindElement(By.XPath(" //*[@id='lkpResultsTable']/tbody/tr[2]")).Click();
-
-                  Delay(2);
-                  var parentt = _driver.WindowHandles[0];
-                  _driver.SwitchTo().Window(parentt);
-
-                  Delay(2);
-                //click next
-
-                  _driver.FindElement(By.XPath("//*[@id='GBLbl-5']/span/a")).Click();
-                  Delay(2);
-                */
-                ///click next
 
 
                 //enter initials
@@ -1232,12 +1147,6 @@ namespace PolicyServicing
                 _driver.FindElement(By.XPath("   //*[@id='GBLbl-5']/span/a")).Click();
 
 
-                //Delay(2);
-                ////  select component
-                //IWebElement component = _driver.FindElement(By.Name("frmComponentObj"));
-                //SelectElement selecComp = new SelectElement(component);
-                //selecComp.SelectByIndex(1);
-
                 Delay(2);
 
                 IWebElement parentcomponent = _driver.FindElement(By.Name("frmParentComponentObj"));
@@ -1249,34 +1158,7 @@ namespace PolicyServicing
 
 
                 Delay(2);
-                //Select date
-                // click 
-                //_driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[2]/td[2]/a/span/img")).Click();
-
-
-                //Delay(2);
-
-                //var compchild = _driver.WindowHandles[1];
-                //_driver.SwitchTo().Window(compchild);
-                //Delay(2);
-                //_driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[4]/td/table/tbody/tr[2]/td[4]/a")).Click();
-                //Delay(2);
-                //var cparent = _driver.WindowHandles[0];
-                //_driver.SwitchTo().Window(cparent);
-
-                //Delay(3);
-
-                ////select sumassured
-                //string url3 = _driver.Url;
-                //Assert.AreEqual(url3, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
-
-
-
-                //IWebElement sumassured = _driver.FindElement(By.Name("frmSPAmount"));
-                //SelectElement sum = new SelectElement(sumassured);
-                //sum.SelectByIndex(3);
-
-                //Delay(3);
+                
 
                 //next 
                 _driver.FindElement(By.XPath("//*[@id='GBLbl-6']/span/a")).Click();
@@ -1302,35 +1184,21 @@ namespace PolicyServicing
 
                 _driver.FindElement(By.XPath("  //*[@id='GBLbl-7']/span/a")).Click();
 
-
-
-            }
-            catch (Exception) { throw; }
-
-
         }
-
-
-
-
-        private void TerminateRoleNext_month()
+        private void TerminateRoleNext_month(string contractRef)
         {
 
-            try
-            {
-
                 IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
-
-                string contRef = base.GetPolicyNoFromExcell(sheet, "TerminateRoleP_next");
-
                 string results = "";
 
-                // _driver.FindElement(By.Name("CBWeb")).Click();
-                // _driver.FindElement(By.XPath(" //*[@id='t0_754']/table/tbody/tr/td[3]/a")).Click();
+                
                 Delay(2);
-                policySearch(contRef);
+                policySearch(contractRef);
+            Delay(2);
 
-                for (int i = 2; i < 23; i++)
+            SetproductName("TerminateRoleNext_month");
+
+            for (int i = 2; i < 23; i++)
                 {
                     var txt = _driver.FindElement(By.XPath($"//*[@id='CntContentsDiv11']/table/tbody/tr[{i.ToString()}]/td[1]/span")).Text;
                     var relationship = _driver.FindElement(By.XPath($"//*[@id='CntContentsDiv11']/table/tbody/tr[{i.ToString()}]/td[3]")).Text;
@@ -1343,14 +1211,8 @@ namespace PolicyServicing
 
                 }
                 Delay(3);
-
-
-
-
                 String expected = "Are you sure you want to terminate this role";
-
                 _driver.FindElement(By.Name("btnTerminate")).Click();
-
                 String alerttext = _driver.SwitchTo().Alert().Text;
                 _driver.SwitchTo().Alert().Accept();
                 Assert.AreEqual(expected, alerttext);
@@ -1388,22 +1250,18 @@ namespace PolicyServicing
 
 
 
-            }
-            catch (Exception) { throw; }
-
 
         }
-
-
-
-
-
         [Category("Add Beneficiary")]
-        private void addBeneficiary()
+        private void addBeneficiary(string contractRef)
         {
             var results = "Failed";
-            string contRef = base.GetPolicyNoFromExcell(sheet, "AddBeneficiary");
-            policySearch(contRef);
+            policySearch(contractRef);
+
+            Delay(2);
+
+            SetproductName("addBeneficiary");
+
             Delay(2);
             var commDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
             _driver.FindElement(By.Name("btnAddRolePlayer")).Click();
@@ -1466,24 +1324,23 @@ namespace PolicyServicing
             base.writeResultsToExcell(results, sheet, "AddBenefeciary");
 
         }
-
-        private void DecreaseSumAssured()
+        private void DecreaseSumAssured(string contractRef)
         {
-            try
-            {
-                string contRef = base.GetPolicyNoFromExcell(sheet, "DecreaseSumAssured");
-
+         
                 string results = "";
-
                 var currentSumAssured = "";
                 var currentPremium = "";
                 var newPremium = "";
                 var commDate = "";
 
-                policySearch(contRef);
+                policySearch(contractRef);
 
-                //Get the Commencement date from contract summary screen
-                commDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
+            
+            Delay(2);
+
+            SetproductName("DecreaseSumAssured");
+            //Get the Commencement date from contract summary screen
+            commDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
                 //Scroll Down
                 Delay(3);
 
@@ -1577,23 +1434,20 @@ namespace PolicyServicing
                 base.writeResultsToExcell(results, sheet, "DecreaseSumAssured");
 
 
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+         
         }
-        private void ChangeLifeAssured()
+        private void ChangeLifeAssured(string contractRef)
         {
-            try
-            {
-                string contRef = base.GetPolicyNoFromExcell(sheet, "ChangeLifeAssured");
+           
 
                 string results = "";
-                policySearch(contRef);
+                policySearch(contractRef);
 
-                string title = "", surname = "", MaritalStatus = "", EducationLevel = "", Department = "", Profession = "";
+            Delay(2);
+
+            SetproductName("ChangeLifeAssured");
+
+            string title = "", surname = "", MaritalStatus = "", EducationLevel = "", Department = "", Profession = "";
 
                 //Extract data from excell
                 using (OleDbConnection conn = new OleDbConnection(base._connString))
@@ -1915,26 +1769,21 @@ namespace PolicyServicing
 
                 base.writeResultsToExcell(results, sheet, "ChangeLifeAssured");
 
-            }
-            catch (Exception ex)
-            {
-                DisconnectBrowser();
-
-                throw ex;
-            }
+          
         }
-
         [Category("Removal of Non-Compulsory life")]
-        private void RemovalOfNonCompulsoryLife()
+        private void RemovalOfNonCompulsoryLife(string contractRef)
         {
-            try
-            {
-                string contRef = base.GetPolicyNoFromExcell(sheet, "RemovaleOfNonCompulsoryLife");
                 string results = "";
                 var currentPremium = "";
                 var newPremium = "";
-                policySearch(contRef);
-                Delay(2);
+                policySearch(contractRef);
+
+
+            Delay(2);
+
+            SetproductName("RemovalOfNonCompulsoryLife");
+            Delay(2);
                 //Get commencemet data
                 var commDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
                 Delay(2);
@@ -1967,31 +1816,19 @@ namespace PolicyServicing
                 results = Convert.ToDouble(newPremium) < Convert.ToDouble(currentPremium) ? "Passed" : "Failed";
                 Delay(3);
                 base.writeResultsToExcell(results, sheet, "RemovaleOfNonCompulsoryLife");
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+           
         }
-
-
-
         [Category("Cancel Policy")]
-        private void CancelPolicy()
+        private void CancelPolicy(string contractRef)
         {
 
-            try
-
-            {
-
-                string contRef = base.GetPolicyNoFromExcell(sheet, "CancelPolicy");
 
                 string results = "";
 
                 string date = DateTime.Today.ToString("g");
 
 
-                policySearch(contRef);
+                policySearch(contractRef);
 
                 Delay(3);
                 //Hover on policy options
@@ -2039,33 +1876,13 @@ namespace PolicyServicing
                 {
                     results = "Failed";
                 }
-
-
-
                 base.writeResultsToExcell(results, sheet, "CancelPolicy");
-
-            }
-
-            catch (Exception ex)
-
-            {
-
-                DisconnectBrowser();
-
-                throw ex;
-
-            }
 
         }
         [Category("ReInstate")]
-
-        public void ReInstate()
+        public void ReInstate(string contractRef)
 
         {
-
-            try
-
-            {
 
                 String test_url_1 = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
                 String test_url_1_title = "MIP - Sanlam ARL - Warpspeed Lookup Window";
@@ -2075,13 +1892,13 @@ namespace PolicyServicing
                 String test_url_4_title = "DateTime Picker";
                 IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
 
-                string contRef = base.GetPolicyNoFromExcell(sheet, "ReInstate");
+                
 
                 string results = "";
 
                 string date = DateTime.Today.ToString("g");
 
-                CancelPolicy();
+                CancelPolicy(contractRef);
                 //Contract Status validation 
 
                 var Cancelled = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[2]/td[2]/u/font")).Text;
@@ -2150,45 +1967,25 @@ namespace PolicyServicing
                 base.writeResultsToExcell(results, sheet, "ReInstate");
 
 
-            }
-
-            catch (Exception ex)
-
-            {
-
-                DisconnectBrowser();
-
-                throw ex;
-
-            }
-
         }
         [Category("IncreaseSumAssured")]
-        private void IncreaseSumAssured()
+        private void IncreaseSumAssured(string contractRef)
         {
-
-            try
-
-            {
                 String test_url_3 = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
                 String test_url_4_title = "DateTime Picker";
                 IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
-
-                string contRef = base.GetPolicyNoFromExcell(sheet, "IncreaseSumAssured");
-
                 string results = "";
 
                 string date = DateTime.Today.ToString("g");
 
                 var currentSumAssured = "";
                 var commDate = "";
+                policySearch(contractRef);
+            Delay(2);
 
+            SetproductName("IncreaseSumAssured");
 
-
-                policySearch(contRef);
-
-                Delay(3);
-
+            Delay(3);
                 //Get the Commencement date from contract summary screen
                 commDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
                 //Scroll Down
@@ -2266,15 +2063,7 @@ namespace PolicyServicing
                 // Click on finish
                 _driver.FindElement(By.Name("btncbmcc23")).Click();
                 Delay(5);
-
-
-
-
                 var newPrem = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr/td[2]")).Text;
-
-
-
-
 
                 if (Convert.ToDecimal(newPrem) > Convert.ToDecimal(contractPrem))
                 {
@@ -2288,33 +2077,13 @@ namespace PolicyServicing
 
                 base.writeResultsToExcell(results, sheet, "IncreaseSumAssured");
 
-            }
-
-            catch (Exception ex)
-
-            {
-
-                DisconnectBrowser();
-
-                throw ex;
-
-            }
-
         }
         [Category("ChangeCollectionMeth")]
-        private void ChangeCollectionMeth()
+        private void ChangeCollectionMeth(string contractRef)
         {
-
-            try
-
-            {
-
                 String test_url_1 = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
                 String test_url_2_title = "MIP - Sanlam ARL - Warpspeed Lookup Window";
                 IJavaScriptExecutor js = (IJavaScriptExecutor)_driver;
-
-
-                string contRef = base.GetPolicyNoFromExcell(sheet, "ChangeCollectionM");
 
                 string results = "";
 
@@ -2322,9 +2091,12 @@ namespace PolicyServicing
 
                 string employee_number1 = "";
 
-                policySearch(contRef);
+                policySearch(contractRef);
+            Delay(2);
 
-                Delay(3);
+            SetproductName("ChangeCollectionMeth");
+
+            Delay(3);
 
 
 
@@ -2429,10 +2201,6 @@ namespace PolicyServicing
                 _driver.FindElement(By.Id("GBLbl-1")).Click();
                 Delay(5);
 
-
-
-
-
                 var expectedcollectionM = _driver.FindElement(By.XPath("//*[@id='frmCbmre']/tbody/tr[8]/td[4]")).Text;
 
 
@@ -2452,34 +2220,14 @@ namespace PolicyServicing
 
                 base.writeResultsToExcell(results, sheet, "ChangeCollectionM");
 
-
-            }
-
-            catch (Exception ex)
-
-            {
-
-                DisconnectBrowser();
-
-                throw ex;
-
-            }
-
         }
         [Category("ChangeCollectionM")]
-        private void ChangeCollectionM()
+        private void ChangeCollectionM(string contractRef)
         {
-
-            try
-
-            {
 
                 String test_url_1 = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
                 String test_url_2_title = "MIP - Sanlam ARL - Warpspeed Lookup Window";
                 IJavaScriptExecutor js = (IJavaScriptExecutor)_driver;
-
-
-                string contRef = base.GetPolicyNoFromExcell(sheet, "ChangeCollectionM");
 
                 string results = "";
 
@@ -2487,9 +2235,12 @@ namespace PolicyServicing
 
                 string employee_number2 = "";
 
-                policySearch(contRef);
+                policySearch(contractRef);
+            Delay(2);
 
-                Delay(3);
+            SetproductName("ChangeCollectionM");
+
+            Delay(3);
 
 
 
@@ -2617,39 +2368,24 @@ namespace PolicyServicing
 
                 base.writeResultsToExcell(results, sheet, "ChangeCollectionM");
 
-
-            }
-
-            catch (Exception ex)
-
-            {
-
-                DisconnectBrowser();
-
-                throw ex;
-
-            }
-
         }
-
         [Category("AddaLife")]
-        private void AddaLife()
+        private void AddaLife(string contractRef)
         {
 
-            try
-
-            {
                 IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
 
-                string contRef = base.GetPolicyNoFromExcell(sheet, "AddaLife");
+               
 
                 string results = "";
                 string title = "", first_name = "", surname = "", initials = "", dob = "", gender = "", id_number = "", relationship = "";
 
-                policySearch(contRef);
+                policySearch(contractRef);
+            Delay(2);
 
+            SetproductName("AddaLife");
 
-                var oldPrem = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[2]")).Text;
+            var oldPrem = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[2]")).Text;
 
 
                 //click add policy
@@ -2948,25 +2684,13 @@ namespace PolicyServicing
 
                 base.writeResultsToExcell(results, sheet, "AddaLife");
 
-            }
-
-            catch (Exception ex)
-
-            {
-
-                DisconnectBrowser();
-
-                throw ex;
-
-            }
+ 
 
         }
 
-        private void IncreaseSumAssuredAge()
+        private void IncreaseSumAssuredAge(string contractRef)
         {
-            try
-            {
-                string contRef = base.GetPolicyNoFromExcell(sheet, "IncreaseSumAssuredAge");
+           
 
                 string results = "";
 
@@ -2975,10 +2699,14 @@ namespace PolicyServicing
                 var newPremium = "";
                 var commDate = "";
 
-                policySearch(contRef);
+                policySearch(contractRef);
+           
+            Delay(2);
 
-                //Get the Commencement date from contract summary screen
-                commDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
+           SetproductName("IncreaseSumAssuredAge");
+
+            //Get the Commencement date from contract summary screen
+            commDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
                 //Scroll Down
                 Delay(2);
 
@@ -3080,15 +2808,62 @@ namespace PolicyServicing
                 {
                     results = "Failed";
                 }
-                base.writeResultsToExcell(results, sheet, "IncreaseSumAssuredAge");
+            base.writeResultsToExcell(results, sheet, "IncreaseSumAssuredAge");
+        }
+        private void SetproductName(String methodname) {
 
-
-            }
-            catch (Exception)
+            var product = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv5']/table/tbody/tr[1]/td[2]")).Text;
+            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            using (OleDbConnection conn = new OleDbConnection(_connString))
             {
+                try
+                {
 
-                throw;
+                    // Open connection
+                    conn.Open();
+                    string cmdQuery = "SELECT * FROM [" + sheet + "$]";
+
+                    OleDbCommand cmd = new OleDbCommand(cmdQuery, conn);
+
+                    // Create new OleDbDataAdapter
+                    OleDbDataAdapter oleda = new OleDbDataAdapter();
+
+                    oleda.SelectCommand = cmd;
+
+                    // Create a DataSet which will hold the data extracted from the worksheet.
+                    DataSet ds = new DataSet();
+
+                    // Fill the DataSet from the data extracted from the worksheet.
+                    oleda.Fill(ds, "Policies");
+
+
+
+
+
+                    cmd.CommandText = $"UPDATE [{sheet}$] SET Product  = '{product}' WHERE Function = '{methodname}';";
+                    cmd.ExecuteNonQuery();
+
+
+
+
+                }
+
+
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    conn.Close();
+
+
+                    conn.Dispose();
+                }
             }
+
+
+
         }
 
 
@@ -3120,6 +2895,7 @@ namespace PolicyServicing
             Delay(2);
             _driver.FindElement(By.XPath("//*[@id='AppArea']/table[2]/tbody/tr[2]/td[1]/a")).Click();
 
+           
         }
 
         [Category("LogInValidation")]
