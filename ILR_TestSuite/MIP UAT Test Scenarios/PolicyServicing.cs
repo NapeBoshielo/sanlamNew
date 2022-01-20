@@ -102,9 +102,9 @@ namespace PolicyServicing
             //Delay(4);
             //RemovalOfNonCompulsoryLife();
             //Delay(2);
-            //clickOnMainMenu();
-            //Delay(4);
-            //ChangeCollectionMeth();
+           clickOnMainMenu();
+            Delay(4);
+            ChangeCollectionMeth();
             //Delay(2);
             //clickOnMainMenu();
             //Delay(2);
