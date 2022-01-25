@@ -51,7 +51,7 @@ namespace PolicyServicing
 
         public void PolicyServicingTestSuite()
 
-        {
+    {
 
             _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
             using (OleDbConnection conn = new OleDbConnection(_connString))
@@ -461,44 +461,30 @@ namespace PolicyServicing
 
             Delay(3);
                 //Redate
-                redate();
+               redate();
 
 
                 Delay(3);
 
-                //click add role player
+            //get commencement date
+            var commencementDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
 
-                _driver.FindElement(By.Name("btnAddRolePlayer")).Click();
+            //click add role player
+            _driver.FindElement(By.Name("btnAddRolePlayer")).Click();
 
                 //Select role
                 IWebElement selectRole = _driver.FindElement(By.Name("frmRoleObj"));
                 SelectElement s = new SelectElement(selectRole);
                 s.SelectByIndex(4);
                 Delay(3);
-                //Click calendar
+            //Click calendar
 
-                _driver.FindElement(By.XPath("//*[@id='frmCbmre']/tbody/tr[2]/td[2]/a")).Click();
-                Delay(3);
-                Assert.AreEqual(2, _driver.WindowHandles.Count);
+            Delay(1);
+            _driver.FindElement(By.Name("frmEffectiveFromDate")).Clear();
+            _driver.FindElement(By.Name("frmEffectiveFromDate")).SendKeys(commencementDate);
 
-                //switch to window
-                var childwindow = _driver.WindowHandles[1];
-                _driver.SwitchTo().Window(childwindow);
-
-
-
-                // click calendar month
-                Actions act = new Actions(_driver);
-                IWebElement ele = _driver.FindElement(By.XPath("//*[@id='aIncYear']/img"));
-                act.Click(ele).Perform();
-                _driver.FindElement(By.XPath("//*[@id='aIncYear']")).Click();
-
-                _driver.FindElement(By.XPath("//a[@name='fcCal1']")).Click();
-
-
-                var parent = _driver.WindowHandles[0];
-                _driver.SwitchTo().Window(parent);
-                Delay(4);
+         
+            Delay(4);
 
 
                 _driver.FindElement(By.XPath("//*[@id='GBLbl-4']/span/a")).Click();
