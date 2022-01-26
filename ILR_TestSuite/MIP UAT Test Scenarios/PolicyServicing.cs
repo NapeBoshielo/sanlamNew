@@ -812,7 +812,7 @@ namespace PolicyServicing
 
                 }
 
-                base.writeResultsToExcell(results, sheet, "TerminateRoleP");
+                base.writeResultsToExcell(results, sheet, "TerminateRolePlayer");
         }
         private void redate()
         {
@@ -943,7 +943,7 @@ namespace PolicyServicing
                     {
                         con.Open();
 
-                        String command = "SELECT * FROM [AddRoleNext_month$]";
+                        String command = "SELECT * FROM [AddRole_NextMonth$]";
 
                         OleDbCommand cmd = new OleDbCommand(command, con);
 
@@ -1126,7 +1126,7 @@ namespace PolicyServicing
 
                 }
 
-                base.writeResultsToExcell(results, sheet, "AddRoleNext_month");
+                base.writeResultsToExcell(results, sheet, "AddRole_NextMonth");
 
 
                 clickOnMainMenu();
@@ -1239,7 +1239,7 @@ namespace PolicyServicing
 
                 }
 
-                base.writeResultsToExcell(results, sheet, "TerminateRoleP_next");
+                base.writeResultsToExcell(results, sheet, "TerminateRoleNext_month");
 
 
 
