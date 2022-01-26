@@ -1883,17 +1883,14 @@ namespace PolicyServicing
                 String test_url_1_title = "MIP - Sanlam ARL - Warpspeed Lookup Window";
                 IJavaScriptExecutor js = (IJavaScriptExecutor)_driver;
 
-                String test_url_3 = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
-                String test_url_4_title = "DateTime Picker";
-                IJavaScriptExecutor js2 = (IJavaScriptExecutor)_driver;
-
-                
 
                 string results = "";
 
                 string date = DateTime.Today.ToString("g");
 
-                CancelPolicy(contractRef);
+
+            policySearch(contractRef);
+
             //Contract Status validation 
             Delay(2);
             SetproductName("ReInstate");
