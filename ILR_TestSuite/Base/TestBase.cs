@@ -43,13 +43,11 @@ namespace ILR_TestSuite
         [SetUp]
 
         public void StartBrowser()
-
-
-
         {
 
             _driver = new ChromeDriver("C:/Code/bin");
 
+            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
 
             _screenShotFolder = $@"C:\Code​{ScreenShotDailyFolderName()}​\";
 
@@ -75,11 +73,6 @@ namespace ILR_TestSuite
                 new DirectoryInfo(filePath).Create();
 
 
-
-
-
-
-
             ITakesScreenshot ssdriver = driver as ITakesScreenshot;
 
             Screenshot screenshot = ssdriver.GetScreenshot();
@@ -93,14 +86,6 @@ namespace ILR_TestSuite
             //Bitmap ss  = new Bitmap(new System.IO.MemoryStream(byteArray));
 
             // screenshot.SaveAsFile(String.Format(fileName, ImageFormat.Png));
-
-
-
-
-
-
-
-
 
         }
 
@@ -121,9 +106,9 @@ namespace ILR_TestSuite
 
             _driver.Url = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
 
-            _userName = "G992127";//TODO add your user name and password
+            _userName = "SKA008PPE";//TODO add your user name and password
 
-            _password = "P@$$word47";
+            _password = "Aw123456";
 
             _driver.Manage().Window.Maximize();
 
@@ -144,12 +129,9 @@ namespace ILR_TestSuite
             System.Threading.Thread.Sleep(2000);
             return _driver;
         }
-
-
         public string GetPolicyNoFromExcell(string sheet, string function)
         {
 
-            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
 
             string conRef = "";
             using (OleDbConnection conn = new OleDbConnection(_connString))
@@ -209,7 +191,6 @@ namespace ILR_TestSuite
         }
         public Decimal getPremuimFromRateTable(string age, string rolePlayer, string sumAsured, string product)
         {
-            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
             var premium="";
             
             using (OleDbConnection conn = new OleDbConnection(_connString))
@@ -272,11 +253,7 @@ namespace ILR_TestSuite
 
         public void writeResultsToExcell(string results, string sheet , string function)
         {
-
-            string connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
-
-
-            using (OleDbConnection conn = new OleDbConnection(connString))
+            using (OleDbConnection conn = new OleDbConnection(_connString))
             {
                 try
                 {

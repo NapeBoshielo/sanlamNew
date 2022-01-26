@@ -15,7 +15,7 @@ using OpenQA.Selenium.Support.UI;
 using System.Data.OleDb;
 using Actions = OpenQA.Selenium.Interactions.Actions;
 using System.Data;
-
+using System.Text;
 
 namespace PolicyServicing
 
@@ -53,7 +53,6 @@ namespace PolicyServicing
 
         {
 
-            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
             using (OleDbConnection conn = new OleDbConnection(_connString))
             {
                 try
@@ -118,7 +117,6 @@ namespace PolicyServicing
                                     case "IncreaseSumAssuredAge":
                                         IncreaseSumAssuredAge(contractRef);
                                         break;
-
                                     case "RemovalOfNonCompulsoryLife()":
                                         RemovalOfNonCompulsoryLife(contractRef);
                                         break;
@@ -145,20 +143,39 @@ namespace PolicyServicing
                                         break;
                                     default:
                                         break;
+
+
                                 }
                             }
                             catch (Exception ex)
                             {
-                                var errMsg = (ex.ToString()).Substring(0, 255);
+                                var errMsg = ex.Message;
+                                StringBuilder error = new StringBuilder();
+                                var charsToRemove = new char[] { '@', ',', '.', ';', '"', '{', '}'};
+                                var stringsToRemove = new String[] { "'" };
+                          
+
+                                foreach (char c in errMsg)
+                                {
+                                    var isInvalidChar = charsToRemove.Contains(c);
+                                    var isInvalidString = stringsToRemove.Contains(c.ToString());
+                                    if (!isInvalidChar && !isInvalidString)
+                                    {
+                                       error.Append(c);
+                                    }
+                                }
+
                                 cmd = conn.CreateCommand();
-                                cmd.CommandText = $"UPDATE [{sheet}$] SET Comments  = '{errMsg}' WHERE Function = '{func}';";
-                                cmd.ExecuteNonQuery();
+                                
                                 var testDate = DateTime.Now.ToString();
+                                var errorMsg = error.ToString();
 
                                 //Test_Date
                                 cmd.CommandText = $"UPDATE [{sheet}$] SET Test_Date = '{testDate}' WHERE Function = '{func}';";
                                 cmd.ExecuteNonQuery();
                                 cmd.CommandText = $"UPDATE [{sheet}$] SET Test_Results  = 'Failed' WHERE Function = '{func}';";
+                                cmd.ExecuteNonQuery();
+                                cmd.CommandText = $"UPDATE [{sheet}$] SET Comments  = '{errorMsg}' WHERE Function = '{func}';";
                                 cmd.ExecuteNonQuery();
                             }
 
@@ -168,15 +185,9 @@ namespace PolicyServicing
 
 
                 }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
                 finally
                 {
                     conn.Close();
-
-
                     conn.Dispose();
                 }
             }
@@ -208,8 +219,6 @@ namespace PolicyServicing
                 string date = DateTime.Today.ToString("g");
 
                 var currentSumAssured = "";
-
-
 
                 policySearch(contractRef);
             Delay(2);
@@ -1865,7 +1874,7 @@ namespace PolicyServicing
 
                 Delay(2);
 
-                var newStatus = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[2]/td[2]/u/font")).Text;
+                string newStatus = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[2]/td[2]/u/font")).Text;
 
                 if (newStatus == "Cancelled")
                 {
@@ -1899,8 +1908,9 @@ namespace PolicyServicing
                 string date = DateTime.Today.ToString("g");
 
                 CancelPolicy(contractRef);
-                //Contract Status validation 
-
+            //Contract Status validation 
+            Delay(2);
+            SetproductName("ReInstate");
                 var Cancelled = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[2]/td[2]/u/font")).Text;
 
 
@@ -2025,7 +2035,7 @@ namespace PolicyServicing
                 //Click on options
                 _driver.FindElement(By.XPath("//*[@id='m0t0']/tbody/tr[1]/td/div/div[3]/a/img")).Click();
 
-;
+
 
                 //Date selection
                 Delay(4);
@@ -2813,7 +2823,6 @@ namespace PolicyServicing
         private void SetproductName(String methodname) {
 
             var product = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv5']/table/tbody/tr[1]/td[2]")).Text;
-            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
             using (OleDbConnection conn = new OleDbConnection(_connString))
             {
                 try
