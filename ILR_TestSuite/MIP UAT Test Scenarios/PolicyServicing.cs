@@ -120,8 +120,8 @@ namespace PolicyServicing
                                     case "RemovalOfNonCompulsoryLife()":
                                         RemovalOfNonCompulsoryLife(contractRef);
                                         break;
-                                    case "ChangeCollectionMeth":
-                                        ChangeCollectionMeth(contractRef);
+                                    case "ChangeCollectionMethod":
+                                        ChangeCollectionMethod(contractRef);
                                         break;
                                     case "ReInstate":
                                         ReInstate(contractRef);
@@ -138,8 +138,8 @@ namespace PolicyServicing
                                     case "addBeneficiary":
                                         addBeneficiary(contractRef);
                                         break;
-                                    case "ChangeCollectionM":
-                                        ChangeCollectionM(contractRef);
+                                    case "ChangeCollectionNegative":
+                                        ChangeCollectionNegative(contractRef);
                                         break;
                                     default:
                                         break;
@@ -169,6 +169,10 @@ namespace PolicyServicing
                                 
                                 var testDate = DateTime.Now.ToString();
                                 var errorMsg = error.ToString();
+                                if(errMsg.Length > 250)
+                                {
+                                    errMsg = errMsg.Substring(0, 250);
+                                }
 
                                 //Test_Date
                                 cmd.CommandText = $"UPDATE [{sheet}$] SET Test_Date = '{testDate}' WHERE Function = '{func}';";
@@ -812,7 +816,7 @@ namespace PolicyServicing
 
                 }
 
-                base.writeResultsToExcell(results, sheet, "TerminateRolePlayer");
+                base.writeResultsToExcell(results, sheet, "TerminateRoleP");
         }
         private void redate()
         {
@@ -943,7 +947,7 @@ namespace PolicyServicing
                     {
                         con.Open();
 
-                        String command = "SELECT * FROM [AddRole_NextMonth$]";
+                        String command = "SELECT * FROM [AddRoleNext_month$]";
 
                         OleDbCommand cmd = new OleDbCommand(command, con);
 
@@ -1126,7 +1130,7 @@ namespace PolicyServicing
 
                 }
 
-                base.writeResultsToExcell(results, sheet, "AddRole_NextMonth");
+                base.writeResultsToExcell(results, sheet, "AddRoleNext_month");
 
 
                 clickOnMainMenu();
@@ -1239,7 +1243,7 @@ namespace PolicyServicing
 
                 }
 
-                base.writeResultsToExcell(results, sheet, "TerminateRoleNext_month");
+                base.writeResultsToExcell(results, sheet, "TerminateRoleP_next");
 
 
 
@@ -1823,9 +1827,14 @@ namespace PolicyServicing
                 string date = DateTime.Today.ToString("g");
 
 
-                policySearch(contractRef);
+            policySearch(contractRef);
 
-                Delay(3);
+            SetproductName("CancelPolicy");
+            Delay(2);
+            var commDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
+
+
+            Delay(3);
                 //Hover on policy options
                 IWebElement policyOptionElement = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
 
@@ -1836,11 +1845,16 @@ namespace PolicyServicing
                 action.MoveToElement(policyOptionElement).Perform();
 
                 Delay(5);
-                //Click on Cancel
-
+            //Click on Cancel
                 _driver.FindElement(By.XPath("//table[@id='m0t0']/tbody/tr/td/div/div[3]/a/img")).Click();
                 Delay(5);
-                SelectElement oSelect = new SelectElement(_driver.FindElement(By.Name("frmCancelReason")));
+
+            _driver.FindElement(By.Name("frmTerminationDate")).Clear();
+            Delay(3);
+            _driver.FindElement(By.Name("frmTerminationDate")).SendKeys(commDate);
+            Delay(3);
+                
+            SelectElement oSelect = new SelectElement(_driver.FindElement(By.Name("frmCancelReason")));
 
                 oSelect.SelectByValue("Cancelled by external service");
                 Delay(4);
@@ -1848,23 +1862,18 @@ namespace PolicyServicing
                 _driver.FindElement(By.Name("btnSubmit")).Click();
                 Delay(2);
 
-
-
-
-
                 // Switch the control of 'driver' to the Alert from main Window
                 IAlert simpleAlert1 = _driver.SwitchTo().Alert();
 
                 // '.Accept()' is used to accept the alert '(click on the Ok button)'
                 simpleAlert1.Accept();
 
-                Delay(2);
+                Delay(5);
 
                 string newStatus = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[2]/td[2]/u/font")).Text;
 
-                if (newStatus == "Cancelled")
+                if (newStatus == "Cancelled" || newStatus == "Not Taken Up")
                 {
-                    //Assert.Pass("The policy was succesfully cancelled");
                     results = "Passed";
                 }
                 else
@@ -1877,87 +1886,129 @@ namespace PolicyServicing
         [Category("ReInstate")]
         public void ReInstate(string contractRef)
 
+
+
         {
 
-                String test_url_1 = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
-                String test_url_1_title = "MIP - Sanlam ARL - Warpspeed Lookup Window";
-                IJavaScriptExecutor js = (IJavaScriptExecutor)_driver;
 
 
-                string results = "";
+            String test_url_1 = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
+            String test_url_1_title = "MIP - Sanlam ARL - Warpspeed Lookup Window";
+            IJavaScriptExecutor js = (IJavaScriptExecutor)_driver;
 
-                string date = DateTime.Today.ToString("g");
+
+
+
+            string results = "";
+
+
+
+            string date = DateTime.Today.ToString("g");
+
+
 
 
             policySearch(contractRef);
 
-            //Contract Status validation 
+
+
+            //Contract Status validation
             Delay(2);
             SetproductName("ReInstate");
-                var Cancelled = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[2]/td[2]/u/font")).Text;
-
-
-
-                IWebElement policyOptionElement3 = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
-
-
-                //Creating object of an Actions class
-                Actions action2 = new Actions(_driver);
-
-
-
-                //Performing the mouse hover action on the target element.
-                action2.MoveToElement(policyOptionElement3).Perform();
-                Delay(2);
-
-                //Click on Reinstate
-                _driver.FindElement(By.XPath("//*[@id='m0t0']/tbody/tr[10]/td/div/div[3]/a/img")).Click();
-                Delay(2);
-
-
-
-
-                SelectElement oSelect2 = new SelectElement(_driver.FindElement(By.Name("frmReason")));
-
-                oSelect2.SelectByValue("ReinstateReason2");
-                Delay(2);
-
-
-                //Click submit
-                _driver.FindElement(By.Name("btnctcrereinstatecsu5")).Click();
-                Delay(4);
-
-
-                //Click submit
-                _driver.FindElement(By.Name("btnctcrereinstatecsu2")).Click();
-                Delay(5);
-
-
-
-                //Contract Status validation 
-
-                var StatusInForce = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[2]/td[2]/u/font")).Text;
-
-
-
-                Assert.IsTrue(StatusInForce.Equals("In-Force", StringComparison.CurrentCultureIgnoreCase));
-
-                Delay(3);
-
-                if (StatusInForce == "In-Force")
-                {
-                    results = "Passed";
-                }
-                else
-                {
-                    results = "Failed";
-                }
+            var Cancelled = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[2]/td[2]/u/font")).Text;
 
 
 
 
 
-                base.writeResultsToExcell(results, sheet, "ReInstate");
+            IWebElement policyOptionElement3 = _driver.FindElement(By.XPath("//*[@id='m0i0o1']"));
+
+
+
+
+            //Creating object of an Actions class
+            Actions action2 = new Actions(_driver);
+
+
+
+
+
+            //Performing the mouse hover action on the target element.
+            action2.MoveToElement(policyOptionElement3).Perform();
+            Delay(2);
+
+
+
+            //Click on Reinstate
+            _driver.FindElement(By.XPath("//*[@id='m0t0']/tbody/tr[10]/td/div/div[3]/a/img")).Click();
+            Delay(2);
+
+
+
+
+
+
+            SelectElement oSelect2 = new SelectElement(_driver.FindElement(By.Name("frmReason")));
+
+
+
+            oSelect2.SelectByValue("ReinstateReason2");
+            Delay(2);
+
+
+
+
+            //Click submit
+            _driver.FindElement(By.Name("btnctcrereinstatecsu5")).Click();
+            Delay(4);
+
+
+
+
+            //Click submit
+            _driver.FindElement(By.Name("btnctcrereinstatecsu2")).Click();
+            Delay(5);
+
+
+
+
+
+            //Contract Status validation
+
+
+
+            var StatusInForce = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[2]/td[2]/u/font")).Text;
+
+
+
+
+
+            Assert.IsTrue(StatusInForce.Equals("In-Force", StringComparison.CurrentCultureIgnoreCase));
+
+
+
+            Delay(3);
+
+
+
+            if (StatusInForce == "In-Force")
+            {
+                results = "Passed";
+            }
+            else
+            {
+                results = "Failed";
+            }
+
+
+
+
+
+
+
+            base.writeResultsToExcell(results, sheet, "ReInstate");
+
+
 
 
         }
@@ -2071,8 +2122,8 @@ namespace PolicyServicing
                 base.writeResultsToExcell(results, sheet, "IncreaseSumAssured");
 
         }
-        [Category("ChangeCollectionMeth")]
-        private void ChangeCollectionMeth(string contractRef)
+        [Category("ChangeCollectionMethod")]
+        private void ChangeCollectionMethod(string contractRef)
         {
                 String test_url_1 = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
                 String test_url_2_title = "MIP - Sanlam ARL - Warpspeed Lookup Window";
@@ -2087,7 +2138,7 @@ namespace PolicyServicing
                 policySearch(contractRef);
             Delay(2);
 
-            SetproductName("ChangeCollectionMeth");
+            SetproductName("ChangeCollectionMethod");
 
             Delay(3);
 
@@ -2211,11 +2262,11 @@ namespace PolicyServicing
                 }
 
 
-                base.writeResultsToExcell(results, sheet, "ChangeCollectionM");
+                base.writeResultsToExcell(results, sheet, "ChangeCollectionMethod");
 
         }
-        [Category("ChangeCollectionM")]
-        private void ChangeCollectionM(string contractRef)
+        [Category("ChangeCollectionNegative")]
+        private void ChangeCollectionNegative(string contractRef)
         {
 
                 String test_url_1 = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
@@ -2228,10 +2279,10 @@ namespace PolicyServicing
 
                 string employee_number2 = "";
 
-                policySearch(contractRef);
-            Delay(2);
+            policySearch(contractRef);
+            Delay(3);
 
-            SetproductName("ChangeCollectionM");
+            SetproductName("ChangeCollectionNegative");
 
             Delay(3);
 
@@ -2359,7 +2410,7 @@ namespace PolicyServicing
                 }
 
 
-                base.writeResultsToExcell(results, sheet, "ChangeCollectionM");
+                base.writeResultsToExcell(results, sheet, "ChangeCollectionNegative");
 
         }
         [Category("AddaLife")]
