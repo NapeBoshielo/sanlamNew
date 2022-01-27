@@ -126,7 +126,7 @@ namespace PolicyServicing
                                     case "ReInstate":
                                         ReInstate(contractRef);
                                         break;
-                                    case "Cancel":
+                                    case "CancelPolicy":
                                         CancelPolicy(contractRef);
                                         break;
                                     case "ChangeLifeAssured":
@@ -1833,6 +1833,26 @@ namespace PolicyServicing
             Delay(2);
             var commDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
 
+            var dt = commDate;
+            var splitedDate = dt.Split('/');
+            var year = splitedDate[0];
+            int month = Convert.ToInt32(splitedDate[1]);
+            string strMonth;
+            if (month == 12)
+            {
+                strMonth = "01";
+                year = "" + (Convert.ToInt32(year) + 1);
+            }
+            else if (month < 10)
+            {
+                strMonth = "0" + (month + 1);
+            }
+            else
+            {
+                strMonth = (month + 1).ToString();
+            }
+
+            commDate = year + "/" + strMonth + "/" + "01";
 
             Delay(3);
                 //Hover on policy options
