@@ -169,9 +169,9 @@ namespace PolicyServicing
                                 
                                 var testDate = DateTime.Now.ToString();
                                 var errorMsg = error.ToString();
-                                if(errMsg.Length > 250)
+                                if(errorMsg.Length > 250)
                                 {
-                                    errMsg = errMsg.Substring(0, 250);
+                                    errorMsg = errorMsg.Substring(0, 250);
                                 }
 
                                 //Test_Date
