@@ -117,7 +117,7 @@ namespace PolicyServicing
                                     case "IncreaseSumAssuredAge":
                                         IncreaseSumAssuredAge(contractRef);
                                         break;
-                                    case "RemovalOfNonCompulsoryLife()":
+                                    case "RemovalOfNonCompulsoryLife":
                                         RemovalOfNonCompulsoryLife(contractRef);
                                         break;
                                     case "ChangeCollectionMethod":
