@@ -1803,13 +1803,13 @@ namespace PolicyServicing
                 string results = "";
                 var currentPremium = "";
                 var newPremium = "";
+
                 policySearch(contractRef);
 
 
-            Delay(2);
-
-            SetproductName("RemovalOfNonCompulsoryLife");
-            Delay(2);
+                Delay(4);
+                SetproductName("RemovalOfNonCompulsoryLife");
+                Delay(2);
                 //Get commencemet data
                 var commDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
                 Delay(2);
@@ -1840,9 +1840,10 @@ namespace PolicyServicing
                 newPremium = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr/td[2]")).Text;
                 Delay(3);
                 results = Convert.ToDouble(newPremium) < Convert.ToDouble(currentPremium) ? "Passed" : "Failed";
-                Delay(3);
-                base.writeResultsToExcell(results, sheet, "RemovaleOfNonCompulsoryLife");
-           
+                Delay(4);
+                base.writeResultsToExcell(results, sheet, "RemovalOfNonCompulsoryLife"); 
+
+
         }
         [Category("Cancel Policy")]
         private void CancelPolicy(string contractRef)
@@ -2182,8 +2183,10 @@ namespace PolicyServicing
 
                 string employee_number1 = "";
 
-                policySearch(contractRef);
-            Delay(2);
+            policySearch(contractRef);
+            
+            
+            Delay(4);
 
             SetproductName("ChangeCollectionMethod");
 
