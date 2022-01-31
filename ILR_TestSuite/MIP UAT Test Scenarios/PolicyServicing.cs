@@ -1347,7 +1347,7 @@ namespace PolicyServicing
             }
             Delay(3);
 
-            base.writeResultsToExcell(results, sheet, "AddBenefeciary");
+            base.writeResultsToExcell(results, sheet, "addBeneficiary");
 
         }
         private void DecreaseSumAssured(string contractRef)
