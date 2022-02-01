@@ -235,7 +235,12 @@
 
 
 <dependencies>
-
+<dependency>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-compiler-plugin</artifactId>
+  <version>3.9.0</version>
+  <type>maven-plugin</type>
+</dependency>
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>

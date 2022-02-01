@@ -14,7 +14,7 @@ public class Tbase {
 	        System.setProperty("webdriver.chrome.driver","C:\\Code\\bin\\ChromeDriver.exe");
 	       WebDriver _driver = new ChromeDriver();
 	       _driver.get("http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
-	     //  _driver.manage().window().maximize();
+	      _driver.manage().window().maximize();
 
 	        _driver.findElement(By.name("fcUserCode")).sendKeys("SKA008PPE");
 	        _driver.findElement(By.name("fcPassword")).sendKeys("Aw123456");
