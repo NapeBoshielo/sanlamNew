@@ -2473,48 +2473,29 @@ namespace PolicyServicing
 
                 string results = "";
                 string title = "", first_name = "", surname = "", initials = "", dob = "", gender = "", id_number = "", relationship = "";
-
-                policySearch(contractRef);
+            var commDate = "";
+            policySearch(contractRef);
             Delay(2);
 
             SetproductName("AddaLife");
 
             var oldPrem = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[2]")).Text;
+            //Get the Commencement date from contract summary screen
+            commDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
 
+            //click add policy
 
-                //click add policy
-
-                _driver.FindElement(By.XPath("//*[@id='GBLbl-1']/span/a")).Click();
+            _driver.FindElement(By.XPath("//*[@id='GBLbl-1']/span/a")).Click();
 
                 //Select role
                 IWebElement selectRole = _driver.FindElement(By.Name("frmRoleObj"));
                 SelectElement s = new SelectElement(selectRole);
                 s.SelectByIndex(4);
-                // Delay(3);
+             
+            Delay(2);
+            _driver.FindElement(By.Name("frmEffectiveFromDate")).SendKeys(commDate);
 
-                //Click calendar
-
-                //_driver.FindElement(By.XPath("//*[@id='frmCbmre']/tbody/tr[2]/td[2]/a")).Click();
-                //Delay(3);
-                //Assert.AreEqual(2, _driver.WindowHandles.Count);
-
-                //switch to window
-                //var childwindow = _driver.WindowHandles[1];
-                //_driver.SwitchTo().Window(childwindow);
-
-                //Delay(2);
-
-                ////clickback
-                //Actions act = new Actions(_driver);
-                //IWebElement ele = _driver.FindElement(By.XPath("//*[@id='aIncYear']/img"));
-                //act.MoveToElement(ele).Click().Build().Perform();
-
-                //_driver.FindElement(By.XPath("//a[@name='fcCal1']")).Click();
-
-
-                //var parent = _driver.WindowHandles[0];
-                //_driver.SwitchTo().Window(parent);
-                Delay(4);
+            Delay(4);
 
 
                 _driver.FindElement(By.XPath("//*[@id='GBLbl-4']/span/a")).Click();
@@ -2715,6 +2696,7 @@ namespace PolicyServicing
                 _driver.FindElement(By.Name("2000175333.8")).Click();
 
 
+
                 Delay(2);
                 //click on componet
                 _driver.FindElement(By.XPath("//*[@id='GBLbl-5']/span/a")).Click();
@@ -2730,13 +2712,14 @@ namespace PolicyServicing
                 _driver.FindElement(By.XPath("//*[@id='GBLbl-6']/span/a")).Click();
 
 
+            Delay(2);
+            _driver.FindElement(By.Name("frmCCStartDate")).SendKeys(commDate);
 
 
 
+            SelectElement oSelect4 = new SelectElement(_driver.FindElement(By.Name("frmSPAmount")));
 
-                SelectElement oSelect4 = new SelectElement(_driver.FindElement(By.Name("frmSPAmount")));
-
-                oSelect4.SelectByValue("7500");
+                oSelect4.SelectByValue("10000");
                 Delay(2);
 
                 //Click next
