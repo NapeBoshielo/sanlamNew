@@ -699,7 +699,7 @@ namespace PolicyServicing
           
             Delay(2);
             //click contract summary
-            _driver.FindElement(By.XPath(" //*[@id='t0_755']/table/tbody/tr/td[3]/a")).Click();
+            _driver.FindElement(By.XPath(" //*[@id='t0_752']/table/tbody/tr/td[3]/a")).Click();
 
             Delay(3);
           //  _driver.Navigate().Refresh();
@@ -1206,7 +1206,7 @@ namespace PolicyServicing
 
             Delay(2);
             //click contract summary
-            _driver.FindElement(By.XPath(" //*[@id='t0_755']/table/tbody/tr/td[3]/a")).Click();
+            _driver.FindElement(By.XPath(" //*[@id='t0_752']/table/tbody/tr/td[3]/a")).Click();
 
             Delay(3);
             //  _driver.Navigate().Refresh();
@@ -2477,7 +2477,7 @@ namespace PolicyServicing
                         {
 
                          
-                            employee_number2 = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
+                            employee_number2 = ((System.Data.DataRowView)row).Row.ItemArray[2].ToString();
                             
                             break;
                         }
@@ -2540,9 +2540,9 @@ namespace PolicyServicing
                 var expectedcollectionM = _driver.FindElement(By.XPath("//*[@id='frmCbmre']/tbody/tr[8]/td[4]")).Text;
 
 
-                
+            TakeScreenshot(_driver, $@"{_screenShotFolder}\NegativeExpectedCollectionMethod\", "collection Method Stop Order");
 
-                Delay(3);
+            Delay(3);
 
                 if (expectedcollectionM == "Debi-Check")
                 {
