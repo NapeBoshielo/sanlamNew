@@ -2491,10 +2491,11 @@ namespace PolicyServicing
                 IWebElement selectRole = _driver.FindElement(By.Name("frmRoleObj"));
                 SelectElement s = new SelectElement(selectRole);
                 s.SelectByIndex(4);
-             
+
+            Delay(2);
+            _driver.FindElement(By.Name("frmEffectiveFromDate")).Clear();
             Delay(2);
             _driver.FindElement(By.Name("frmEffectiveFromDate")).SendKeys(commDate);
-
             Delay(4);
 
 
@@ -2711,7 +2712,8 @@ namespace PolicyServicing
 
                 _driver.FindElement(By.XPath("//*[@id='GBLbl-6']/span/a")).Click();
 
-
+            Delay(2);
+            _driver.FindElement(By.Name("frmCCStartDate")).Clear();
             Delay(2);
             _driver.FindElement(By.Name("frmCCStartDate")).SendKeys(commDate);
 
@@ -2799,8 +2801,6 @@ namespace PolicyServicing
 
                 //Select the component
                 _driver.FindElement(By.Name("fccComponentDescription1")).Click();
-
-
 
 
                 Delay(4);
