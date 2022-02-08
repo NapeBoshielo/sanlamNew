@@ -2333,7 +2333,7 @@ namespace PolicyServicing
                         {
 
 
-                            employee_number1 = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
+                            employee_number1 = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
 
                             break;
                         }
@@ -2477,7 +2477,7 @@ namespace PolicyServicing
                         {
 
                          
-                            employee_number2 = ((System.Data.DataRowView)row).Row.ItemArray[2].ToString();
+                            employee_number2 = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
                             
                             break;
                         }
@@ -2533,14 +2533,10 @@ namespace PolicyServicing
                 _driver.FindElement(By.Id("GBLbl-1")).Click();
                 Delay(5);
 
+              var expectedcollectionM = _driver.FindElement(By.XPath("//*[@id='frmCbmre']/tbody/tr[8]/td[4]")).Text;
 
 
-
-
-                var expectedcollectionM = _driver.FindElement(By.XPath("//*[@id='frmCbmre']/tbody/tr[8]/td[4]")).Text;
-
-
-            TakeScreenshot(_driver, $@"{_screenShotFolder}\NegativeExpectedCollectionMethod\", "collection Method Stop Order");
+            TakeScreenshot(_driver, $@"{_screenShotFolder}\NegativeExpected\", "collectionMethodStopOrder");
 
             Delay(3);
 
