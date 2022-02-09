@@ -149,6 +149,7 @@ namespace PolicyServicing
                             }
                             catch (Exception ex)
                             {
+                                TakeScreenshot(_driver, $@"{_screenShotFolder}\Failed_Scenarios\", func);
                                 var errMsg = ex.Message;
                                 StringBuilder error = new StringBuilder();
                                 var charsToRemove = new char[] { '@', ',', '.', ';', '"', '{', '}'};
