@@ -525,7 +525,6 @@ namespace PolicyServicing
                         break;
                     }
 
-
                 }
                 catch (Exception ex)
 
@@ -2776,7 +2775,7 @@ namespace PolicyServicing
 
         }
 
-        private void IncreaseSumAssuredAge(string contractRef)
+        private void  IncreaseSumAssuredAge(string contractRef)
         {
 
 
