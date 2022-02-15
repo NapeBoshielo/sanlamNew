@@ -105,7 +105,7 @@ namespace ILR_TestSuite
         {
          
 
-            _driver.Url = "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
+            _driver.Url = "http://ilr-tst.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?";
 
             _userName = "SKA008PPE";//TODO add your user name and password
 
