@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\DA003793\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj": {}
+    "C:\\Users\\G992127\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj": {}
   },
   "projects": {
-    "C:\\Users\\DA003793\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj": {
+    "C:\\Users\\G992127\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\DA003793\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj",
+        "projectUniqueName": "C:\\Users\\G992127\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj",
         "projectName": "ILR_TestSuite",
-        "projectPath": "C:\\Users\\DA003793\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj",
-        "packagesPath": "C:\\Users\\DA003793\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\DA003793\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\obj\\",
+        "projectPath": "C:\\Users\\G992127\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj",
+        "packagesPath": "C:\\Users\\G992127\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\G992127\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\DA003793\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\G992127\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -105,26 +105,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[3.1.10, 3.1.10]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[3.1.0, 3.1.0]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[3.1.0, 3.1.0]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
