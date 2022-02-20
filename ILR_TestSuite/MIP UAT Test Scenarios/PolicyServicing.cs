@@ -490,7 +490,7 @@ namespace PolicyServicing
             _driver.FindElement(By.XPath("//*[@id='GBLbl-4']/span/a")).Click();
             //assert
             string url = _driver.Url;
-            Assert.AreEqual(url, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
+            Assert.AreEqual(url, "http://ilr-tst.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrtst/run.w?");
 
             //click next to enter new role player
             _driver.FindElement(By.XPath("//*[@id='GBLbl-5']/span/a")).Click();
@@ -658,7 +658,7 @@ namespace PolicyServicing
 
 
             string url2 = _driver.Url;
-            Assert.AreEqual(url2, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
+            Assert.AreEqual(url2, "http://ilr-tst.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrtst/run.w?");
 
             Delay(2);
             //save
@@ -687,7 +687,7 @@ namespace PolicyServicing
 
             Delay(2);
             //click contract summary
-            _driver.FindElement(By.XPath(" //*[@id='t0_752']/table/tbody/tr/td[3]/a")).Click();
+            _driver.FindElement(By.XPath(" //*[@id='t0_82']/table/tbody/tr/td[3]/a")).Click();
 
             Delay(3);
             //  _driver.Navigate().Refresh();
@@ -824,7 +824,7 @@ namespace PolicyServicing
             _driver.FindElement(By.Name("btnTerminate")).Click();
 
             //validation
-            if (_driver.Url == "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?")
+            if (_driver.Url == "http://ilr-tst.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrtst/run.w?")
             {
                 results = "Passed";
 
@@ -961,7 +961,7 @@ namespace PolicyServicing
             _driver.FindElement(By.XPath("//*[@id='GBLbl-4']/span/a")).Click();
             //assert
             string url = _driver.Url;
-            Assert.AreEqual(url, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
+            Assert.AreEqual(url, "http://ilr-tst.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrtst/run.w?");
 
             //click next to enter new role player
             _driver.FindElement(By.XPath("//*[@id='GBLbl-5']/span/a")).Click();
@@ -1130,7 +1130,7 @@ namespace PolicyServicing
 
 
             string url2 = _driver.Url;
-            Assert.AreEqual(url2, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
+            Assert.AreEqual(url2, "http://ilr-tst.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrtst/run.w?");
 
             Delay(2);
             //save
@@ -1159,7 +1159,7 @@ namespace PolicyServicing
 
             Delay(2);
             //click contract summary
-            _driver.FindElement(By.XPath(" //*[@id='t0_752']/table/tbody/tr/td[3]/a")).Click();
+            _driver.FindElement(By.XPath(" //*[@id='t0_82']/table/tbody/tr/td[3]/a")).Click();
 
             Delay(3);
             // _driver.Navigate().Refresh();
@@ -1283,7 +1283,7 @@ namespace PolicyServicing
             _driver.FindElement(By.Name("btnTerminate")).Click();
 
             //validation
-            if (_driver.Url == "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?")
+            if (_driver.Url == "http://ilr-tst.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrtst/run.w?")
             {
                 results = "Passed";
 
