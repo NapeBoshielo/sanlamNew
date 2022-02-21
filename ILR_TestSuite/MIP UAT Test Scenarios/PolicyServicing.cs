@@ -2786,9 +2786,14 @@ namespace PolicyServicing
             var newPremium = "";
             var commDate = "";
 
+
+            
+
             policySearch(contractRef);
 
             Delay(2);
+
+
 
             SetproductName("IncreaseSumAssuredAge");
 
@@ -2807,6 +2812,127 @@ namespace PolicyServicing
 
             Delay(4);
 
+
+            var product = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv5']/table/tbody/tr[1]/td[2]")).Text;
+
+
+
+
+            if ( product == "Safrican Provide and Protect Plan (4000)")
+            {   
+
+                var oldCoverAmount = "";
+                var newCoverAmount1 = "";
+                var currentCoverAmount = "";
+                var currentPremium1 = "";
+                var newPremium2 = "";
+                var startDate = "";
+
+                
+                //Get The current  the current premium Amount
+                currentPremium1 = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv14']/table/tbody/tr[6]/td[7]")).Text;
+
+                //Select the component
+                _driver.FindElement(By.Name("fccComponentDescription5")).Click();
+                Delay(4);
+                //Get The current cover Amount
+                oldCoverAmount = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv1']/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[5]")).Text;
+
+
+                startDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv1']/center/table/tbody/tr[2]/td/center/table/tbody/tr[2]/td[6]")).Text;
+
+                IWebElement policyOptionElement1 = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[3]/table/tbody/tr/td/div/div[3]"));
+
+                //Creating object of an Actions class
+                Actions action1 = new Actions(_driver);
+
+                //Performing the mouse hover action on the target element.
+                action1.MoveToElement(policyOptionElement1).Perform();
+
+                Delay(5);
+
+                _driver.FindElement(By.XPath("//div[3]/a/img")).Click();
+
+                Delay(4);
+                _driver.FindElement(By.Name("frmCCStartDate")).Clear();
+                Delay(2);
+                _driver.FindElement(By.Name("frmCCStartDate")).SendKeys(startDate);
+                Delay(2);
+
+                //Get The current cover Amount
+                currentCoverAmount = _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[6]/td[2]/input")).Text;
+
+                var newCoverAmount = "";
+                //Do a  upgrade on current sum assured by 100000
+                if (Convert.ToInt32(currentCoverAmount) > 100000 || Convert.ToInt32(currentCoverAmount) == 100000)
+                {
+                    newCoverAmount = (Convert.ToInt32(currentCoverAmount) + 100000).ToString();
+                }
+                else
+                {
+                    newCoverAmount = (10000000).ToString();
+                }
+
+
+                Delay(3);
+                _driver.FindElement(By.Name("frmSPAmount")).Clear();
+                Delay(2);
+                _driver.FindElement(By.Name("frmSPAmount")).SendKeys(newCoverAmount);
+              
+                Delay(4);
+                _driver.FindElement(By.Name("btncbmcc13")).Click();
+                Delay(4);
+                _driver.FindElement(By.Name("btncbmcc17")).Click();
+
+                Delay(4);
+                _driver.FindElement(By.Name("btncbmcc23")).Click();
+                Delay(4);
+
+                clickOnMainMenu();
+                Delay(4);
+                //Go Back to contract summary
+                _driver.FindElement(By.Name("PF_User_Menu")).Click();
+                _driver.FindElement(By.Name("cb_User_cbmct")).Click();
+                Delay(4);
+
+                //Get the new cover amount
+                newCoverAmount1 = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv14']/table/tbody/tr[6]/td[9]")).Text;
+               
+
+
+                //newCoverAmountalidation
+                if (Convert.ToDecimal(newCoverAmount1) > Convert.ToDecimal(oldCoverAmount))
+                {
+                    results = "Passed";
+
+                }
+                else
+
+                {
+                    results = "Fail";
+
+                }
+                //Get the new Premium
+                newPremium2 = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv14']/table/tbody/tr[6]/td[7]")).Text;
+
+                if (Convert.ToDecimal(newPremium2) > Convert.ToDecimal(currentPremium1))
+                {
+                    results = "Passed";
+                }
+                else
+                {
+                    results = "Failed";
+                }
+
+
+                base.writeResultsToExcell(results, sheet, "IncreaseSumAssuredAge");
+
+
+
+            }
+            else
+            {
+               
             //Select the component
             _driver.FindElement(By.Name("fccComponentDescription1")).Click();
 
@@ -2894,47 +3020,24 @@ namespace PolicyServicing
                 results = "Failed";
             }
             base.writeResultsToExcell(results, sheet, "IncreaseSumAssuredAge");
+            }
         }
-        private void SetproductName(String methodname)
-        {
 
+        private string SetproductName(String methodname)
+        {
             var product = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv5']/table/tbody/tr[1]/td[2]")).Text;
             using (OleDbConnection conn = new OleDbConnection(_connString))
             {
-
                 try
-                {
-
-                    // Open connection
+                { // Open connection
                     conn.Open();
-                    string cmdQuery = "SELECT * FROM [" + sheet + "$]";
-
-                    OleDbCommand cmd = new OleDbCommand(cmdQuery, conn);
-
-                    // Create new OleDbDataAdapter
-                    OleDbDataAdapter oleda = new OleDbDataAdapter();
-
-                    oleda.SelectCommand = cmd;
-
-                    // Create a DataSet which will hold the data extracted from the worksheet.
-                    DataSet ds = new DataSet();
-
-                    // Fill the DataSet from the data extracted from the worksheet.
-                    oleda.Fill(ds, "Policies");
-
-
-
-
-
-                    cmd.CommandText = $"UPDATE [{sheet}$] SET Product  = '{product}' WHERE Function = '{methodname}';";
+                    string cmdQuery = "SELECT * FROM [" + sheet + "$]"; OleDbCommand cmd = new OleDbCommand(cmdQuery, conn); // Create new OleDbDataAdapter
+                    OleDbDataAdapter oleda = new OleDbDataAdapter(); oleda.SelectCommand = cmd; // Create a DataSet which will hold the data extracted from the worksheet.
+                    DataSet ds = new DataSet(); // Fill the DataSet from the data extracted from the worksheet.
+                    oleda.Fill(ds, "Policies"); cmd.CommandText = $"UPDATE [{sheet}$] SET Product = '{product}' WHERE Function = '{methodname}';";
                     cmd.ExecuteNonQuery();
-
-
-
-
+                    return product;
                 }
-
-
                 catch (Exception ex)
                 {
                     throw ex;
@@ -2942,17 +3045,10 @@ namespace PolicyServicing
                 finally
                 {
                     conn.Close();
-
-
                     conn.Dispose();
                 }
             }
-
-
-
         }
-
-
 
         [Category("Policy Search")]
         public void policySearch(string contractRef = "")
