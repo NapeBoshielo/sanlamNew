@@ -490,7 +490,7 @@ namespace PolicyServicing
             _driver.FindElement(By.XPath("//*[@id='GBLbl-4']/span/a")).Click();
             //assert
             string url = _driver.Url;
-            Assert.AreEqual(url, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
+            Assert.AreEqual(url, "http://ilr-tst.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrtst/run.w?");
 
             //click next to enter new role player
             _driver.FindElement(By.XPath("//*[@id='GBLbl-5']/span/a")).Click();
@@ -658,7 +658,7 @@ namespace PolicyServicing
 
 
             string url2 = _driver.Url;
-            Assert.AreEqual(url2, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
+            Assert.AreEqual(url2, "http://ilr-tst.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrtst/run.w?");
 
             Delay(2);
             //save
@@ -687,7 +687,7 @@ namespace PolicyServicing
 
             Delay(2);
             //click contract summary
-            _driver.FindElement(By.XPath(" //*[@id='t0_752']/table/tbody/tr/td[3]/a")).Click();
+            _driver.FindElement(By.XPath(" //*[@id='t0_82']/table/tbody/tr/td[3]/a")).Click();
 
             Delay(3);
             //  _driver.Navigate().Refresh();
@@ -824,7 +824,7 @@ namespace PolicyServicing
             _driver.FindElement(By.Name("btnTerminate")).Click();
 
             //validation
-            if (_driver.Url == "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?")
+            if (_driver.Url == "http://ilr-tst.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrtst/run.w?")
             {
                 results = "Passed";
 
@@ -961,7 +961,7 @@ namespace PolicyServicing
             _driver.FindElement(By.XPath("//*[@id='GBLbl-4']/span/a")).Click();
             //assert
             string url = _driver.Url;
-            Assert.AreEqual(url, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
+            Assert.AreEqual(url, "http://ilr-tst.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrtst/run.w?");
 
             //click next to enter new role player
             _driver.FindElement(By.XPath("//*[@id='GBLbl-5']/span/a")).Click();
@@ -1130,7 +1130,7 @@ namespace PolicyServicing
 
 
             string url2 = _driver.Url;
-            Assert.AreEqual(url2, "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?");
+            Assert.AreEqual(url2, "http://ilr-tst.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrtst/run.w?");
 
             Delay(2);
             //save
@@ -1159,7 +1159,7 @@ namespace PolicyServicing
 
             Delay(2);
             //click contract summary
-            _driver.FindElement(By.XPath(" //*[@id='t0_752']/table/tbody/tr/td[3]/a")).Click();
+            _driver.FindElement(By.XPath(" //*[@id='t0_82']/table/tbody/tr/td[3]/a")).Click();
 
             Delay(3);
             // _driver.Navigate().Refresh();
@@ -1283,7 +1283,7 @@ namespace PolicyServicing
             _driver.FindElement(By.Name("btnTerminate")).Click();
 
             //validation
-            if (_driver.Url == "http://ilr-int.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrint/run.w?")
+            if (_driver.Url == "http://ilr-tst.safrican.co.za/web/wspd_cgi.sh/WService=wsb_ilrtst/run.w?")
             {
                 results = "Passed";
 
@@ -1379,106 +1379,207 @@ namespace PolicyServicing
         {
 
             string results = "";
-            var currentSumAssured = "";
+            var currentCoverAmount = "";
             var currentPremium = "";
             var newPremium = "";
             var commDate = "";
-
+            var newSumAssured = "";
             policySearch(contractRef);
-
-
             Delay(2);
-
-            SetproductName("DecreaseSumAssured");
+            var product = SetproductName("DecreaseSumAssured");
             //Get the Commencement date from contract summary screen
             commDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
             //Scroll Down
             Delay(3);
-
             IJavaScriptExecutor js = (IJavaScriptExecutor)_driver;
-
-
             Delay(4);
-
             //Get Current premium
             currentPremium = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[2]")).Text;
-
             Delay(4);
-
             //Select the component
-            _driver.FindElement(By.Name("fccComponentDescription1")).Click();
-
-            Delay(4);
-            //Get The current Sum Assured for the life assured
-            currentSumAssured = _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[8]/td[4]")).Text;
-
-
-
-            IWebElement policyOptionElement = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[3]/table/tbody/tr/td/div/div[3]"));
-
-            //Creating object of an Actions class
-            Actions action = new Actions(_driver);
-
-            //Performing the mouse hover action on the target element.
-            action.MoveToElement(policyOptionElement).Perform();
-
-            Delay(5);
-
-            _driver.FindElement(By.XPath("//div[3]/a/img")).Click();
-
-            Delay(4);
-            _driver.FindElement(By.Name("frmCCStartDate")).Clear();
-            Delay(2);
-            _driver.FindElement(By.Name("frmCCStartDate")).SendKeys(commDate);
-
-            var newSumAssured = "";
-            //Do a  downgrade on current sum assured by 5000
-            if (Convert.ToInt32(currentSumAssured) > 10000 || Convert.ToInt32(currentSumAssured) == 10000)
+            var component = "";
+            using (OleDbConnection conn = new OleDbConnection(_connString))
             {
-                newSumAssured = (Convert.ToInt32(currentSumAssured) - 10000).ToString();
+                try
+                {
+
+                    // Open connection
+                    conn.Open();
+                    string cmdQuery = "SELECT * FROM [DownGrade$]";
+
+                    OleDbCommand cmd = new OleDbCommand(cmdQuery, conn);
+
+                    // Create new OleDbDataAdapter
+                    OleDbDataAdapter oleda = new OleDbDataAdapter();
+
+                    oleda.SelectCommand = cmd;
+
+                    // Create a DataSet which will hold the data extracted from the worksheet.
+                    DataSet ds = new DataSet();
+
+                    // Fill the DataSet from the data extracted from the worksheet.
+                    oleda.Fill(ds, "Policies");
+                    foreach (var row in ds.Tables[0].DefaultView)
+                    {
+
+                        var dt = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+
+                        if (dt == "Pre-dated")
+                        {
+                            component = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
+                            newSumAssured = ((System.Data.DataRowView)row).Row.ItemArray[2].ToString();
+
+                            break;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    conn.Close();
+                    conn.Dispose();
+                    //Loop trhough the componets and select the correct one
+                    var max_benefits = 23;
+                    var comp = "";
+
+                    for (int i = 1; i < (max_benefits + 1); i++)
+                    {
+                        i = i + 1;
+                        var path = "//*[@id='CntContentsDiv14']/table/tbody/tr[" + i + "]/td[1]";
+                        comp = _driver.FindElement(By.XPath(path)).Text;
+                        if (comp.Contains(component))
+                        {
+                            _driver.FindElement(By.XPath(path)).Click();
+                            break;
+
+                        }
+                    }
+
+                }
+
+
+            }
+    
+            if (product == "Safrican Provide and Protect Plan (4000)")
+            {
+                Delay(4);
+                //Get The current Sum Assured for the life assured
+                currentCoverAmount = _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[7]/td[2]")).Text;
+                //Get start date
+                commDate = _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[3]/td[4]")).Text;
+
+
+                IWebElement policyOptionElement = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[3]/table/tbody/tr/td/div/div[3]"));
+
+                //Creating object of an Actions class
+                Actions action = new Actions(_driver);
+
+                //Performing the mouse hover action on the target element.
+                action.MoveToElement(policyOptionElement).Perform();
+
+                Delay(5);
+                _driver.FindElement(By.XPath("//div[3]/a/img")).Click();
+
+                Delay(4);
+                _driver.FindElement(By.Name("frmCCStartDate")).Clear();
+                Delay(2);
+                _driver.FindElement(By.Name("frmCCStartDate")).SendKeys(commDate);
+
+                _driver.FindElement(By.Name("frmSPAmount")).Clear();
+                _driver.FindElement(By.Name("frmSPAmount")).SendKeys(newSumAssured);
+
+                Delay(4);
+                _driver.FindElement(By.Name("btncbmcc13")).Click();
+                Delay(4);
+                _driver.FindElement(By.Name("btncbmcc17")).Click();
+                Delay(4);
+
+                _driver.FindElement(By.Name("btncbmcc23")).Click();
+                Delay(4);
+                _driver.FindElement(By.Name("2000175333.8")).Click();
+                Delay(3);
+                newPremium = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv9']/table/tbody/tr[2]/td[2]")).Text;
+                Delay(3);
+
+                if (Convert.ToDecimal(currentPremium) > Convert.ToDecimal(newPremium))
+                {
+                    results = "Passed";
+                }
+                else
+                {
+                    results = "Failed";
+                }
+
             }
             else
             {
-                newSumAssured = (5000).ToString();
+              
+                Delay(4);
+                //Get The current Sum Assured for the life assured
+                currentCoverAmount = _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[8]/td[4]")).Text;
+
+
+                IWebElement policyOptionElement = _driver.FindElement(By.XPath("/html/body/center/center/form[3]/table/tbody/tr[2]/td[3]/center/table[1]/tbody/tr[4]/td[2]/span/table/tbody/tr[1]/td/table/tbody/tr/td[1]/table/tbody/tr/td/div[3]/table/tbody/tr/td/div/div[3]"));
+
+                //Creating object of an Actions class
+                Actions action = new Actions(_driver);
+
+                //Performing the mouse hover action on the target element.
+                action.MoveToElement(policyOptionElement).Perform();
+
+                Delay(5);
+
+                _driver.FindElement(By.XPath("//div[3]/a/img")).Click();
+
+                Delay(4);
+                _driver.FindElement(By.Name("frmCCStartDate")).Clear();
+                Delay(2);
+                _driver.FindElement(By.Name("frmCCStartDate")).SendKeys(commDate);
+
+                SelectElement oSelect = new SelectElement(_driver.FindElement(By.Name("frmSPAmount")));
+
+                oSelect.SelectByValue(newSumAssured);
+                Delay(4);
+                _driver.FindElement(By.Name("btncbmcc13")).Click();
+                Delay(4);
+                _driver.FindElement(By.Name("btncbmcc17")).Click();
+                //Calculate age based on IdNo
+                var idElement = _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[9]/td[2]")).Text;
+                var idNo = (idElement.Split(" ")[idElement.Split(" ").Length - 1]).ToString();
+                var birthYear = idNo.Substring(1, 2);
+
+                birthYear = "19" + birthYear;
+                var age = (DateTime.Now.Year - Convert.ToInt32(birthYear)).ToString();
+                Delay(2);
+             
+             
+               
+                var premuimfromRateTable = base.getPremuimFromRateTable(age, "ML", newSumAssured, product);
+                Delay(2);
+                _driver.FindElement(By.Name("btncbmcc23")).Click();
+                Delay(6);
+
+                //Get the new Premium
+                //js.ExecuteScript("window.scrollBy(0,1000)", "");
+                newPremium = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv5']/table/tbody/tr[2]/td[7]")).Text;
+
+                //Do Age validation
+
+
+                if (premuimfromRateTable == Convert.ToDecimal(newPremium) && Convert.ToDecimal(currentPremium)> Convert.ToDecimal(newPremium))
+                {
+                    results = "Passed";
+                }
+                else
+                {
+                    results = "Failed";
+                }
             }
-
-            SelectElement oSelect = new SelectElement(_driver.FindElement(By.Name("frmSPAmount")));
-
-            oSelect.SelectByValue(newSumAssured);
-
-
-            Delay(4);
-            _driver.FindElement(By.Name("btncbmcc13")).Click();
-            Delay(4);
-            _driver.FindElement(By.Name("btncbmcc17")).Click();
-            //Calculate age based on IdNo
-            var idElement = _driver.FindElement(By.XPath("//*[@id='frmCbmcc']/tbody/tr[9]/td[2]")).Text;
-            var idNo = (idElement.Split(" ")[idElement.Split(" ").Length - 1]).ToString();
-            var birthYear = idNo.Substring(1, 2);
-            birthYear = "19" + birthYear;
-            var age = (DateTime.Now.Year - Convert.ToInt32(birthYear)).ToString();
-
-            var premuimfromRateTable = base.getPremuimFromRateTable(age, "ML", newSumAssured, "Safrican_Just_Funeral");
-
-            Delay(4);
-            _driver.FindElement(By.Name("btncbmcc23")).Click();
-            Delay(6);
-
-            //Get the new Premium
-            //js.ExecuteScript("window.scrollBy(0,1000)", "");
-            newPremium = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv5']/table/tbody/tr[2]/td[7]")).Text;
-
-            //Do Age validation
-
-
-            if (premuimfromRateTable == Convert.ToDecimal(newPremium))
-            {
-                results = "Passed";
-            }
-            else
-            {
-                results = "Failed";
-            }
+               
+                
             base.writeResultsToExcell(results, sheet, "DecreaseSumAssured");
 
 
@@ -1822,6 +1923,8 @@ namespace PolicyServicing
         [Category("Removal of Non-Compulsory life")]
         private void RemovalOfNonCompulsoryLife(string contractRef)
         {
+
+
             string results = "";
             var currentPremium = "";
             var newPremium = "";
@@ -3036,6 +3139,7 @@ namespace PolicyServicing
                     DataSet ds = new DataSet(); // Fill the DataSet from the data extracted from the worksheet.
                     oleda.Fill(ds, "Policies"); cmd.CommandText = $"UPDATE [{sheet}$] SET Product = '{product}' WHERE Function = '{methodname}';";
                     cmd.ExecuteNonQuery();
+
                     return product;
                 }
                 catch (Exception ex)
