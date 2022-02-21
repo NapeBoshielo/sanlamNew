@@ -1385,12 +1385,12 @@ namespace PolicyServicing
             var commDate = "";
             var newSumAssured = "";
             policySearch(contractRef);
-            Delay(2);
+            Delay(3);
             var product = SetproductName("DecreaseSumAssured");
             //Get the Commencement date from contract summary screen
             commDate = _driver.FindElement(By.XPath("//*[@id='CntContentsDiv8']/table/tbody/tr[6]/td[2]")).Text;
             //Scroll Down
-            Delay(3);
+            Delay(4);
             IJavaScriptExecutor js = (IJavaScriptExecutor)_driver;
             Delay(4);
             //Get Current premium
@@ -1485,7 +1485,7 @@ namespace PolicyServicing
 
                 Delay(4);
                 _driver.FindElement(By.Name("frmCCStartDate")).Clear();
-                Delay(2);
+                Delay(4);
                 _driver.FindElement(By.Name("frmCCStartDate")).SendKeys(commDate);
 
                 _driver.FindElement(By.Name("frmSPAmount")).Clear();
@@ -1553,12 +1553,12 @@ namespace PolicyServicing
 
                 birthYear = "19" + birthYear;
                 var age = (DateTime.Now.Year - Convert.ToInt32(birthYear)).ToString();
-                Delay(2);
+                Delay(3);
              
              
                
                 var premuimfromRateTable = base.getPremuimFromRateTable(age, "ML", newSumAssured, product);
-                Delay(2);
+                Delay(3);
                 _driver.FindElement(By.Name("btncbmcc23")).Click();
                 Delay(6);
 
