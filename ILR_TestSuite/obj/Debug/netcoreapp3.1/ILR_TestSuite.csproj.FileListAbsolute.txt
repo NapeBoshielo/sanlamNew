@@ -611,3 +611,15 @@ C:\Users\E697642\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\obj\Debug\netcorea
 C:\Users\E697642\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\obj\Debug\netcoreapp3.1\ILR_TestSuite.dll
 C:\Users\E697642\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\obj\Debug\netcoreapp3.1\ILR_TestSuite.pdb
 C:\Users\E697642\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\obj\Debug\netcoreapp3.1\ILR_TestSuite.genruntimeconfig.cache
+C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\bin\Debug\netcoreapp3.1\Microsoft.Build.dll
+C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\bin\Debug\netcoreapp3.1\Microsoft.Build.Framework.dll
+C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\bin\Debug\netcoreapp3.1\Microsoft.Build.Tasks.Core.dll
+C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\bin\Debug\netcoreapp3.1\Microsoft.Build.Utilities.Core.dll
+C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\bin\Debug\netcoreapp3.1\Microsoft.NET.StringTools.dll
+C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\bin\Debug\netcoreapp3.1\System.CodeDom.dll
+C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\bin\Debug\netcoreapp3.1\System.Collections.Immutable.dll
+C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\bin\Debug\netcoreapp3.1\System.Resources.Extensions.dll
+C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\bin\Debug\netcoreapp3.1\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\bin\Debug\netcoreapp3.1\System.Security.Cryptography.Pkcs.dll
+C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\bin\Debug\netcoreapp3.1\System.Security.Cryptography.Xml.dll
+C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Security.Cryptography.Pkcs.dll

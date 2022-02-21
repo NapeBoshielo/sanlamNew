@@ -34,6 +34,8 @@ namespace ILR_TestSuite
 
         private string _password;
 
+        private string _pin;
+
         public string _screenShotFolder;
 
         public string _connString;
@@ -50,13 +52,13 @@ namespace ILR_TestSuite
             _chromeOptions = new ChromeOptions();
             _chromeOptions.AddArguments("--incognito");
             _chromeOptions.AddArguments("--ignore-certificate-errors");
-            _driver = new ChromeDriver(_chromeOptions);
+            _driver = new ChromeDriver("C:/Code/bin", _chromeOptions);
 
-            _driver = new ChromeDriver("C:/Code/bin");
 
-            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
 
-            _screenShotFolder = $@"C:\Users\E697642\Documents\GitHub\ILR_TestSuite\Failed_ScreenShots​{ScreenShotDailyFolderName()}​\";
+            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+
+            _screenShotFolder = $@"C:\Users\G992107\Documents\GitHub\ILR_TestSuite\Failed_ScreenShots​{ScreenShotDailyFolderName()}​\";
 
             new DirectoryInfo(_screenShotFolder).Create();
 
@@ -117,30 +119,50 @@ namespace ILR_TestSuite
 
                
 
-                _userName = "SKA008PPE";//TODO add your user name and password
+                _userName = "G992127";//TODO add your user name and password
 
-                _password = "Aw123456";
+                _password = "P@$$word47";
 
-                _driver.Manage().Window.Maximize();
-
-                System.Threading.Thread.Sleep(2000);
+                _pin = "119547";
 
                 _driver.Manage().Window.Maximize();
 
                 System.Threading.Thread.Sleep(2000);
 
-                IWebElement loginTextBox = _driver.FindElement(By.XPath("/html/body/div[1]/form/li[1]/input"));
-                IWebElement passwordTextBox = _driver.FindElement(By.XPath("/html/body/div[1]/form/li[2]/input"));
+                _driver.Manage().Window.Maximize();
+
+                System.Threading.Thread.Sleep(2000);
+
+                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/div/div[2]/button")).Click();
+                System.Threading.Thread.Sleep(3000);
+
+                IWebElement loginTextBox = _driver.FindElement(By.Name("username"));
+                System.Threading.Thread.Sleep(3000);
+                IWebElement passwordTextBox = _driver.FindElement(By.Name("password"));
+                System.Threading.Thread.Sleep(3000);
                 IWebElement loginBtn = _driver.FindElement(By.XPath("/html/body/div[1]/form/div/button[1]"));
+                System.Threading.Thread.Sleep(3000);
                 loginTextBox.SendKeys(_userName);
-                System.Threading.Thread.Sleep(2000);
+                System.Threading.Thread.Sleep(3000);
                 passwordTextBox.SendKeys(_password);
-                System.Threading.Thread.Sleep(2000);
+                System.Threading.Thread.Sleep(3000);
                 loginBtn.Click();
-                System.Threading.Thread.Sleep(2000);
+                System.Threading.Thread.Sleep(3000);
+
+                IWebElement pinTextBox = _driver.FindElement(By.XPath("/html/body/div/div[1]/div/section/form/div/input"));
+                pinTextBox.SendKeys(_pin);
+                System.Threading.Thread.Sleep(3000);
+
+                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div/section/form/button")).Click();
+                
+
+
                 return _driver;
             }
             catch (Exception ex) {
+
+       
+
 
                 throw ex;
             }
