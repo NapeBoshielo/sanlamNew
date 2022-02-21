@@ -46,6 +46,12 @@ namespace ILR_TestSuite
         public void StartBrowser()
         {
 
+
+            _chromeOptions = new ChromeOptions();
+            _chromeOptions.AddArguments("--incognito");
+            _chromeOptions.AddArguments("--ignore-certificate-errors");
+            _driver = new ChromeDriver(_chromeOptions);
+
             _driver = new ChromeDriver("C:/Code/bin");
 
             _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
@@ -103,6 +109,7 @@ namespace ILR_TestSuite
         public IWebDriver SiteConnection()
 
         {
+
             _driver.Url = "https://uat-fe.safricansalesapp.net/advisor/dashboard/";
 
             try
