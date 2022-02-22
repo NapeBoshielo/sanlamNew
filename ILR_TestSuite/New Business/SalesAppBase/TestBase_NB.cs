@@ -56,9 +56,9 @@ namespace ILR_TestSuite
 
 
 
-            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
 
-            _screenShotFolder = $@"C:\Users\G992107\Documents\GitHub\ILR_TestSuite\Failed_ScreenShots​{ScreenShotDailyFolderName()}​\";
+            _screenShotFolder = $@"C:\Users\E697642\Documents\GitHub\ILR_TestSuite\Failed_ScreenShots​{ScreenShotDailyFolderName()}​\";
 
             new DirectoryInfo(_screenShotFolder).Create();
 
@@ -134,9 +134,13 @@ namespace ILR_TestSuite
                 System.Threading.Thread.Sleep(2000);
 
                 _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/div/div[2]/button")).Click();
-                System.Threading.Thread.Sleep(3000);
+                System.Threading.Thread.Sleep(6000);
 
-                IWebElement loginTextBox = _driver.FindElement(By.Name("username"));
+                _driver.SwitchTo().Frame("form-frame");
+
+                IWebElement loginTextBox = _driver.FindElement(By.XPath("/html/body/div[1]/form/li[1]/input"));
+               
+               
                 System.Threading.Thread.Sleep(3000);
                 IWebElement passwordTextBox = _driver.FindElement(By.Name("password"));
                 System.Threading.Thread.Sleep(3000);
