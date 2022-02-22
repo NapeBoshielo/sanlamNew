@@ -134,7 +134,7 @@ namespace ILR_TestSuite
                 System.Threading.Thread.Sleep(2000);
 
                 _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/div/div[2]/button")).Click();
-                System.Threading.Thread.Sleep(6000);
+                System.Threading.Thread.Sleep(3000);
 
                 _driver.SwitchTo().Frame("form-frame");
 
@@ -158,8 +158,19 @@ namespace ILR_TestSuite
                 System.Threading.Thread.Sleep(3000);
 
                 _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div/section/form/button")).Click();
-                
+                System.Threading.Thread.Sleep(3000);
+                //create pin
 
+               
+
+
+                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div/section/form/div[1]/input")).SendKeys(_pin);
+                System.Threading.Thread.Sleep(3000);
+                _driver.FindElement(By.Name("pinConfirm")).SendKeys(_pin);
+                System.Threading.Thread.Sleep(3000);
+             IWebElement create =   _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div/section/form/button"));
+
+               create.Click();
 
                 return _driver;
             }
