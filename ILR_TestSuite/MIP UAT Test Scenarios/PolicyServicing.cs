@@ -3097,10 +3097,14 @@ namespace PolicyServicing
                 try
                 { // Open connection
                     conn.Open();
-                    string cmdQuery = "SELECT * FROM [" + sheet + "$]"; OleDbCommand cmd = new OleDbCommand(cmdQuery, conn); // Create new OleDbDataAdapter
-                    OleDbDataAdapter oleda = new OleDbDataAdapter(); oleda.SelectCommand = cmd; // Create a DataSet which will hold the data extracted from the worksheet.
-                    DataSet ds = new DataSet(); // Fill the DataSet from the data extracted from the worksheet.
-                    oleda.Fill(ds, "Policies"); cmd.CommandText = $"UPDATE [{sheet}$] SET Product = '{product}' WHERE Function = '{methodname}';";
+                    string cmdQuery = "SELECT * FROM [" + sheet + "$]";
+                    OleDbCommand cmd = new OleDbCommand(cmdQuery, conn); // Create new OleDbDataAdapter
+                    OleDbDataAdapter oleda = new OleDbDataAdapter(); oleda.SelectCommand = cmd;
+                    // Create a DataSet which will hold the data extracted from the worksheet.
+                    DataSet ds = new DataSet();
+                    // Fill the DataSet from the data extracted from the worksheet.
+                    oleda.Fill(ds, "Policies");
+                    cmd.CommandText = $"UPDATE [{sheet}$] SET Product = '{product}' WHERE Function = '{methodname}';";
                     cmd.ExecuteNonQuery();
 
                     return product;
