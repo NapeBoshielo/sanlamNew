@@ -90,7 +90,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
                 
                 
                 
-                s
+                
                 
                 
                 }
@@ -99,15 +99,15 @@ namespace ILR_TestSuite.New_Business.Sales_App
             }
             catch (Exception ex)
             {
-                DisconnectBrowser();
+               
                 throw ex;
             }
-
+            //*[@id="gatsby-focus-wrapper"]/article/div[2]/div[1]/button
 
             _driver.SwitchTo().ActiveElement();
-                _driver.FindElement(By.XPath("//*[@id='___gatsby']"));
-                Delay(2);
-                IWebElement new_client = _driver.FindElement(By.XPath(" //*[@id='gatsby-focus-wrapper']/article/div[2]/div[1]/button"));
+                _driver.FindElement(By.XPath("//*[@id='___gatsby']")).Click();
+                Delay(5);
+                IWebElement new_client = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/div[2]/div[1]/button"));
                 new_client.Click();
                 //  Actions action = new Actions(_driver);
                 // action.MoveToElement(new_client).Perform()
@@ -177,12 +177,42 @@ namespace ILR_TestSuite.New_Business.Sales_App
                 lect.SelectByIndex(1);
 
 
-                _driver.FindElement(By.XPath("//*[@id='/gross-monthly-income']")).SendKeys("nape@gmilco.za");
+                _driver.FindElement(By.XPath("//*[@id='/gross-monthly-income']")).SendKeys("10000");
 
 
-                //*[@id="gatsby-focus-wrapper"]/article/section/form/div/div[16]/div/label[1]
+         IWebElement PermanentEmp =  _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/form/div/div[16]/div/label[1]"));
+            PermanentEmp.Click();
 
-           
+
+            IWebElement salaryF = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/form/div/div[17]/div/label[2]"));
+       salaryF.Click();
+            Delay(1);
+            _driver.FindElement(By.XPath(" //*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a")).Click();
+
+
+            //occupation
+            Delay(1);
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/form/section/div/div[1]/label")).Click();
+            Delay(1);
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[3]/div[1]/a[2]")).Click();
+
+            ///dependants
+
+            Delay(4);
+
+            for (int i =1 ; i < 5; i++)
+            {
+                _driver.FindElement(By.XPath($"//*[@id='gatsby-focus-wrapper']/article/section/form/div[1]/section[{i.ToString()}]/label")).Click();
+
+            }
+
+            Delay(1);
+            _driver.FindElement(By.XPath(" //*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a[2]")).Click();
+            //save and continue
+           // Delay(1);
+          //  _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/nav/div/a")).Click();
+
+
         }
 
 
