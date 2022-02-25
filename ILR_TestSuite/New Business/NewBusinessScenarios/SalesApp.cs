@@ -18,15 +18,14 @@ namespace ILR_TestSuite.New_Business.Sales_App
     public class SalesApp : TestBase_NB
 
     {
-        private IWebDriver _driver;
-        private string sheet;
+   
         [SetUp]
             public void startBrowser()
 
             {
 
                 _driver = base.SiteConnection();
-            sheet = "";
+           
 
             }
 
@@ -43,140 +42,129 @@ namespace ILR_TestSuite.New_Business.Sales_App
            // Product3000MinMaxAge();
             //Delay(10);
         }
-
-        [Category(" Product1000MinMaxAge")]
-        public void Product1000MinMaxAge()
+        public void createNewClient()
         {
-            
-            try
-            {
-
-             
-
-            }
-            catch (Exception ex)
-            {
-                DisconnectBrowser();
-                throw ex;
-            }
-        }
-
-
-        public void Product2000MinMaxAge()
-        {
-            try
-            {
-                using (OleDbConnection conn = new OleDbConnection(base._connString))
-                {
-
-                    conn.Open();
-
-                    String cmd = "SELECT * FROM []";
-
-
-
-
-
-
-                }
-
-
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-            //*[@id="gatsby-focus-wrapper"]/article/div[2]/div[1]/button
-
+            var policyHolderData = getPolicyHolderDetails("1");
             _driver.SwitchTo().ActiveElement();
-            _driver.FindElement(By.XPath("//*[@id='___gatsby']")).Click();
-            Delay(5);
-            IWebElement new_client = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/div[2]/div[1]/button"));
+            _driver.FindElement(By.XPath("//*[@id='___gatsby']"));
+            Delay(2);
+            IWebElement new_client = _driver.FindElement(By.XPath(" //*[@id='gatsby-focus-wrapper']/article/div[2]/div[1]/button"));
             new_client.Click();
             //  Actions action = new Actions(_driver);
             // action.MoveToElement(new_client).Perform()
             Delay(2);
             IWebElement town = _driver.FindElement(By.XPath("//*[@id='downshift-0-input']"));
-            town.SendKeys("Johan");
+            town.SendKeys(policyHolderData["town"]);
+            Delay(1);
             town.SendKeys(Keys.ArrowDown);
+            Delay(1);
             town.SendKeys(Keys.Enter);
-
-
-            Delay(2);
+            Delay(4);
             IWebElement worksite = _driver.FindElement(By.XPath("//*[@id='downshift-1-input']"));
-            worksite.SendKeys("Nike");
+            worksite.SendKeys(policyHolderData["WorkSite"]);
+            Delay(1);
             worksite.SendKeys(Keys.ArrowDown);
+            Delay(1);
             worksite.SendKeys(Keys.Enter);
             Delay(2);
             IWebElement employer = _driver.FindElement(By.XPath("//*[@id='downshift-2-input']"));
-
-            employer.SendKeys("Nike");
+            employer.SendKeys(policyHolderData["employemnt"]);
+            Delay(1);
             employer.SendKeys(Keys.ArrowDown);
+            Delay(1);
             employer.SendKeys(Keys.Enter);
             Delay(2);
-            IWebElement yes = _driver.FindElement(By.XPath("/html/body/reach-portal/div/div/div/div[4]/div/div[2]/div/label[1]"));
-            yes.Click();
-
+            IWebElement no = _driver.FindElement(By.XPath("/html/body/reach-portal/div/div/div/div[4]/div/div[2]/div/label[2]"));
+            Delay(1);
+            no.Click();
+            Delay(2);
             IWebElement cont = _driver.FindElement(By.XPath(" /html/body/reach-portal/div/div/div/div[5]/button[2]"));
             cont.Click();
-
             Delay(2);
             IWebElement agree = _driver.FindElement(By.XPath(" /html/body/reach-portal/div/div/div/div[2]/button"));
             agree.Click();
-
             //Personal Details
             Delay(2);
             //firstname
-            _driver.FindElement(By.XPath("//*[@id='/name']")).SendKeys("Themaba");
+            _driver.FindElement(By.XPath("//*[@id='/name']")).SendKeys(policyHolderData["first_name"]);
             Delay(2);
             //maiden name
-            _driver.FindElement(By.XPath("//*[@id='/maiden-surname']")).SendKeys("Bongo");
+            _driver.FindElement(By.XPath("//*[@id='/maiden-surname']")).SendKeys(policyHolderData["maiden"]);
             Delay(2);
-            _driver.FindElement(By.XPath("//*[@id='/surname']")).SendKeys("Bongo");
-
+            _driver.FindElement(By.XPath("//*[@id='/surname']")).SendKeys(policyHolderData["surname"]);
             Delay(2);
-            _driver.FindElement(By.XPath("//*[@id='/id-number']")).SendKeys("7604146054087");
-
+            _driver.FindElement(By.XPath("//*[@id='/id-number']")).SendKeys(policyHolderData["idNo"]);
+            Delay(2);
+            //Select ethicity
             IWebElement select = _driver.FindElement(By.XPath(" //*[@id='/ethnicity']"));
             SelectElement oselect = new SelectElement(select);
-            oselect.SelectByIndex(1);
-
+            oselect.SelectByValue(policyHolderData["ethnicity"]);
+            Delay(2);
+            //Select Maratiel
             IWebElement selectstatus = _driver.FindElement(By.XPath("//*[@id='/marital-status']"));
             SelectElement cselect = new SelectElement(selectstatus);
-            cselect.SelectByIndex(1);
+            cselect.SelectByValue(policyHolderData["material_status"]);
+            Delay(2);
+            //Enter contact number
+            _driver.FindElement(By.XPath("//*[@id='/contact-number']")).SendKeys(policyHolderData["cellphone_number"]);
+            Delay(2);
+            //Enter email
+            _driver.FindElement(By.XPath("//*[@id='/email']")).SendKeys(policyHolderData["email"]);
+            Delay(2);
+            // //select nationality
+            // IWebElement electstatus = _driver.FindElement(By.XPath("//*[@id='/nationality']"));
+            // SelectElement elect = new SelectElement(electstatus);
+            // elect.SelectByText(policyHolderData["nationality"]);
+            // Delay(2);
+            // //Country of birth
+            //IWebElement lectstatus = _driver.FindElement(By.XPath("//*[@id='/country-of-birth']"));
+            //SelectElement lect = new SelectElement(lectstatus);
+            //lect.SelectByValue(policyHolderData["countryOfResidence"]);
+            // Delay(2);
+            //Enter gross monthly
+            _driver.FindElement(By.XPath("//*[@id='/gross-monthly-income']")).SendKeys(policyHolderData["grossMonthlyIncome"]);
+            Delay(2);
 
-            _driver.FindElement(By.XPath("//*[@id='/contact-number']")).SendKeys("0675344558");
+            //Select employent type
+            if (policyHolderData["permanently_employed"] == "Yes")
+            {
+                _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/section/form/div/div[16]/div/label[1]")).Click();
+
+            }
+            else
+            {
+                _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/section/form/div/div[16]/div/label[2]")).Click();
+
+            }
+            Delay(2);
+
+            //Salary frequency
+            switch (policyHolderData["salary_frequency"])
+            {
+                case "Weekly":
+                    _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/section/form/div/div[17]/div/label[1]")).Click();
+
+                    break;
+                case "Monthly":
+                    _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/section/form/div/div[17]/div/label[2]")).Click();
+                    break;
+
+                case "Other":
+                    _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/section/form/div/div[17]/div/label[3]")).Click();
+                    break;
+
+                default:
+                    _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/section/form/div/div[17]/div/label[2]")).Click();
+                    break;
 
 
-            _driver.FindElement(By.XPath("//*[@id='/email']")).SendKeys("nape@gmilco.za");
-
-
-            IWebElement electstatus = _driver.FindElement(By.XPath("//*[@id='/nationality']"));
-            SelectElement elect = new SelectElement(electstatus);
-            elect.SelectByIndex(1);
-
-
-            IWebElement lectstatus = _driver.FindElement(By.XPath("//*[@id='/country-of-birth']"));
-            SelectElement lect = new SelectElement(lectstatus);
-            lect.SelectByIndex(1);
-
-
-            _driver.FindElement(By.XPath("//*[@id='/gross-monthly-income']")).SendKeys("10000");
-
-
-            IWebElement PermanentEmp = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/form/div/div[16]/div/label[1]"));
-            PermanentEmp.Click();
-
-
-            IWebElement salaryF = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/form/div/div[17]/div/label[2]"));
-            salaryF.Click();
+            }
             Delay(1);
             _driver.FindElement(By.XPath(" //*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a")).Click();
 
 
             //occupation
-            Delay(1);
+            Delay(3);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/form/section/div/div[1]/label")).Click();
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[3]/div[1]/a[2]")).Click();
@@ -190,7 +178,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
                 _driver.FindElement(By.XPath($"//*[@id='gatsby-focus-wrapper']/article/section/form/div[1]/section[{i.ToString()}]/label")).Click();
 
             }
-             //click next
+            //click next
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a[2]")).Click();
 
@@ -214,31 +202,31 @@ namespace ILR_TestSuite.New_Business.Sales_App
             _driver.FindElement(By.Name("/existing-financial-cover")).SendKeys("0");
 
             //School Fees
-             Delay(1);
+            Delay(1);
             _driver.FindElement(By.Name("/school-fees")).SendKeys("4000");
 
             //Food
             Delay(1);
             _driver.FindElement(By.Name("/food")).SendKeys("3000");
             //Retail accounts
-             Delay(1);
+            Delay(1);
             _driver.FindElement(By.Name("/retail-accounts")).SendKeys("1000");
 
             //Cellphone
             Delay(1);
             _driver.FindElement(By.Name("/cellphone")).SendKeys("700");
             //Debt
-             Delay(1);
+            Delay(1);
             _driver.FindElement(By.Name("/debt")).SendKeys("0");
 
-           // Mortgage / Rent
+            // Mortgage / Rent
             Delay(1);
             _driver.FindElement(By.Name("/mortage-rent")).SendKeys("9000");
             //Transport
-             Delay(1);
+            Delay(1);
             _driver.FindElement(By.Name("/transport")).SendKeys("2500");
             //Entertainment / Other
-             Delay(1);
+            Delay(1);
             _driver.FindElement(By.Name("/entertainment-other")).SendKeys("3000");
 
 
@@ -247,7 +235,29 @@ namespace ILR_TestSuite.New_Business.Sales_App
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/button")).Click();
 
+        }
+        [Category(" Product1000MinMaxAge")]
+        public void Product1000MinMaxAge()
+        {
+            
+            try
+            {
 
+             
+
+            }
+            catch (Exception ex)
+            {
+                DisconnectBrowser();
+                throw ex;
+            }
+        }
+
+
+        public void Product2000MinMaxAge()
+        {
+
+            createNewClient();
             //click tickbox
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section/div[2]/input[1]")).Click();
@@ -331,139 +341,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
         public void Product3000MinMaxAge()
         {
-            try
-            {
-                using (OleDbConnection conn = new OleDbConnection(base._connString))
-                {
-
-                    conn.Open();
-
-                    String cmd = "SELECT * FROM []";
-                
-                
-                
-                
-                
-                
-                }
-
-
-            }
-            catch (Exception ex)
-            {
-               
-                throw ex;
-            }
-            //*[@id="gatsby-focus-wrapper"]/article/div[2]/div[1]/button
-
-            _driver.SwitchTo().ActiveElement();
-                _driver.FindElement(By.XPath("//*[@id='___gatsby']")).Click();
-                Delay(5);
-                IWebElement new_client = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/div[2]/div[1]/button"));
-                new_client.Click();
-                //  Actions action = new Actions(_driver);
-                // action.MoveToElement(new_client).Perform()
-                Delay(2);
-                IWebElement town = _driver.FindElement(By.XPath("//*[@id='downshift-0-input']"));
-               town.SendKeys("Johan");
-               town.SendKeys(Keys.ArrowDown);
-                town.SendKeys(Keys.Enter);
-
-
-                Delay(2);
-                IWebElement worksite =_driver.FindElement(By.XPath("//*[@id='downshift-1-input']"));
-                worksite.SendKeys("health");
-                worksite.SendKeys(Keys.ArrowDown);
-                worksite.SendKeys(Keys.Enter);
-                Delay(2);
-                IWebElement employer = _driver.FindElement(By.XPath("//*[@id='downshift-2-input']"));
-
-               employer.SendKeys("sap");
-                employer.SendKeys(Keys.ArrowDown);
-                employer.SendKeys(Keys.Enter);
-                Delay(2);
-                IWebElement yes =  _driver.FindElement(By.XPath("/html/body/reach-portal/div/div/div/div[4]/div/div[2]/div/label[1]"));
-                yes.Click();
-
-               IWebElement cont = _driver.FindElement(By.XPath(" /html/body/reach-portal/div/div/div/div[5]/button[2]"));
-                cont.Click();
-
-                Delay(2);
-                IWebElement agree = _driver.FindElement(By.XPath(" /html/body/reach-portal/div/div/div/div[2]/button"));
-                agree.Click();
-
-                //Personal Details
-                Delay(2);
-                //firstname
-                _driver.FindElement(By.XPath("//*[@id='/name']")).SendKeys("Nape");
-                Delay(2);
-                //maiden name
-                _driver.FindElement(By.XPath("//*[@id='/maiden-surname']")).SendKeys("Bongo");
-                Delay(2);
-                _driver.FindElement(By.XPath("//*[@id='/surname']")).SendKeys("Bongo");
-
-                Delay(2);
-                _driver.FindElement(By.XPath("//*[@id='/id-number']")).SendKeys("0005297455080");
-
-                IWebElement select = _driver.FindElement(By.XPath(" //*[@id='/ethnicity']"));
-                SelectElement oselect = new SelectElement(select);
-                oselect.SelectByIndex(1);
-
-                IWebElement selectstatus = _driver.FindElement(By.XPath("//*[@id='/marital-status']"));
-                SelectElement cselect = new SelectElement(selectstatus);
-                cselect.SelectByIndex(1);
-
-                _driver.FindElement(By.XPath("//*[@id='/contact-number']")).SendKeys("0823344558");
-
-
-                _driver.FindElement(By.XPath("//*[@id='/email']")).SendKeys("nape@gmilco.za");
-
-
-                IWebElement electstatus = _driver.FindElement(By.XPath("//*[@id='/nationality']"));
-                SelectElement elect = new SelectElement(electstatus);
-                elect.SelectByIndex(1);
-
-
-                IWebElement lectstatus = _driver.FindElement(By.XPath("//*[@id='/country-of-birth']"));
-                SelectElement lect = new SelectElement(lectstatus);
-                lect.SelectByIndex(1);
-
-
-                _driver.FindElement(By.XPath("//*[@id='/gross-monthly-income']")).SendKeys("10000");
-
-
-         IWebElement PermanentEmp =  _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/form/div/div[16]/div/label[1]"));
-            PermanentEmp.Click();
-
-
-            IWebElement salaryF = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/form/div/div[17]/div/label[2]"));
-       salaryF.Click();
-            Delay(1);
-            _driver.FindElement(By.XPath(" //*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a")).Click();
-
-
-            //occupation
-            Delay(1);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/form/section/div/div[1]/label")).Click();
-            Delay(1);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[3]/div[1]/a[2]")).Click();
-
-            ///dependants
-
-            Delay(4);
-
-            for (int i =1 ; i < 5; i++)
-            {
-                _driver.FindElement(By.XPath($"//*[@id='gatsby-focus-wrapper']/article/section/form/div[1]/section[{i.ToString()}]/label")).Click();
-
-            }
-
-            Delay(1);
-            _driver.FindElement(By.XPath(" //*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a[2]")).Click();
-            //save and continue
-           // Delay(1);
-          //  _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/nav/div/a")).Click();
-
+           
 
         }
 
