@@ -159,32 +159,33 @@ namespace ILR_TestSuite.New_Business.Sales_App
             //Select employent type
             if(policyHolderData["permanently_employed"] == "Yes")
             {
-                _driver.FindElement(By.Id("/permanently-employed_true")).Click();
+                _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/section/form/div/div[16]/div/label[1]")).Click();
 
             }
             else
             {
-                _driver.FindElement(By.XPath("//*[@id='gatsby - focus - wrapper']/article/section/form/div/div[16]/div/label[2]")).Click();
+                _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/section/form/div/div[16]/div/label[2]")).Click();
 
             }
             Delay(2);
+
             //Salary frequency
             switch (policyHolderData["salary_frequency"])
             {
                 case "Weekly":
-                   _driver.FindElement(By.Id("/salary-frequency_Weekly")).Click();
+                   _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/section/form/div/div[17]/div/label[1]")).Click();
 
                     break;
                 case "Monthly":
-                   _driver.FindElement(By.Id("/salary-frequency_Monthly")).Click();
+                   _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/section/form/div/div[17]/div/label[2]")).Click();
                     break;
 
                 case "Other":
-                   _driver.FindElement(By.Id("/salary-frequency_Other")).Click();
+                   _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/section/form/div/div[17]/div/label[3]")).Click();
                     break;
 
                 default:
-                    _driver.FindElement(By.Id("/salary-frequency_Monthly")).Click();
+                   _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/section/form/div/div[17]/div/label[2]")).Click();
                     break;
 
                   
