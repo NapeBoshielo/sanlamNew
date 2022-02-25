@@ -15,6 +15,7 @@ using System;
 using OpenQA.Selenium.Firefox;
 using System.Data.OleDb;
 using System.Data;
+using System.Collections.Generic;
 
 namespace ILR_TestSuite
 
@@ -56,15 +57,91 @@ namespace ILR_TestSuite
 
 
 
-            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
 
-            _screenShotFolder = $@"C:\Users\E697642\Documents\GitHub\ILR_TestSuite\Failed_ScreenShots​{ScreenShotDailyFolderName()}​\";
+            _screenShotFolder = $@"C:\Users\G992127\Documents\GitHub\ILR_TestSuite\Failed_ScreenShots​{ScreenShotDailyFolderName()}​\";
 
             new DirectoryInfo(_screenShotFolder).Create();
 
 
         }
 
+        public IDictionary<string, string> getPolicyHolderDetails(string scenario_id)
+        {
+            //Variables to store policy holder data
+            IDictionary<string, string> policyHolderData = new Dictionary<string, string>();
+            string[] keys = {"town","WorkSite", "employemnt", "first_name", "maiden", "surname", "idNo", "ethnicity", "material_status" , "cellphone_number", "email","nationality", "countryOBirth", "countryOfResidence", "grossMonthlyIncome", "permanently_employed", "salary_frequency", "gender", "DOB",
+                "net_salary", "additional_income", "exsisting_financial_cover", "school_fees", "food", "retail_accounts", "cellphone", "debt",
+                "mortage", "transport", "entertainment_other"};
+
+            //Sheets in the test data file that we want to access to extract Policy holder data
+            var sheets = new List<string>();
+            sheets.Add("PolicyHolder_Details");
+            sheets.Add("Affordability_Check");
+
+            //Extracting data from every sheet 
+
+            foreach (var sheet in sheets)
+            {
+                using (OleDbConnection conn = new OleDbConnection(_connString))
+                {
+                    try
+                    {
+
+                        // Open connection
+                        conn.Open();
+                        string cmdQuery = "SELECT * FROM [" + sheet + "$]";
+
+                        OleDbCommand cmd = new OleDbCommand(cmdQuery, conn);
+
+                        // Create new OleDbDataAdapter
+                        OleDbDataAdapter oleda = new OleDbDataAdapter();
+
+                        oleda.SelectCommand = cmd;
+
+                        // Create a DataSet which will hold the data extracted from the worksheet.
+                        DataSet ds = new DataSet();
+
+                        // Fill the DataSet from the data extracted from the worksheet.
+                        oleda.Fill(ds, "PolicyHolderData");
+
+                        if (sheet == "PolicyHolder_Details")
+                        {
+                            foreach (var row in ds.Tables[0].DefaultView)
+                            {
+
+                                var scenarioID = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+
+                                if (scenarioID == scenario_id)
+                                {
+                                    var keysLen = keys.Length - 11;
+                                    for(int i = 0; i < keysLen; i++)
+                                    {
+                                        policyHolderData.Add(keys[i], ((System.Data.DataRowView)row).Row.ItemArray[i + 1].ToString());
+                                    }
+
+                                }
+                            }
+
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    finally
+                    {
+                        conn.Close();
+
+
+                        conn.Dispose();
+                    }
+                }
+            }
+
+            return policyHolderData;
+        }
         private static string ScreenShotDailyFolderName()
 
         {
