@@ -56,9 +56,9 @@ namespace ILR_TestSuite
 
 
 
-            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            _connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/MIP UAT Test Scenarios/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
 
-            _screenShotFolder = $@"C:\Users\E697642\Documents\GitHub\ILR_TestSuite\Failed_ScreenShots​{ScreenShotDailyFolderName()}​\";
+            _screenShotFolder = $@"C:\Users\G992107\Documents\GitHub\ILR_TestSuite\Failed_ScreenShots​{ScreenShotDailyFolderName()}​\";
 
             new DirectoryInfo(_screenShotFolder).Create();
 
