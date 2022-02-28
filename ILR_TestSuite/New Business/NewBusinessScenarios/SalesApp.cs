@@ -18,7 +18,8 @@ namespace ILR_TestSuite.New_Business.Sales_App
     public class SalesApp : TestBase_NB
 
     {
-   
+       /// IWebElement main_="",spouce_,child_="",parent_="",extended_="";
+      //  string main1_="";
         [SetUp]
             public void startBrowser()
 
@@ -466,23 +467,27 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //add main life
             Delay(1);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[3]/div[2]/div[1]/div/label[1]")).Click();
+         _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[3]/div[2]/div[1]/div/label[1]")).Click();    
+         //main_.Click();
+         // main1_ = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[3]/div[2]/div[1]/div/label[1]")).Text;
 
-            //Cover Amount 
+                //Cover Amount 
 
-            IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
-            int widthslider = sliderbar.Size.Width;
-            Delay(1);
-            IWebElement slider = _driver.FindElement(By.ClassName("slider"));
-            Actions slideraction = new Actions(_driver);
-            slideraction.ClickAndHold(slider);
-            slideraction.MoveByOffset(75, 0).Build().Perform();
+                SlideBar("Myself");
+
+                //IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
+                //int widthslider = sliderbar.Size.Width;
+                //Delay(1);
+                //IWebElement slider = _driver.FindElement(By.ClassName("slider"));
+                //Actions slideraction = new Actions(_driver);
+                //slideraction.ClickAndHold(slider);
+                //slideraction.MoveByOffset(75, 0).Build().Perform();
 
 
-            //Spouse
+                //Spouse
 
-            //click Add 
-            Delay(1);
+                //click Add 
+                Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/button")).Click();
 
 
@@ -506,23 +511,24 @@ namespace ILR_TestSuite.New_Business.Sales_App
             _driver.FindElement(By.Name("/cover-details[1].contact-number")).SendKeys("0679774589");
 
 
-            //Cover Amount 
+                //Cover Amount 
+
+                SlideBar("Spouse");
 
 
+                //IWebElement sliderbar1 = _driver.FindElement(By.ClassName("slider"));
+                //int widthslider2 = sliderbar1.Size.Width;
+                //Delay(1);
+                //IWebElement slider1 = _driver.FindElement(By.ClassName("slider"));
+                //Actions slideraction1 = new Actions(_driver);
+                //slideraction.ClickAndHold(slider1);
+                //slideraction.MoveByOffset(0, 0).Build().Perform();
 
-            IWebElement sliderbar1 = _driver.FindElement(By.ClassName("slider"));
-            int widthslider2 = sliderbar1.Size.Width;
-            Delay(1);
-            IWebElement slider1 = _driver.FindElement(By.ClassName("slider"));
-            Actions slideraction1 = new Actions(_driver);
-            slideraction.ClickAndHold(slider1);
-            slideraction.MoveByOffset(0, 0).Build().Perform();
 
+                //child
 
-            //child
-
-            //click Add 
-            Delay(1);
+                //click Add 
+                Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/button")).Click();
 
 
@@ -548,24 +554,27 @@ namespace ILR_TestSuite.New_Business.Sales_App
             _driver.FindElement(By.Name("/cover-details[2].contact-number")).SendKeys("0679774522");
 
 
-            //Cover Amount 
+                //Cover Amount 
 
 
 
-            IWebElement sliderbar2 = _driver.FindElement(By.ClassName("slider"));
-            int widthslider1 = sliderbar2.Size.Width;
-            Delay(1);
-            IWebElement slider2 = _driver.FindElement(By.ClassName("slider"));
-            Actions slideraction2 = new Actions(_driver);
-            slideraction.ClickAndHold(slider2);
-            slideraction.MoveByOffset(0, 0).Build().Perform();
+
+                SlideBar("Child");
+
+                //    IWebElement sliderbar2 = _driver.FindElement(By.ClassName("slider"));
+                //int widthslider1 = sliderbar2.Size.Width;
+                //Delay(1);
+                //IWebElement slider2 = _driver.FindElement(By.ClassName("slider"));
+                //Actions slideraction2 = new Actions(_driver);
+                //slideraction.ClickAndHold(slider2);
+                //slideraction.MoveByOffset(0, 0).Build().Perform();
 
 
 
-            //parent
+                //parent
 
-            //click Add 
-            Delay(1);
+                //click Add 
+                Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/button")).Click();
 
 
@@ -589,22 +598,22 @@ namespace ILR_TestSuite.New_Business.Sales_App
             _driver.FindElement(By.Name("/cover-details[3].contact-number")).SendKeys("0677654589");
 
 
-            //Cover Amount 
+                //Cover Amount 
 
+                SlideBar("Parent");
 
+                //IWebElement sliderbar3 = _driver.FindElement(By.ClassName("slider"));
+                //int widthslider3 = sliderbar3.Size.Width;
+                //Delay(1);
+                //IWebElement slider3 = _driver.FindElement(By.ClassName("slider"));
+                //Actions slideraction3 = new Actions(_driver);
+                //slideraction.ClickAndHold(slider3);
+                //slideraction.MoveByOffset(0, 0).Build().Perform();
 
-            IWebElement sliderbar3 = _driver.FindElement(By.ClassName("slider"));
-            int widthslider3 = sliderbar3.Size.Width;
-            Delay(1);
-            IWebElement slider3 = _driver.FindElement(By.ClassName("slider"));
-            Actions slideraction3 = new Actions(_driver);
-            slideraction.ClickAndHold(slider3);
-            slideraction.MoveByOffset(0, 0).Build().Perform();
+                //Extended
 
-            //Extended
-
-            //click Add 
-            Delay(1);
+                //click Add 
+                Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/button")).Click();
 
 
@@ -637,20 +646,20 @@ namespace ILR_TestSuite.New_Business.Sales_App
             _driver.FindElement(By.Name("/cover-details[4].contact-number")).SendKeys("0670974589");
 
 
-            //Cover Amount 
+                //Cover Amount 
 
+                SlideBar("Extended");
 
+                //IWebElement sliderbar4 = _driver.FindElement(By.ClassName("slider"));
+                //int widthslider4 = sliderbar4.Size.Width;
+                //Delay(1);
+                //IWebElement slider4 = _driver.FindElement(By.ClassName("slider"));
+                //Actions slideraction4 = new Actions(_driver);
+                //slideraction4.ClickAndHold(slider4);
+                //slideraction4.MoveByOffset(100, 0).Build().Perform();
 
-            IWebElement sliderbar4 = _driver.FindElement(By.ClassName("slider"));
-            int widthslider4 = sliderbar4.Size.Width;
-            Delay(1);
-            IWebElement slider4 = _driver.FindElement(By.ClassName("slider"));
-            Actions slideraction4 = new Actions(_driver);
-            slideraction4.ClickAndHold(slider4);
-            slideraction4.MoveByOffset(100, 0).Build().Perform();
-
-            //Click next
-            Delay(1);
+                //Click next
+                Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a[2]")).Click();
 
 
@@ -679,13 +688,13 @@ namespace ILR_TestSuite.New_Business.Sales_App
             _driver.FindElement(By.Name("/funeral-beneficiaries[0].contact-number")).SendKeys("0679774589");
 
             // Percentage
-            IWebElement sliderbar5 = _driver.FindElement(By.ClassName("slider"));
-            int widthslider5 = sliderbar5.Size.Width;
-            Delay(1);
-            IWebElement slider5 = _driver.FindElement(By.ClassName("slider"));
-            Actions slideraction5 = new Actions(_driver);
-            slideraction5.ClickAndHold(slider5);
-            slideraction5.MoveByOffset(260, 0).Build().Perform();
+            //IWebElement sliderbar5 = _driver.FindElement(By.ClassName("slider"));
+            //int widthslider5 = sliderbar5.Size.Width;
+            //Delay(1);
+            //IWebElement slider5 = _driver.FindElement(By.ClassName("slider"));
+            //Actions slideraction5 = new Actions(_driver);
+            //slideraction5.ClickAndHold(slider5);
+            //slideraction5.MoveByOffset(260, 0).Build().Perform();
 
 
             //Click next
@@ -802,6 +811,176 @@ namespace ILR_TestSuite.New_Business.Sales_App
             }
         }
 
+        public void SlideBar(string roles)
+        {
+
+          string Amount = "";
+
+            using (OleDbConnection con = new OleDbConnection(base._test_data_connString))
+            {
+                try
+                {
+                    con.Open();
+
+                    String command = "SELECT * FROM [CoverAmount$]";
+
+                    OleDbCommand cmd = new OleDbCommand(command, con);
+
+                    OleDbDataAdapter adapt = new OleDbDataAdapter();
+                    adapt.SelectCommand = cmd;
+
+                    DataSet ds = new DataSet("policies");
+                    adapt.Fill(ds);
+                    foreach (var row in ds.Tables[0].DefaultView)
+                    {
+
+                    var  role = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+                        
+                        if (role==roles) {
+                        
+                        roles = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+                            Amount = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
+                            break;
+                        }
+
+                       
+                    }
+
+                }
+                catch (Exception ex)
+
+                {
+                    throw ex;
+
+                }
+                con.Close();
+                con.Dispose();
+
+            }
+            if (roles == "Myself" || roles == "Child" || roles == "Spouce" )
+            {
+
+                var V_Position = "";
+                switch (Amount)
+                {
+
+                    case "5000":
+                        V_Position = "0";
+                        break;
+                    case "7000":
+                        V_Position = "12.5";
+                        break;
+                    case "10000":
+                        V_Position = "25";
+                        break;
+                    case "15000":
+                        V_Position = "37.5";
+                        break;
+                    case "20000":
+                        V_Position = "50";
+                        break;
+
+                    case "30000":
+                        V_Position = "62.5";
+                        break;
+                    case "40000":
+                        V_Position = "75";
+                        break;
+                    case "50000":
+                        V_Position = "87.5";
+                        break;
+                    case "60000":
+                        V_Position = "100";
+                        break;
+
+                }
+
+                IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
+                int widthslider = sliderbar.Size.Width;
+                Delay(1);
+                IWebElement slider = _driver.FindElement(By.ClassName("slider"));
+                Actions slideraction = new Actions(_driver);
+                slideraction.ClickAndHold(slider);
+                slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
+
+
+            }
+            else if (roles == "Parent")
+            {
+
+                var V_Position = "";
+                switch (Amount)
+                {
+
+                    case "5000":
+                        V_Position = "0";
+                        break;
+                    case "7500":
+                        V_Position = "25";
+                        break;
+                    case "10000":
+                        V_Position = "50";
+                        break;
+                    case "15000":
+                        V_Position = "75";
+                        break;
+                    case "20000":
+                        V_Position = "100";
+                        break;
+
+                }
+
+                IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
+                int widthslider = sliderbar.Size.Width;
+                Delay(1);
+                IWebElement slider = _driver.FindElement(By.ClassName("slider"));
+                Actions slideraction = new Actions(_driver);
+                slideraction.ClickAndHold(slider);
+                slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
+
+
+
+            }
+            else {
+                var V_Position = "";
+                switch (Amount)
+                {
+
+                    case "5000":
+                        V_Position = "0";
+                        break;
+                    case "7500":
+                        V_Position = "20";
+                        break;
+                    case "10000":
+                        V_Position = "40";
+                        break;
+                    case "15000":
+                        V_Position = "60";
+                        break;
+                    case "20000":
+                        V_Position = "80";
+                        break;
+                    case "30000":
+                        V_Position = "80";
+                        break;
+                }
+                IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
+                int widthslider = sliderbar.Size.Width;
+                Delay(1);
+                IWebElement slider = _driver.FindElement(By.ClassName("slider"));
+                Actions slideraction = new Actions(_driver);
+                slideraction.ClickAndHold(slider);
+                slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
+
+
+
+            }
+
+
+
+
+        }
 
         public void Product3000MinMaxAge()
         {
