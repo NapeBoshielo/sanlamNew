@@ -54,9 +54,9 @@ namespace ILR_TestSuite
             _chromeOptions.AddArguments("--incognito");
             _chromeOptions.AddArguments("--ignore-certificate-errors");
             _driver = new ChromeDriver("C:/Code/bin", _chromeOptions);
-            _test_data_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            _test_data_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
             _test_results_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestResults.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
-            _screenShotFolder = $@"C:\Users\G992107\Documents\GitHub\ILR_TestSuite\Failed_ScreenShots​{ScreenShotDailyFolderName()}​\";
+            _screenShotFolder = $@"C:\Users\G992127\Documents\GitHub\ILR_TestSuite\Failed_ScreenShots​{ScreenShotDailyFolderName()}​\";
 
             new DirectoryInfo(_screenShotFolder).Create();
 
@@ -341,7 +341,7 @@ namespace ILR_TestSuite
             //Variables to store policy holder data
             IDictionary<string, string> policyHolderData = new Dictionary<string, string>();
             string[] keys = {"town","WorkSite", "employemnt", "first_name", "maiden", "surname", "idNo", "ethnicity", "material_status" , "cellphone_number", "email","nationality", "countryOBirth", "countryOfResidence", "grossMonthlyIncome", "permanently_employed", "salary_frequency", "gender", "DOB",
-                "net_salary", "additional_income", "exsisting_financial_cover", "school_fees", "food", "retail_accounts", "cellphone", "debt",
+                "net_salary", "additional_income", "existing_financial_cover", "school_fees", "food", "retail_accounts", "cellphone", "debt",
                 "mortage", "transport", "entertainment_other"};
 
             //Sheets in the test data file that we want to access to extract Policy holder data
@@ -375,8 +375,7 @@ namespace ILR_TestSuite
                         // Fill the DataSet from the data extracted from the worksheet.
                         oleda.Fill(ds, "PolicyHolderData");
 
-                        if (sheet == "PolicyHolder_Details")
-                        {
+                    
                             foreach (var row in ds.Tables[0].DefaultView)
                             {
 
@@ -384,16 +383,31 @@ namespace ILR_TestSuite
 
                                 if (scenarioID == scenario_id)
                                 {
-                                    var keysLen = keys.Length - 11;
-                                    for (int i = 0; i < keysLen; i++)
+                                    if (sheet == "PolicyHolder_Details")
                                     {
-                                        policyHolderData.Add(keys[i], ((System.Data.DataRowView)row).Row.ItemArray[i + 1].ToString());
-                                    }
+                                        var keysLen = keys.Length - 11;
+                                        for (int i = 0; i < keysLen; i++)
+                                        {
+                                            policyHolderData.Add(keys[i], ((System.Data.DataRowView)row).Row.ItemArray[i + 1].ToString());
+                                        }
 
+                                    }
+                                    else if(sheet == "Affordability_Check")
+                                    {
+                                        var keysLen = keys.Length;
+                                        int counter = 1;
+                                        for (int i = 19; i < keysLen; i++)
+                                        {
+                                            policyHolderData.Add(keys[i], ((System.Data.DataRowView)row).Row.ItemArray[counter].ToString());
+                                            counter++;
+                                        }
+
+                                    }
                                 }
                             }
 
-                        }
+
+                        
 
                     }
                     catch (Exception ex)
