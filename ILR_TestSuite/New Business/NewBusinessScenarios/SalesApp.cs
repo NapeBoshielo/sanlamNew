@@ -34,13 +34,18 @@ namespace ILR_TestSuite.New_Business.Sales_App
             [Test, Order(1)]
             public void RunTest()
         {
-           Delay(30);
-           createNewClient();
+            Delay(28);
+            //  Product1000MinMaxAge();
+            Delay(2);
+            Product2000MinMaxAge();
+            //Delay(2);
+            // Product3000MinMaxAge();
+            //Delay(10);
 
 
         }
 
-       
+
         public void createNewClient()
         {   //get policy holder data
             var policyHolderData = getPolicyHolderDetails("1");
