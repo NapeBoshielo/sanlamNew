@@ -343,7 +343,7 @@ namespace ILR_TestSuite
             //Variables to store policy holder data
             IDictionary<string, string> policyHolderData = new Dictionary<string, string>();
             string[] keys = {"town","WorkSite", "employemnt", "first_name", "maiden", "surname", "idNo", "ethnicity", "material_status" , "cellphone_number", "email","nationality", "countryOBirth", "countryOfResidence", "grossMonthlyIncome", "permanently_employed", "salary_frequency", "gender", "DOB",
-                "net_salary", "additional_income", "exsisting_financial_cover", "school_fees", "food", "retail_accounts", "cellphone", "debt",
+                "net_salary", "additional_income", "existing_financial_cover", "school_fees", "food", "retail_accounts", "cellphone", "debt",
                 "mortage", "transport", "entertainment_other"};
 
             //Sheets in the test data file that we want to access to extract Policy holder data
@@ -377,14 +377,15 @@ namespace ILR_TestSuite
                         // Fill the DataSet from the data extracted from the worksheet.
                         oleda.Fill(ds, "PolicyHolderData");
 
-                        if (sheet == "PolicyHolder_Details")
+
+                        foreach (var row in ds.Tables[0].DefaultView)
                         {
-                            foreach (var row in ds.Tables[0].DefaultView)
+
+                            var scenarioID = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+
+                            if (scenarioID == scenario_id)
                             {
-
-                                var scenarioID = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
-
-                                if (scenarioID == scenario_id)
+                                if (sheet == "PolicyHolder_Details")
                                 {
                                     var keysLen = keys.Length - 11;
                                     for (int i = 0; i < keysLen; i++)
@@ -393,9 +394,22 @@ namespace ILR_TestSuite
                                     }
 
                                 }
-                            }
+                                else if (sheet == "Affordability_Check")
+                                {
+                                    var keysLen = keys.Length;
+                                    int counter = 1;
+                                    for (int i = 19; i < keysLen; i++)
+                                    {
+                                        policyHolderData.Add(keys[i], ((System.Data.DataRowView)row).Row.ItemArray[counter].ToString());
+                                        counter++;
+                                    }
 
+                                }
+                            }
                         }
+
+
+
 
                     }
                     catch (Exception ex)
