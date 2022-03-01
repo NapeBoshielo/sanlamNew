@@ -34,7 +34,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             [Test, Order(1)]
             public void RunTest()
         {
-           Delay(28);
+           Delay(30);
           //  Product1000MinMaxAge();
             Delay(2);
             Product2000MinMaxAge();
@@ -722,7 +722,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //policy payer
             Delay(1);
-            _driver.FindElement(By.XPath("//*[@id='/same-as-fna']")).Click();
+            _driver.FindElement(By.Name("/same-as-fna")).Click();
 
 
             //bank details
@@ -767,33 +767,144 @@ namespace ILR_TestSuite.New_Business.Sales_App
                     break;
             }
 
-            SelectElement oSelect = new SelectElement(_driver.FindElement(By.Name("/bank-select")));
-            oSelect.SelectByValue(value);
+                SelectElement oSelect1 = new SelectElement(_driver.FindElement(By.Name("/bank-select")));
+                oSelect1.SelectByValue("FIRST NATIONAL BANK");
 
-            //Account Number
-            Delay(1);
-            _driver.FindElement(By.Name("")).SendKeys("");
+                //Account Number
+                Delay(1);
+            _driver.FindElement(By.Name("/account-number")).SendKeys("62429363625");
 
 
             //Account Type
             Delay(1);
-            _driver.FindElement(By.XPath("")).Click();
-
-
-            //Debit day
-            Delay(1);
-            _driver.FindElement(By.Name("")).SendKeys("");
-
-
-            //Select Preferred Debit Order DayField is required.
-
-
-            //Next button
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[1]/div[2]/div[4]/div/label[2]")).Click();
 
 
 
+                //Bank Selction
+                var value1 = "";
+                switch (Bank)
+                {
+                    case "1st":
+                        value1 = "1";
+                        break;
+                    case "15th":
+                        value1 = "15";
+                        break;
 
-        }
+                    case "20th":
+                        value1 = "20";
+                        break;
+
+                    case "25th":
+                        value1 = "25";
+                        break;
+                    case "30th":
+                        value1 = "30";
+                        break;
+
+                    case "Last day of the month":
+                        value1 = "31";
+                        break;
+
+                    default:
+                        break;
+                }
+
+                ///debit - order - date / debit - order - date
+                SelectElement oSelect = new SelectElement(_driver.FindElement(By.Name("/debit-order-date")));
+                oSelect.SelectByValue("25");
+
+                //click tickbox
+                Delay(1);
+                _driver.FindElement(By.XPath("//*[@id='/arrange-payment-gather-information-disclaimer']")).Click();
+
+                //click yes
+                Delay(1);
+                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[2]/section/div[1]/div/div/label[1]")).Click();
+
+                //click yes
+                Delay(1);
+                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[2]/section/div[2]/div/div/label[1]")).Click();
+
+
+                //click next
+                Delay(1);
+                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div/button")).Click();
+
+                //click i uderstand
+                Delay(1);
+                IWebElement iagree = _driver.FindElement(By.XPath("/html/body/reach-portal/div/div/div/button"));
+                iagree.Click();
+
+                //click start
+                Delay(1);
+                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper'']/article/section/div[3]/button")).Click();
+
+                //debicheck loading delay
+                Delay(80);
+
+                //Click next
+                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div/a[2]")).Click();
+                Delay(1);
+
+                //Physical Address
+
+                //Building
+                Delay(1);
+                _driver.FindElement(By.Name("/physical-address-building")).SendKeys("27 Beacon Avenue");
+                //Street
+                Delay(1);
+                _driver.FindElement(By.Name("/physical-address-street")).SendKeys("27 Beacon Avenue");
+
+                //Town
+                Delay(1);
+                _driver.FindElement(By.Name("/physical-address-town")).SendKeys("Linbro Park");
+
+                //Suburb
+                Delay(1);
+                _driver.FindElement(By.Name("/physical-address-suburb")).SendKeys("Sandton");
+
+                //CodeField 
+                _driver.FindElement(By.Name("/physical-address-code")).SendKeys("2090");
+
+
+
+                ///click tickbox same-as-physical
+                Delay(1);
+                _driver.FindElement(By.Name("/same-as-physical")).Click();
+
+                ///click tickbox 
+                Delay(1);
+                _driver.FindElement(By.Name("/policy-holder-signature-datetime")).Click();
+
+                ///click tickbox 
+                Delay(1);
+                _driver.FindElement(By.Name("/premium-payer-signature-datetime")).Click();
+
+                //reference no 
+                Delay(1);
+                _driver.FindElement(By.Name("/call-reference-number")).SendKeys("09876567");
+
+
+                
+                ///click tickbox 
+                Delay(1);
+                _driver.FindElement(By.Name("/popia-consent-datetime")).Click();
+
+
+                //click tickbox 
+                Delay(1);
+                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div/button")).Click();
+
+                
+
+
+
+
+
+
+            }
 
             catch (Exception ex)
             {
