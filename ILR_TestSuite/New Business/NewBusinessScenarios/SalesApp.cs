@@ -35,17 +35,17 @@ namespace ILR_TestSuite.New_Business.Sales_App
             [Test, Order(1)]
             public void RunTest()
         {
-           Delay(30);
+            Delay(30);
             //  Product1000MinMaxAge();
-            Delay(2);
-            Product2000MinMaxAge();
+            //Delay(2);
+            //Product2000MinMaxAge();
             //Delay(2);
             // Product3000MinMaxAge();
             //Delay(10);
 
 
 
-
+            createNewClient();
             using (OleDbConnection conn = new OleDbConnection(_test_data_connString))
             {
                 try
@@ -76,7 +76,14 @@ namespace ILR_TestSuite.New_Business.Sales_App
                         var func = ((System.Data.DataRowView)row).Row.ItemArray[4].ToString();
                         var product = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
 
-                        createNewClient(scenarioID,func);
+                        switch (func)
+                        {
+                            case "MaxSpouse":
+                                maxSpouse();
+                                break;
+                            default:
+                                break;
+                        }
                         //validation(scenarioID,func,product)
                     }
                 }
@@ -92,7 +99,13 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
 
         }
-        public void createNewClient(string scenarioID, string func)
+
+        private void maxSpouse()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void createNewClient()
         {   //get policy holder data
             var policyHolderData = getPolicyHolderDetails("1");
             _driver.SwitchTo().ActiveElement();
