@@ -320,7 +320,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             _driver.FindElement(By.XPath("//*[@id='/surname']")).SendKeys("Bongo");
 
             Delay(2);
-            _driver.FindElement(By.XPath("//*[@id='/id-number']")).SendKeys("7604146054087");
+            _driver.FindElement(By.XPath("//*[@id='/id-number']")).SendKeys("1001118453080");
 
             IWebElement select = _driver.FindElement(By.XPath(" //*[@id='/ethnicity']"));
             SelectElement oselect = new SelectElement(select);
@@ -355,8 +355,9 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             IWebElement salaryF = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/form/div/div[17]/div/label[2]"));
             salaryF.Click();
+         
             Delay(1);
-            _driver.FindElement(By.XPath(" //*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a")).Click();
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a")).Click();
 
 
             //occupation
