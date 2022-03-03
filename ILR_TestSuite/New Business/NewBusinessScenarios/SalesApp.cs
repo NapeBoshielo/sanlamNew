@@ -41,7 +41,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             public void RunTest()
         {
             Delay(35);
-
+            ChildMaxAge();
             createNewClient();
             using (OleDbConnection conn = new OleDbConnection(_test_data_connString))
             {
@@ -403,7 +403,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
 
             string results = "";
-
+            createNewClient();
 
             //click tickbox product
             Delay(1);
