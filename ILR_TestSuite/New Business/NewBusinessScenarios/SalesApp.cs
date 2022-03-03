@@ -35,7 +35,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             [Test, Order(1)]
             public void RunTest()
         {
-            Delay(30);
+            Delay(35);
             var mlMaxMinAgeRes = createNewClient();
             writeResultsToExcell(mlMaxMinAgeRes, "Scenarios", "MaxMinAgeMainLife");
 
@@ -244,6 +244,34 @@ namespace ILR_TestSuite.New_Business.Sales_App
         [Category("Add Main Life")]
         public void addMainLife()
         {
+
+            //click tickbox product
+            Delay(1);
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/div[1]/div[3]/button/span")).Click();
+
+            //click tickbox product
+            Delay(1);
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/div/div[2]/label/div")).Click();
+
+
+            //click next
+            Delay(1);
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a")).Click();
+
+
+
+            //click on No
+            Delay(1);
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[1]/div/div[2]/div/div/label[2]")).Click();
+
+
+            //click on 5%
+            Delay(1);
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[2]/div/div[2]/div/div/label[1]")).Click();
+
+
+
+
             //add main life
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[3]/div[2]/div[1]/div/label[1]")).Click();
@@ -261,6 +289,10 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
 
             string results = "";
+
+            //Add life 
+            Delay(1);
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/button")).Click();
 
             //select relationship
             Delay(1);
@@ -330,7 +362,12 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
 
             string results = "";
-            
+
+
+            //Add Life
+            Delay(1);
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/button")).Click();
+
             //select relationship
             Delay(1);
 
