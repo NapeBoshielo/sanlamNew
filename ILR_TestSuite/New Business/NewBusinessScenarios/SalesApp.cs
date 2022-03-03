@@ -10,7 +10,6 @@ using OpenQA.Selenium.Firefox;
 using System.Data.OleDb;
 using System.Data;
 using OpenQA.Selenium.Interactions;
-using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace ILR_TestSuite.New_Business.Sales_App
 {
@@ -19,38 +18,36 @@ namespace ILR_TestSuite.New_Business.Sales_App
     public class SalesApp : TestBase_NB
 
     {
-        private string results;
-
-        /// IWebElement main_="",spouce_,child_="",parent_="",extended_="";
-        //  string main1_="";
+       /// IWebElement main_="",spouce_,child_="",parent_="",extended_="";
+      //  string main1_="";
         [SetUp]
             public void startBrowser()
 
             {
 
                 _driver = base.SiteConnection();
-            string sheet = "Scenarios";
+           
 
-
-
-        }
+            }
 
 
 
             [Test, Order(1)]
             public void RunTest()
         {
-            Delay(35);
-            ChildMaxAge();
-            createNewClient();
+            Delay(30);
+            var mlMaxMinAgeRes = createNewClient();
+            writeResultsToExcell(mlMaxMinAgeRes, "Scenarios", "MaxMinAgeMainLife");
+
             using (OleDbConnection conn = new OleDbConnection(_test_data_connString))
             {
                 try
                 {
-
+                    var sheet = "Scenarios";
+                    var results ="";
                     // Open connection
                     conn.Open();
-                    string cmdQuery = "SELECT * FROM [Scenarios$]";
+                    string cmdQuery = "SELECT * FROM ["+ sheet + "$]";
 
                     OleDbCommand cmd = new OleDbCommand(cmdQuery, conn);
 
@@ -66,26 +63,39 @@ namespace ILR_TestSuite.New_Business.Sales_App
                     oleda.Fill(ds, "Policies");
 
 
-
+                    addMainLife();
                     foreach (var row in ds.Tables[0].DefaultView)
                     {
-                        var scenarioID = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString(); ;
-                        var func = ((System.Data.DataRowView)row).Row.ItemArray[4].ToString();
-                        var product = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
+                        var func = ((System.Data.DataRowView)row).Row.ItemArray[3].ToString();
+           
+                            switch (func)
+                            {
+                                case "MaxMinAgeSpouse":
+                                    results = SpouseMaxMin();
+                                    writeResultsToExcell(results, sheet, func);
+                                    break;
+                                case "MaxMinAgeChild":
+                                    results = ChildMaxAge();
+                                    writeResultsToExcell(results, sheet, func);
+                                    break;
+                                case "MaxMinAgeParent":
+                                    results = MaxMinAgeParent();
+                                writeResultsToExcell(results, sheet, func);
+                                    break;
+                                case "MaxMinAgeExtended":
+                                    results = ExtendedMaxAge();
+                                    writeResultsToExcell(results, sheet, func);
+                                    break;
+                              
 
-                        switch (func)
-                        {
-                            case "ChildMaxAge":
-                                ChildMaxAge();
-                                break;
-                            case "ExtendedMaxAge":
-                                ExtendedMaxAge();
-                                break;
                             default:
-                                break;
-                        }
-                        //validation(scenarioID,func,product)
+                                    break;
+                            }
+                      
+                     
                     }
+                    
+
                 }
                 finally
                 {
@@ -99,14 +109,394 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
 
         }
-
-        private void maxSpouse()
+        [Category("MaxMin Age for Parent")]
+        public string MaxMinAgeParent()
         {
-            throw new NotImplementedException();
+
+
+
+            string results = "";
+            try
+            {
+                //click Add
+                Delay(1);
+                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/button")).Click();
+
+
+                //select relationship
+                Delay(1);
+                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[4]/div[2]/div[1]/div/label[4]")).Click();
+
+
+                //FirstName
+                Delay(1);
+                _driver.FindElement(By.XPath("//*[@id='/cover-details[3].name']")).SendKeys("Modli");
+                //Surname
+                Delay(1);
+                _driver.FindElement(By.Name("/cover-details[3].surname")).SendKeys("Matlou");
+
+
+
+                //ID Number
+                Delay(1);
+                _driver.FindElement(By.Name("/cover-details[3].id-number")).SendKeys("0003099707089");
+
+
+
+                //Cellphone
+                Delay(1);
+                _driver.FindElement(By.Name("/cover-details[3].contact-number")).SendKeys("0677654589");
+
+
+
+
+                String MinimumValidation = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[6]/div[4]/div[1]/label")).Text;
+
+                if (MinimumValidation == "Cover is only available for parents from 26 to 85 years of age")
+                {
+
+
+
+                    TakeScreenshot(_driver, $@"{_screenShotFolder}\Failed_Scenarios\", "ParentMinValidation");
+                    results = "Passed";
+
+
+
+                }
+                else
+                {
+                    results = "Failed";
+                }
+                Delay(1);
+
+
+
+                //ID Number
+                Delay(4);
+
+                //click field
+                Actions builder = new Actions(_driver);
+                builder.MoveToElement(_driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/section/form/div/div[4]/input")))
+                .Click().Build().Perform();
+
+                //clear keys
+                IWebElement clear = _driver.FindElement(By.XPath("/cover-details[1].id-number"));
+                clear.SendKeys(Keys.Control + "a");
+                clear.SendKeys(Keys.Delete);
+                Delay(3);
+
+                //Send new keys
+                IWebElement element = _driver.FindElement(By.XPath("/cover-details[1].id-number"));
+                Delay(3);
+                element.SendKeys("3403148170080");
+                Delay(2);
+
+
+
+
+
+                //ID Number
+                Delay(1);
+                _driver.FindElement(By.Name("/cover-details[1].id-number")).SendKeys("3003095612082");
+
+
+
+
+
+                // TakeScreenshot(_driver, $@"{_screenShotFolder}\Failed_Scenarios\", "ParentMax");
+                String MaximumValidation = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[6]/div[4]/div[1]/label")).Text;
+
+
+
+                if (MinimumValidation.Contains("Cover is only available for parents from 26 to 85 years of age") && MaximumValidation.Contains("Cover is only available for parents from 26 to 85 years of age"))
+
+                {
+
+
+
+                    results = "Passed";
+                    TakeScreenshot(_driver, $@"{_screenShotFolder}\validations\", "ParentMaxValidation");
+
+
+
+                }
+
+
+
+                else
+                {
+                    results = "Failed";
+                    TakeScreenshot(_driver, $@"{_screenShotFolder}\Failed_Scenarios\", "ParentMaxValidation");
+
+                }
+
+
+
+
+            }
+            catch (Exception ex) { }
+            return results;
+
+
+
+
+        }
+        [Category("Add Main Life")]
+        public void addMainLife()
+        {
+            //add main life
+            Delay(1);
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[3]/div[2]/div[1]/div/label[1]")).Click();
+            
+
+
+            //Cover Amount
+
+            SlideBar("Myself");
         }
 
-        public void createNewClient()
-        {   //get policy holder data
+        [Category("ChildMaxAge")]
+        public string ChildMaxAge()
+        {
+
+
+            string results = "";
+
+            //select relationship
+            Delay(1);
+
+            // Locate the element “child” by By.xpath. 
+            IWebElement Child = _driver.FindElement(By.Name("/cover-details[0].relationship-type"));
+
+            // Create an object of Actions class and pass reference variable driver as a parameter to its constructor. 
+            Actions actions = new Actions(_driver);
+            actions.Click(Child);
+            actions.Build().Perform();
+
+
+            //FirstName
+            Delay(1);
+            _driver.FindElement(By.Name("/cover-details[2].name")).SendKeys("Zodwa");
+            //Surname
+            Delay(1);
+            _driver.FindElement(By.Name("/cover-details[2].surname")).SendKeys("Matlou");
+
+            //ID Number
+            Delay(1);
+            _driver.FindElement(By.Name("/cover-details[2].id-number")).SendKeys("7001113329081");
+
+            //Cellphone
+            Delay(1);
+            _driver.FindElement(By.Name("/cover-details[2].contact-number")).SendKeys("0679774522");
+
+
+            //select relationship
+            Delay(2);
+            //Cover Amount 
+            SlideBar("Child");
+
+            TakeScreenshot(_driver, $@"{_screenShotFolder}\validations\", "MaxChildValidation");
+
+            //click next 
+            Delay(2);
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/button")).Click();
+
+            Delay(2);
+
+
+            //Max validation
+            var Errormessage = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper]/article/form/section[5]/div[4]/div[1]/label")).Text;
+
+
+
+            if ((Errormessage) != ("Cover Amount of R20 000 at R28 per month"))
+            {
+                results = "Passed";
+            }
+            else
+            {
+                results = "Failed";
+            }
+
+
+
+            return results;
+
+        }
+
+        [Category("ExtendedMaxAge")]
+        public string ExtendedMaxAge()
+        {
+
+
+            string results = "";
+            
+            //select relationship
+            Delay(1);
+
+
+
+
+            //Extended
+
+            //select relationship
+            // Locate the element “extended” by By.xpath. 
+            IWebElement extended = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[3]/div[2]/div[1]/div/label[5]"));
+
+            // Create an object of Actions class and pass reference variable driver as a parameter to its constructor. 
+            Actions actions = new Actions(_driver);
+            actions.Click(extended);
+            actions.Build().Perform();
+
+
+            //Extended Relationship Type
+
+            IWebElement RelationshipType = _driver.FindElement(By.Id("downshift-3-input"));
+            RelationshipType.SendKeys("Cousin");
+            RelationshipType.SendKeys(Keys.ArrowDown);
+            RelationshipType.SendKeys(Keys.Enter);
+
+
+            //FirstName
+            Delay(1);
+            _driver.FindElement(By.Name("/cover-details[4].name")).SendKeys("Zondi");
+            //Surname
+            Delay(1);
+            _driver.FindElement(By.Name("/cover-details[4].surname")).SendKeys("Zwane");
+
+            //ID Number
+            Delay(1);
+            _driver.FindElement(By.Name("/cover-details[4].id-number")).SendKeys("3011148884087");
+
+            //Cellphone
+            Delay(1);
+            _driver.FindElement(By.Name("/cover-details[4].contact-number")).SendKeys("0670974589");
+
+
+            //Cover Amount 
+
+            SlideBar("Extended");
+
+
+
+            TakeScreenshot(_driver, $@"{_screenShotFolder}\Failed_Scenarios\", "ExtendedMaxvalidation");
+
+            //click next 
+            Delay(2);
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/button")).Click();
+
+            Delay(2);
+
+
+            //Max validation
+            var Errormessage = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[7]/div[4]/div[1]/label")).Text;
+
+
+            if ((Errormessage) == ("Cover is only available for persons up to 85 years of age"))
+            {
+                results = "Passed";
+            }
+            else
+            {
+                results = "Failed";
+            }
+
+            return results;
+
+        }
+
+        private string SpouseMaxMin()
+        {
+            String results;
+            //click Add 
+            Delay(1);
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/button")).Click();
+
+
+            //select relationship
+            Delay(1);
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[4]/div[2]/div[1]/div/label[2]")).Click();
+
+            //FirstName
+            Delay(1);
+            _driver.FindElement(By.Name("/cover-details[1].name")).SendKeys("Lindokuhle");
+            //Surname
+            Delay(1);
+            _driver.FindElement(By.Name("/cover-details[1].surname")).SendKeys("Matlou");
+
+            //ID Number
+            Delay(1);
+            _driver.FindElement(By.Name("/cover-details[1].id-number")).SendKeys("0609162644080");
+
+            //Cellphone
+            Delay(1);
+            _driver.FindElement(By.Name("/cover-details[1].contact-number")).SendKeys("0679774589");
+
+
+            //Cover Amount 
+
+            SlideBar("Spouse");
+
+
+
+            String minimumValidationMsg = _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/form/section[4]/div[4]/div[1]/label")).Text;
+            if (minimumValidationMsg.Contains("Cover is only available for spouses from 18 to 64 years of age"))
+            {
+                TakeScreenshot(_driver, $@"{_screenShotFolder}\Validations\", "Spouse_Min_Age");
+
+
+            }
+
+            //click on id field
+            Actions builder = new Actions(_driver);
+            builder.MoveToElement(_driver.FindElement(By.Name("/cover-details[1].id-number")))
+            .Click().Build().Perform();
+
+            //clear keys
+            IWebElement clear = _driver.FindElement(By.Name("/cover-details[1].id-number"));
+            clear.SendKeys(Keys.Control + "a");
+            clear.SendKeys(Keys.Delete);
+            Delay(3);
+
+
+
+            //Send new keys
+            IWebElement element = _driver.FindElement(By.Name("/cover-details[1].id-number"));
+            Delay(3);
+            element.SendKeys("3403148170080");
+            Delay(2);
+
+
+            String maximumValidationMsg = _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/form/section[4]/div[4]/div[1]/label")).Text;
+            if (maximumValidationMsg.Contains("Cover is only available for spouses from 18 to 64 years of age"))
+            {
+                TakeScreenshot(_driver, $@"{_screenShotFolder}\Failed_Scenarios\", "Spouse_Max_Age");
+            }
+
+            if (maximumValidationMsg.Contains("Cover is only available for spouses from 18 to 64 years of age") && minimumValidationMsg.Contains("Cover is only available for spouses from 18 to 64 years of age"))
+            {
+                results = "Passed";
+            }
+            else
+            {
+                Delay(1);
+                results = "Failed";
+                TakeScreenshot(_driver, $@"{_screenShotFolder}\Failed_Scenarios\", "Spouse_Max_Min_Validations");
+            }
+
+
+            //Cover Amount 
+
+            SlideBar("Spouse");
+        
+            return results;
+
+        }
+
+        public string createNewClient()
+        {
+            string results;
+            //get policy holder data
             var policyHolderData = getPolicyHolderDetails("1");
             _driver.SwitchTo().ActiveElement();
             _driver.FindElement(By.XPath("//*[@id='___gatsby']"));
@@ -216,7 +606,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             Delay(2);
 
             _driver.FindElement(By.XPath("//*[@id='/id-number']")).SendKeys("1803148913086");
-            
+
 
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/button")).Click();
@@ -224,17 +614,10 @@ namespace ILR_TestSuite.New_Business.Sales_App
             //Min validation
             var Errormessage = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/form/div/div[8]/span/span")).Text;
             {
-                TakeScreenshot(_driver, $@"{_screenShotFolder}\Failed_Scenarios\", "MinMainLifeValidation");
+                TakeScreenshot(_driver, $@"{_screenShotFolder}\validations\", "MinMainLifeValidation");
             }
 
-            if ((Errormessage) == ("Must be at least 18 years old."))
-            {
-                results = "Passed";
-            }
-            else
-            {
-                results = "Failed";
-            }
+       
 
             // base.writeResultsToExcell(results, sheet, "MainLifeMinAge");
 
@@ -246,14 +629,14 @@ namespace ILR_TestSuite.New_Business.Sales_App
             Actions builder = new Actions(_driver);
             builder.MoveToElement(_driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/section/form/div/div[4]/input")))
             .Click().Build().Perform();
-           
+
             //claer  keys
             IWebElement clear = _driver.FindElement(By.XPath("//*[@id='/id-number']"));
             clear.SendKeys(Keys.Control + "a");
             clear.SendKeys(Keys.Delete);
             Delay(3);
 
-           //Send new keys
+            //Send new keys
             IWebElement element = _driver.FindElement(By.XPath("//*[@id='/id-number']"));
             Delay(3);
             element.SendKeys("3403148170080");
@@ -262,16 +645,19 @@ namespace ILR_TestSuite.New_Business.Sales_App
             //Min validation
             var Errormessage2 = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/form/div/div[8]/span/span")).Text;
             {
-                TakeScreenshot(_driver, $@"{_screenShotFolder}\Failed_Scenarios\", "MaxMainLifeValidation");
+                
+                TakeScreenshot(_driver, $@"{_screenShotFolder}\validations\", "MaxMainLifeValidation");
             }
 
-            if ((Errormessage2) == ("Must not be older than 74 years of age."))
+            if ((Errormessage2) == ("Must not be older than 74 years of age.") && (Errormessage) == ("Must be at least 18 years old."))
             {
                 results = "Passed";
             }
             else
             {
                 results = "Failed";
+                TakeScreenshot(_driver, $@"{_screenShotFolder}\failed_scenarios\", "MaxMainLifeValidation");
+
             }
 
 
@@ -393,208 +779,10 @@ namespace ILR_TestSuite.New_Business.Sales_App
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a[2]")).Click();
 
- 
 
-
-        }
-        [Category("ChildMaxAge")]
-        public void ChildMaxAge()
-        {
-
-
-            string results = "";
-            createNewClient();
-
-            //click tickbox product
-            Delay(1);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/div[1]/div[3]/button/span")).Click();
-
-            //click tickbox product
-            Delay(1);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/div/div[2]/label/div")).Click();
-
-
-            //click next
-            Delay(1);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a")).Click();
-
-
-
-            //click on No
-            Delay(1);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[1]/div/div[2]/div/div/label[2]")).Click();
-
-
-            //click on 5%
-            Delay(1);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[2]/div/div[2]/div/div/label[1]")).Click();
-
-            //select relationship
-            Delay(1);
-
-            // Locate the element “child” by By.xpath. 
-            IWebElement Child = _driver.FindElement(By.Name("/cover-details[0].relationship-type"));
-
-            // Create an object of Actions class and pass reference variable driver as a parameter to its constructor. 
-            Actions actions = new Actions(_driver);
-            actions.Click(Child);
-            actions.Build().Perform();
-
-
-            //FirstName
-            Delay(1);
-            _driver.FindElement(By.Name("/cover-details[0].name")).SendKeys("Zodwa");
-            //Surname
-            Delay(1);
-            _driver.FindElement(By.Name("/cover-details[0].surname")).SendKeys("Matlou");
-
-            //ID Number
-            Delay(1);
-            _driver.FindElement(By.Name("/cover-details[0].id-number")).SendKeys("7001113329081");
-
-            //Cellphone
-            Delay(1);
-            _driver.FindElement(By.Name("/cover-details[0].contact-number")).SendKeys("0679774522");
-
-
-            //select relationship
-            Delay(2);
-            //Cover Amount 
-            SlideBar("Child");
-
-            TakeScreenshot(_driver, $@"{_screenShotFolder}\Failed_Scenarios\", "MaxChildValidation");
-
-            //click next 
-            Delay(2);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/button")).Click();
-
-            Delay(2);
-
-
-            //Max validation
-            var Errormessage = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[3]/div[4]/div[2]/span")).Text;
-
-
-            if ((Errormessage) != ("No cover is available for the entered details"))
-            {
-                results = "Passed";
-            }
-            else
-            {
-                results = "Failed";
-            }
-
-
-
-            // base.writeResultsToExcell(results, sheet, "ChildMaxAge");
+            return results;
 
         }
-
-        [Category("ExtendedMaxAge")]
-        public void ExtendedMaxAge()
-        {
-
-
-            string results = "";
-            //click tickbox product
-            Delay(1);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/div[1]/div[3]/button/span")).Click();
-
-            //click tickbox product
-            Delay(1);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/div/div[2]/label/div")).Click();
-
-
-            //click next
-            Delay(1);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a")).Click();
-
-
-
-            //click on No
-            Delay(1);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[1]/div/div[2]/div/div/label[2]")).Click();
-
-
-            //click on 5%
-            Delay(1);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[2]/div/div[2]/div/div/label[1]")).Click();
-
-            //select relationship
-            Delay(1);
-
-
-
-
-            //Extended
-
-            //select relationship
-            // Locate the element “extended” by By.xpath. 
-            IWebElement extended = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[3]/div[2]/div[1]/div/label[5]"));
-
-            // Create an object of Actions class and pass reference variable driver as a parameter to its constructor. 
-            Actions actions = new Actions(_driver);
-            actions.Click(extended);
-            actions.Build().Perform();
-
-
-            //Extended Relationship Type
-
-            IWebElement RelationshipType = _driver.FindElement(By.Id("downshift-3-input"));
-            RelationshipType.SendKeys("Cousin");
-            RelationshipType.SendKeys(Keys.ArrowDown);
-            RelationshipType.SendKeys(Keys.Enter);
-
-
-            //FirstName
-            Delay(1);
-            _driver.FindElement(By.Name("/cover-details[0].name")).SendKeys("Zondi");
-            //Surname
-            Delay(1);
-            _driver.FindElement(By.Name("/cover-details[0].surname")).SendKeys("Zwane");
-
-            //ID Number
-            Delay(1);
-            _driver.FindElement(By.Name("/cover-details[0].id-number")).SendKeys("3011148884087");
-
-            //Cellphone
-            Delay(1);
-            _driver.FindElement(By.Name("/cover-details[0].contact-number")).SendKeys("0670974589");
-
-
-            //Cover Amount 
-
-            SlideBar("Extended");
-
-           
-
-            TakeScreenshot(_driver, $@"{_screenShotFolder}\Failed_Scenarios\", "ExtendedMaxvalidation");
-
-            //click next 
-            Delay(2);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/button")).Click();
-
-            Delay(2);
-
-
-            //Max validation
-            var Errormessage = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[3]/div[4]/div[1]/label")).Text;
-
-
-            if ((Errormessage) == ("Cover is only available for persons up to 85 years of age"))
-            {
-                results = "Passed";
-            }
-            else
-            {
-                results = "Failed";
-            }
-
-
-            // base.writeResultsToExcell(results, sheet, "ExtendedMaxAge");
-
-        }
-
 
         public void SlideBar(string roles)
         {
@@ -764,12 +952,6 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
 
 
-
-        }
-
-        public void Product3000MinMaxAge()
-        {
-           
 
         }
 
