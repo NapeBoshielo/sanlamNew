@@ -8,6 +8,18 @@
           "build/netstandard1.0/coverlet.collector.targets": {}
         }
       },
+      "DocumentFormat.OpenXml/2.15.0": {
+        "type": "package",
+        "dependencies": {
+          "System.IO.Packaging": "4.7.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/DocumentFormat.OpenXml.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/DocumentFormat.OpenXml.dll": {}
+        }
+      },
       "Microsoft.Build/17.0.0": {
         "type": "package",
         "compile": {
@@ -1020,6 +1032,15 @@
           "lib/netstandard1.3/System.IO.FileSystem.Primitives.dll": {}
         }
       },
+      "System.IO.Packaging/4.7.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/System.IO.Packaging.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.IO.Packaging.dll": {}
+        }
+      },
       "System.Linq/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -1650,6 +1671,28 @@
         "coverlet-icon.png",
         "coverlet.collector.3.1.0.nupkg.sha512",
         "coverlet.collector.nuspec"
+      ]
+    },
+    "DocumentFormat.OpenXml/2.15.0": {
+      "sha512": "ymfVWFza7DScxwGXRjqevoOe/UoZdaZsbdzEHlkq3nzyQmMwoD04KQwlE8qw3iUAmIn7r3PjEaqQZ4JtuQj35A==",
+      "type": "package",
+      "path": "documentformat.openxml/2.15.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "documentformat.openxml.2.15.0.nupkg.sha512",
+        "documentformat.openxml.nuspec",
+        "icon.png",
+        "lib/net35/DocumentFormat.OpenXml.dll",
+        "lib/net35/DocumentFormat.OpenXml.xml",
+        "lib/net40/DocumentFormat.OpenXml.dll",
+        "lib/net40/DocumentFormat.OpenXml.xml",
+        "lib/net46/DocumentFormat.OpenXml.dll",
+        "lib/net46/DocumentFormat.OpenXml.xml",
+        "lib/netstandard1.3/DocumentFormat.OpenXml.dll",
+        "lib/netstandard1.3/DocumentFormat.OpenXml.xml",
+        "lib/netstandard2.0/DocumentFormat.OpenXml.dll",
+        "lib/netstandard2.0/DocumentFormat.OpenXml.xml"
       ]
     },
     "Microsoft.Build/17.0.0": {
@@ -3921,6 +3964,33 @@
         "system.io.filesystem.primitives.nuspec"
       ]
     },
+    "System.IO.Packaging/4.7.0": {
+      "sha512": "9VV4KAbgRQZ79iEoG40KIeZy38O30oWwewScAST879+oki8g/Wa2HXZQgrhDDxQM4GkP1PnRJll05NMiVPbYAw==",
+      "type": "package",
+      "path": "system.io.packaging/4.7.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net46/System.IO.Packaging.dll",
+        "lib/net46/System.IO.Packaging.xml",
+        "lib/netstandard1.3/System.IO.Packaging.dll",
+        "lib/netstandard1.3/System.IO.Packaging.xml",
+        "lib/netstandard2.0/System.IO.Packaging.dll",
+        "lib/netstandard2.0/System.IO.Packaging.xml",
+        "ref/net46/System.IO.Packaging.dll",
+        "ref/net46/System.IO.Packaging.xml",
+        "ref/netstandard1.3/System.IO.Packaging.dll",
+        "ref/netstandard1.3/System.IO.Packaging.xml",
+        "ref/netstandard2.0/System.IO.Packaging.dll",
+        "ref/netstandard2.0/System.IO.Packaging.xml",
+        "system.io.packaging.4.7.0.nupkg.sha512",
+        "system.io.packaging.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
     "System.Linq/4.3.0": {
       "sha512": "5DbqIUpsDp0dFftytzuMmc0oeMdQwjcP/EWxsksIz/w1TcFRkZ3yKKz0PqiYFMmEwPSWw+qNVqD7PJ889JzHbw==",
       "type": "package",
@@ -5955,6 +6025,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "DocumentFormat.OpenXml >= 2.15.0",
       "Microsoft.Build >= 17.0.0",
       "Microsoft.Build.Framework >= 17.0.0",
       "Microsoft.Build.Tasks.Core >= 17.0.0",
@@ -5970,23 +6041,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\G992127\\.nuget\\packages\\": {},
+    "C:\\Users\\G992107\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\G992127\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj",
+      "projectUniqueName": "C:\\Users\\G992107\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj",
       "projectName": "ILR_TestSuite",
-      "projectPath": "C:\\Users\\G992127\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj",
-      "packagesPath": "C:\\Users\\G992127\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\G992127\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\obj\\",
+      "projectPath": "C:\\Users\\G992107\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj",
+      "packagesPath": "C:\\Users\\G992107\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\G992107\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\G992127\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\G992107\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -6013,6 +6084,10 @@
       "netcoreapp3.1": {
         "targetAlias": "netcoreapp3.1",
         "dependencies": {
+          "DocumentFormat.OpenXml": {
+            "target": "Package",
+            "version": "[2.15.0, )"
+          },
           "Microsoft.Build": {
             "target": "Package",
             "version": "[17.0.0, )"

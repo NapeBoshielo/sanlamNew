@@ -55,9 +55,9 @@ namespace ILR_TestSuite
             _chromeOptions.AddArguments("--ignore-certificate-errors");
             _driver = new ChromeDriver("C:/Code/bin", _chromeOptions);
 
-            _test_data_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
-            _test_results_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestResults.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
-            _screenShotFolder = $@"C:\Users\G992127\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\New Business\​{ScreenShotDailyFolderName()}​\";
+            _test_data_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            _test_results_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestResults.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            _screenShotFolder = $@"C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\New Business\​{ScreenShotDailyFolderName()}​\";
 
 
             new DirectoryInfo(_screenShotFolder).Create();
