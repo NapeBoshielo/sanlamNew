@@ -234,7 +234,11 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
 
             }
-            catch (Exception ex) { }
+            catch (Exception ex) 
+            
+            { 
+            
+            }
             return results;
 
 
@@ -298,7 +302,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             Delay(1);
 
             // Locate the element “child” by By.xpath. 
-            IWebElement Child = _driver.FindElement(By.Name("/cover-details[0].relationship-type"));
+            IWebElement Child = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[5]/div[2]/div[1]/div/label[3]"));
 
             // Create an object of Actions class and pass reference variable driver as a parameter to its constructor. 
             Actions actions = new Actions(_driver);
@@ -324,24 +328,23 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //select relationship
             Delay(2);
+
+
             //Cover Amount 
-            SlideBar("Child");
+            //SlideBar("Child");
 
             TakeScreenshot(_driver, $@"{_screenShotFolder}\validations\", "MaxChildValidation");
 
-            //click next 
-            Delay(2);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/button")).Click();
+
 
             Delay(2);
 
 
             //Max validation
-            var Errormessage = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper]/article/form/section[5]/div[4]/div[1]/label")).Text;
+            var Errormessage = _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/form/section[5]/div[4]/div[1]/label")).Text;
+            
 
-
-
-            if ((Errormessage) != ("Cover Amount of R20 000 at R28 per month"))
+            if ((Errormessage) == ("Cover is only available for children up to 25 years of age"))
             {
                 results = "Passed";
             }
@@ -376,9 +379,10 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //Extended
 
-            //select relationship
-            // Locate the element “extended” by By.xpath. 
-            IWebElement extended = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[3]/div[2]/div[1]/div/label[5]"));
+            /// Locate the element “child” by By.xpath. 
+            IWebElement extended = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[7]/div[2]/div[1]/div/label[5]"));
+
+           
 
             // Create an object of Actions class and pass reference variable driver as a parameter to its constructor. 
             Actions actions = new Actions(_driver);
@@ -388,8 +392,8 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //Extended Relationship Type
 
-            IWebElement RelationshipType = _driver.FindElement(By.Id("downshift-3-input"));
-            RelationshipType.SendKeys("Cousin");
+            IWebElement RelationshipType = _driver.FindElement(By.Name("/cover-details[4].relationship-extended-type"));
+            RelationshipType.SendKeys("uncle");
             RelationshipType.SendKeys(Keys.ArrowDown);
             RelationshipType.SendKeys(Keys.Enter);
 
@@ -426,7 +430,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
 
             //Max validation
-            var Errormessage = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[7]/div[4]/div[1]/label")).Text;
+            var Errormessage = _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/form/section[7]/div[4]/div[1]/label")).Text;
 
 
             if ((Errormessage) == ("Cover is only available for persons up to 85 years of age"))
@@ -654,10 +658,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
                 TakeScreenshot(_driver, $@"{_screenShotFolder}\validations\", "MinMainLifeValidation");
             }
 
-       
-
-            // base.writeResultsToExcell(results, sheet, "MainLifeMinAge");
-
+      
             Delay(2);
 
 
@@ -698,8 +699,6 @@ namespace ILR_TestSuite.New_Business.Sales_App
             }
 
 
-
-            // base.writeResultsToExcell(results, sheet, "MainLifeMaxAge");
 
 
 
