@@ -57,7 +57,7 @@ namespace ILR_TestSuite
 
             _test_data_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
             _test_results_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestResults.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
-            _screenShotFolder = $@"C:\Users\G992107\Documents\GitHub\ILR_TestSuite\Failed_ScreenShots​{ScreenShotDailyFolderName()}​\";
+            _screenShotFolder = $@"C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\New Business\​{ScreenShotDailyFolderName()}​\";
 
 
             new DirectoryInfo(_screenShotFolder).Create();
@@ -134,7 +134,7 @@ namespace ILR_TestSuite
                 System.Threading.Thread.Sleep(2000);
 
                 _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/div/div[2]/button")).Click();
-                System.Threading.Thread.Sleep(3000);
+                System.Threading.Thread.Sleep(4000);
 
                 _driver.SwitchTo().Frame("form-frame");
                 System.Threading.Thread.Sleep(2000);
@@ -151,17 +151,17 @@ namespace ILR_TestSuite
                 passwordTextBox.SendKeys(_password);
                 System.Threading.Thread.Sleep(3000);
                 loginBtn.Click();
-                System.Threading.Thread.Sleep(1000);
+                System.Threading.Thread.Sleep(3000);
                _driver.SwitchTo().DefaultContent();
 
-                Delay(25);
+                Delay(30);
 
 
                 //create pin
                 _driver.FindElement(By.Name("pin")).SendKeys(_pin);
-                System.Threading.Thread.Sleep(3000);
+                System.Threading.Thread.Sleep(4000);
                 _driver.FindElement(By.Name("pinConfirm")).SendKeys(_pin);
-                System.Threading.Thread.Sleep(3000);
+                System.Threading.Thread.Sleep(4000);
                 IWebElement create = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div/section/form/button"));
                 create.Click();
                 Delay(2);
@@ -170,11 +170,7 @@ namespace ILR_TestSuite
                 return _driver;
             }
             catch (Exception ex) {
-
-       
-
-
-                throw ex;
+                 throw ex;
             }
 
            
@@ -304,7 +300,7 @@ namespace ILR_TestSuite
 
         public void writeResultsToExcell(string results, string sheet, string function)
         {
-            using (OleDbConnection conn = new OleDbConnection(_test_results_connString))
+            using (OleDbConnection conn = new OleDbConnection(_test_data_connString))
             {
                 try
                 {
