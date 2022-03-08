@@ -1076,26 +1076,44 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
 
 
+            Delay(2);
+            //upload1
+            _driver.FindElement(By.Id("/identification")).SendKeys("C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
+
+            //upload2
             Delay(1);
-            _driver.FindElement(By.Id("/identification")).SendKeys("C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload");
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/div/div[1]/section[1]/label/span[1]")).Click();
+            _driver.FindElement(By.Id("/q-link")).SendKeys("C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
+            //upload3
+
+            _driver.FindElement(By.Id("/proof-of-income")).SendKeys("C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
+
+            //_driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/div/div[1]/section[1]/label/span[1]")).Click();
+            //_driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/div/div[1]/section[1]/label/span[1]")).SendKeys("C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload");
+            //*[@id="gatsby-focus-wrapper"]/article/section/div/div[1]/section[1]/label/span[1]
+
+
+          //  Delay(3);
+           // IWebElement upload_file2 = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/div/div[2]/section[1]/label/span[1]"));
+
+           // upload_file2.SendKeys("C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload");
+
+
+          //  Delay(3);
+          //  IWebElement upload_file3 = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/div/div[3]/section[1]/label/span[1]"));
+
+          //  upload_file3.SendKeys("C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload");
+
+            //Next
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div/a[2]")).Click();
+
+            //Card number
+            _driver.FindElement(By.XPath("//*[@id='/card-number']")).SendKeys("00000007");
+
+            //next
+
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a[2]")).Click();
             
 
-        
-
-            Delay(3);
-            IWebElement upload_file2 = _driver.FindElement(By.XPath.c("//*[@id='gatsby-focus-wrapper']/article/section/div/div[2]/section[1]/label/span[1]"));
-
-            upload_file2.SendKeys("C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload");
-
-
-            Delay(3);
-            IWebElement upload_file3 = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/div/div[3]/section[1]/label/span[1]"));
-
-            upload_file3.SendKeys("C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload");
-
-
-            
         }
 
         public void SlideBar(string roles)
