@@ -1108,7 +1108,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div/a")).Click();
 
 
-            Delay(10);
+            Delay(15);
 
 
 
