@@ -170,7 +170,8 @@ namespace ILR_TestSuite
                 return _driver;
             }
             catch (Exception ex) {
-                 throw ex;
+                 
+                throw ex;
             }
 
            
