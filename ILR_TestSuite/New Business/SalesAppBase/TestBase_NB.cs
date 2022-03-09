@@ -154,7 +154,7 @@ namespace ILR_TestSuite
                 System.Threading.Thread.Sleep(3000);
                _driver.SwitchTo().DefaultContent();
 
-                Delay(35);
+                Delay(10);
 
 
                 //create pin

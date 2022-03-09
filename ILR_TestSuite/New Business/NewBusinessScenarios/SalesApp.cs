@@ -171,7 +171,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             //Send new keys
             IWebElement element = _driver.FindElement(By.Name("/cover-details[3].id-number"));
             Delay(3);
-            element.SendKeys("6902075770082");
+            element.SendKeys("6806081846085");
             Delay(2);
 
 
@@ -276,7 +276,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //ID Number
             Delay(1);
-            _driver.FindElement(By.Name("/cover-details[2].id-number")).SendKeys("0502076785083");   
+            _driver.FindElement(By.Name("/cover-details[2].id-number")).SendKeys("1009248900086");   
 
             //Cellphone
             Delay(1);
@@ -290,8 +290,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             //Cover Amount 
             //SlideBar("Child");
 
-            TakeScreenshot(_driver, $@"{_screenShotFolder}\validations\", "MaxChildValidation");
-
+            
 
 
             Delay(2);
@@ -303,10 +302,14 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             if ((Errormessage) == ("Cover is only available for children up to 25 years of age"))
             {
+
+                TakeScreenshot(_driver, $@"{_screenShotFolder}\validations\", "MaxChildValidation");
                 results = "Passed";
             }
             else
             {
+                TakeScreenshot(_driver, $@"{_screenShotFolder}\failedscenarios\", "MaxChildValidation");
+
                 results = "Failed";
             }
 
@@ -364,7 +367,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //ID Number
             Delay(1);
-            _driver.FindElement(By.Name("/cover-details[4].id-number")).SendKeys("7001113329081");
+            _driver.FindElement(By.Name("/cover-details[4].id-number")).SendKeys("8803205554081");
 
             //Cellphone
             Delay(1);
@@ -462,7 +465,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             //Send new keys
             IWebElement element = _driver.FindElement(By.Name("/cover-details[1].id-number"));
             Delay(3);
-            element.SendKeys("8202075420087");
+            element.SendKeys("9002143493085");
             Delay(2);
 
 
@@ -1081,10 +1084,10 @@ namespace ILR_TestSuite.New_Business.Sales_App
             _driver.FindElement(By.Id("/identification")).SendKeys("C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
 
             //upload2
-            Delay(1);
+            Delay(2);
             _driver.FindElement(By.Id("/q-link")).SendKeys("C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
             //upload3
-
+            Delay(1);
             _driver.FindElement(By.Id("/proof-of-income")).SendKeys("C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
 
 
@@ -1098,7 +1101,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             _driver.FindElement(By.Id("/card-number")).SendKeys("10000007");
 
             //next
-            Delay(1);
+            Delay(2);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a[2]")).Click();
 
 
@@ -1110,6 +1113,10 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             Delay(15);
 
+
+            //sync
+            Delay(1);
+            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/nav/div/div/button")).Click();
 
 
 
