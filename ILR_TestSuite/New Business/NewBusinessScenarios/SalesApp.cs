@@ -479,7 +479,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             var policyHolderData = getPolicyHolderDetails(scenario_ID);
             _driver.SwitchTo().ActiveElement();
             _driver.FindElement(By.XPath("//*[@id='___gatsby']"));
-            Delay(60);
+            Delay(20);
             IWebElement new_client = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/div[2]/div[1]/button"));
             new_client.Click();
             //  Actions action = new Actions(_driver);
@@ -1048,14 +1048,14 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             Delay(2);
             //upload1
-            _driver.FindElement(By.Id("/identification")).SendKeys("C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
+            _driver.FindElement(By.Id("/identification")).SendKeys("C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
 
             //upload2
             Delay(2);
-            _driver.FindElement(By.Id("/q-link")).SendKeys("C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
+            _driver.FindElement(By.Id("/q-link")).SendKeys("C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
             //upload3
             Delay(1);
-            _driver.FindElement(By.Id("/proof-of-income")).SendKeys("C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
+            _driver.FindElement(By.Id("/proof-of-income")).SendKeys("C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
 
 
             //click next
@@ -1065,7 +1065,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //Card number
             Delay(4);
-            _driver.FindElement(By.Id("/card-number")).SendKeys("10007408");
+            _driver.FindElement(By.Id("/card-number")).SendKeys("10017408");
 
             //next
             Delay(2);
