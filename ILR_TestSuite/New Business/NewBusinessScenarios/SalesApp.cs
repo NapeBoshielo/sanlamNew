@@ -35,11 +35,9 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             [Test, Order(1)]
             public void RunTest()
-        {
-            Delay(40);
-           // string scenario_id;
-        // createNewClient();
-           // writeResultsToExcell( "Scenarios", "MaxMinAgeMainLife");
+            {
+                Delay(15);
+
 
             using (OleDbConnection conn = new OleDbConnection(_test_data_connString))
             {
@@ -69,31 +67,9 @@ namespace ILR_TestSuite.New_Business.Sales_App
                     foreach (var row in ds.Tables[0].DefaultView)
                     {
                         var Scenario_ID = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
-                        PositiveTestProcess(Scenario_ID);
-                        //switch (func)
-                        //{
-                        //    case "MaxMinAgeSpouse":
-                        //        SpouseMaxMin();
-                        //    //  writeResultsToExcell(results, sheet, func);
-                        //        break;
-                        //    case "MaxMinAgeChild":
-                        //        ChildMaxAge();
-                        //       // writeResultsToExcell(results, sheet, func);
-                        //        break;
-                        //    case "MaxMinAgeParent":
-                        //       MaxMinAgeParent();
-                        //  //  writeResultsToExcell(results, sheet, func);
-                        //        break;
-                        //    case "MaxMinAgeExtended":
-                        //         ExtendedMaxAge();
-                        //       // writeResultsToExcell(results, sheet, func);
-                        //        break;
-                        //    case "PositiveTest":
-                        //   // writeResultsToExcell(results, sheet, func);
-                        //    break;
-                        //default:
-                        //        break;
-                        //}
+                        var result = PositiveTestProcess(Scenario_ID);
+                        writeResultsToExcell(results, sheet,Scenario_ID);
+                        
 
 
                     }
@@ -503,7 +479,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             var policyHolderData = getPolicyHolderDetails(scenario_ID);
             _driver.SwitchTo().ActiveElement();
             _driver.FindElement(By.XPath("//*[@id='___gatsby']"));
-            Delay(1);
+            Delay(60);
             IWebElement new_client = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/div[2]/div[1]/button"));
             new_client.Click();
             //  Actions action = new Actions(_driver);
@@ -670,9 +646,18 @@ namespace ILR_TestSuite.New_Business.Sales_App
         }
         public string PositiveTestProcess(string scenario_ID)
         {
-
             createNewClient(scenario_ID);
             string results="";
+            var policyplayers = getRolePlayers(scenario_ID);
+            List<string> keys = new List<string>();
+            keys.Add("PLA");
+            keys.Add("spouse");
+            keys.Add("Children");
+            keys.Add("Parents");
+            keys.Add("Extended");
+
+            var beneficiaries = policyplayers["Beneficiaries"];
+
             //click tickbox product
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/div[1]/div[3]/button/span")).Click();
@@ -685,226 +670,123 @@ namespace ILR_TestSuite.New_Business.Sales_App
             //click next
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a")).Click();
-
-
-
             //click on No
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[1]/div/div[2]/div/div/label[2]")).Click();
 
-
             //click on 5%
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[2]/div/div[2]/div/div/label[1]")).Click();
+           //Add Provided LAs
+            var lifeAsuredCounter = 0;
+            var label = 1;
+            var section = 3;
+            foreach (var key in keys) 
+            {
+
+                foreach (var item in policyplayers[key])
+                {
+                     if(item.Count > 0)
+                    {
+                        if (key == "PLA")
+                        {
+                            if (item["Covered"] == "Yes")
+                            {
+
+                                //add main life
+                                Delay(1);
+                                _driver.FindElement(By.XPath($"//*[@id='gatsby-focus-wrapper']/article/form/section[{section}]/div[2]/div[1]/div/label[{label}]")).Click();
+                                //Cover Amount
+                                SlideBar("Myself");
+                                section++;
+                                lifeAsuredCounter++;
+                                break;
+                            }
+                        }
+                        //click Add 
+                        Delay(2);
+                        _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/button")).Click();
+
+                        //select relationship
+                        Delay(2);
+                        _driver.FindElement(By.XPath($"//*[@id='gatsby-focus-wrapper']/article/form/section[{section}]/div[2]/div[1]/div/label[{label}]")).Click();
+                        if (key == "Extended")
+                        {
+                            //Extended Relationship Type
+
+                            IWebElement RelationshipType = _driver.FindElement(By.Name($"/cover-details[{lifeAsuredCounter}].relationship-extended-type"));
+                            RelationshipType.SendKeys(item["Extended_RelationshipType"]);
+                            RelationshipType.SendKeys(Keys.ArrowDown);
+                            RelationshipType.SendKeys(Keys.Enter);
+                        }
+                        //FirstName
+                        Delay(1);
+                        _driver.FindElement(By.Name($"/cover-details[{lifeAsuredCounter}].name")).SendKeys(item["First_name"]);
+                        //Surname
+                        Delay(2);
+                        _driver.FindElement(By.Name($"/cover-details[{lifeAsuredCounter}].surname")).SendKeys(item["Surname"]);
+                        //ID Number
+                        Delay(1);
+                        _driver.FindElement(By.Name($"/cover-details[{lifeAsuredCounter}].id-number")).SendKeys(item["ID_number"]);
+                        //Cellphone
+                        Delay(2);
+                        _driver.FindElement(By.Name($"/cover-details[{lifeAsuredCounter}].contact-number")).SendKeys(item["Cellphone"]);
+
+                        section++;
+                        lifeAsuredCounter++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            
+                label++;
+                
+            }
 
 
-
-
-            //add main life
             Delay(1);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[3]/div[2]/div[1]/div/label[1]")).Click();
-
-
-
-            //Cover Amount
-
-            SlideBar("Myself");
-
-
-            var counter = 1;
-
-            
-
-         var policyplayers =   getRolePlayers(scenario_ID);
-            //foreach (var keys in policyplayers) {
-            //    if (policyplayers[keys] != "Extended") {
-                
-                
-                
-            //    }
-            
-            
-            
-            
-            
-            
-            //}
-                foreach (var player in policyplayers["spouse"]) {
-
-                //click Add 
-                Delay(1);
-                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/button")).Click();
-
-
-
-                //select relationship
-                Delay(1);
-                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[4]/div[2]/div[1]/div/label[2]")).Click();
-
-                //FirstName
-                Delay(1);
-                _driver.FindElement(By.Name($"/cover-details[{counter}].name")).SendKeys(player["First_name"]);
-                //Surname
-                Delay(1);
-                _driver.FindElement(By.Name($"/cover-details[{counter}].surname")).SendKeys(player["Surname"]);
-
-                //ID Number
-                Delay(1);
-                _driver.FindElement(By.Name($"/cover-details[{counter}].id-number")).SendKeys(player["ID_number"]);
-
-                //Cellphone
-                Delay(1);
-                _driver.FindElement(By.Name($"/cover-details[{counter}].contact-number")).SendKeys(player["Cellphone"]);
-               
-            }
-            counter++;
-            Delay(1);
-            var counter1 = 1;
-            foreach (var player in policyplayers["Children"])
-            {
-                Delay(1);
-               
-                //click Add 
-                Delay(1);
-                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/button")).Click();
-
-
-
-                //select relationship
-                Delay(3);
-                _driver.FindElement(By.XPath($"//*[@id='gatsby-focus-wrapper']/article/form/section[{counter1+4}]/div[2]/div[1]/div/label[3]")).Click();
-
-                //*[@id="gatsby-focus-wrapper"]/article/form/section[5]/div[2]/div[1]/div/label[3]
-                //FirstName
-                Delay(1);
-                _driver.FindElement(By.Name($"/cover-details[{counter}].name")).SendKeys(player["First_name"]);
-                //Surname
-                Delay(1);
-                _driver.FindElement(By.Name($"/cover-details[{counter}].surname")).SendKeys(player["Surname"]);
-
-                //ID Number
-                Delay(1);
-                _driver.FindElement(By.Name($"/cover-details[{counter}].id-number")).SendKeys(player["ID_number"]);
-
-                //Cellphone
-                Delay(1);
-                _driver.FindElement(By.Name($"/cover-details[{counter}].contact-number")).SendKeys(player["Cellphone"]);
-                counter1++;
-            }
-            counter++;
-            foreach (var player in policyplayers["Parents"])
-            {
-
-                //click Add 
-                Delay(1);
-                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/button")).Click();
-
-
-
-                //select relationship
-                Delay(1);
-                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[7]/div[2]/div[1]/div/label[4]")).Click();
-
-                
-
-                //FirstName
-                Delay(1);
-                _driver.FindElement(By.Name($"/cover-details[{counter}].name")).SendKeys(player["First_name"]);
-                //Surname
-                Delay(1);
-                _driver.FindElement(By.Name($"/cover-details[{counter}].surname")).SendKeys(player["Surname"]);
-
-                //ID Number
-                Delay(1);
-                _driver.FindElement(By.Name($"/cover-details[{counter}].id-number")).SendKeys(player["ID_number"]);
-
-                //Cellphone
-                Delay(1);
-                _driver.FindElement(By.Name($"/cover-details[{counter}].contact-number")).SendKeys(player["Cellphone"]);
-
-            }
-            counter++;
-            foreach (var player in policyplayers["Extended"])
-            {
-
-                //click Add 
-                Delay(1);
-                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/button")).Click();
-
-
-
-                //select relationship
-                Delay(1);
-                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[4]/div[2]/div[1]/div/label[2]")).Click();
-
-
-                // Create an object of Actions class and pass reference variable driver as a parameter to its constructor. 
-                //Actions actions = new Actions(_driver);
-                //actions.Click(extended);
-                //actions.Build().Perform();
-
-
-                //Extended Relationship Type
-
-                IWebElement RelationshipType = _driver.FindElement(By.Name("/cover-details[4].relationship-extended-type"));
-                RelationshipType.SendKeys("uncle");
-                RelationshipType.SendKeys(Keys.ArrowDown);
-                RelationshipType.SendKeys(Keys.Enter);
-
-                //FirstName
-                Delay(1);
-                _driver.FindElement(By.Name($"/cover-details[{counter}].name")).SendKeys(player["First_name"]);
-                //Surname
-                Delay(1);
-                _driver.FindElement(By.Name($"/cover-details[{counter}].surname")).SendKeys(player["Surname"]);
-
-                //ID Number
-                Delay(1);
-                _driver.FindElement(By.Name($"/cover-details[{counter}].id-number")).SendKeys(player["ID_number"]);
-
-                //Cellphone
-                Delay(1);
-                _driver.FindElement(By.Name($"/cover-details[{counter}].contact-number")).SendKeys(player["Cellphone"]);
-
-            }
-            counter++;
+   
             //Click next
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a[2]")).Click();
 
 
+            var beneCounter = 0;
             //payment reciever(Beneficiary)
+            foreach (var item in beneficiaries)
+            {
+                //click relationship 
+                Delay(1);
+                _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/div/section/div[3]/div/div[1]/div/label[1]")).Click();
 
+                //FirstName
+                Delay(1);
+                _driver.FindElement(By.Name($"/funeral-beneficiaries[{beneCounter}].name")).SendKeys(item["First_name"]);
+                //Surname
+                Delay(1);
+                _driver.FindElement(By.Name($"/funeral-beneficiaries[{beneCounter}].surname")).SendKeys(item["Surname"]);
 
-            //click relationship 
-            Delay(1);
-            _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/div/section/div[3]/div/div[1]/div/label[1]")).Click();
+                //ID Number
+                Delay(1);
+                _driver.FindElement(By.Name($"/funeral-beneficiaries[{beneCounter}].id-number")).SendKeys(item["ID_number"]);
 
+                //Cellphone
+                Delay(1);
+                _driver.FindElement(By.Name($"/funeral-beneficiaries[{beneCounter}].contact-number")).SendKeys(item["Cellphone"]);
 
+                //Percentage
+                IWebElement sliderbar5 = _driver.FindElement(By.ClassName("slider"));
+                int widthslider5 = sliderbar5.Size.Width;
+                Delay(1);
+                IWebElement slider5 = _driver.FindElement(By.ClassName("slider"));
+                Actions slideraction5 = new Actions(_driver);
+                slideraction5.ClickAndHold(slider5);
+                slideraction5.MoveByOffset(260, 0).Build().Perform();
+                beneCounter++;
 
-            //FirstName
-            Delay(1);
-            _driver.FindElement(By.Name("/funeral-beneficiaries[0].name")).SendKeys("Lindokuhle");
-            //Surname
-            Delay(1);
-            _driver.FindElement(By.Name("/funeral-beneficiaries[0].surname")).SendKeys("Matlou");
-
-            //ID Number
-            Delay(1);
-            _driver.FindElement(By.Name("/funeral-beneficiaries[0].id-number")).SendKeys("8811205596085");
-
-            //Cellphone
-            Delay(1);
-            _driver.FindElement(By.Name("/funeral-beneficiaries[0].contact-number")).SendKeys("0679774589");
-
-            //Percentage
-            IWebElement sliderbar5 = _driver.FindElement(By.ClassName("slider"));
-            int widthslider5 = sliderbar5.Size.Width;
-            Delay(1);
-            IWebElement slider5 = _driver.FindElement(By.ClassName("slider"));
-            Actions slideraction5 = new Actions(_driver);
-            slideraction5.ClickAndHold(slider5);
-            slideraction5.MoveByOffset(260, 0).Build().Perform();
+            }
 
 
             //Click next
@@ -1146,7 +1028,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //reference no 
             Delay(1);
-            _driver.FindElement(By.Name("/call-reference-number")).SendKeys("09876567");
+            _driver.FindElement(By.Name("/call-reference-number")).SendKeys("09876566");
 
             //click next 
             Delay(1);
@@ -1166,14 +1048,14 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             Delay(2);
             //upload1
-            _driver.FindElement(By.Id("/identification")).SendKeys("C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
+            _driver.FindElement(By.Id("/identification")).SendKeys("C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
 
             //upload2
             Delay(2);
-            _driver.FindElement(By.Id("/q-link")).SendKeys("C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
+            _driver.FindElement(By.Id("/q-link")).SendKeys("C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
             //upload3
             Delay(1);
-            _driver.FindElement(By.Id("/proof-of-income")).SendKeys("C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
+            _driver.FindElement(By.Id("/proof-of-income")).SendKeys("C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
 
 
             //click next
@@ -1183,7 +1065,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //Card number
             Delay(4);
-            _driver.FindElement(By.Id("/card-number")).SendKeys("10000008");
+            _driver.FindElement(By.Id("/card-number")).SendKeys("10007408");
 
             //next
             Delay(2);
