@@ -55,9 +55,9 @@ namespace ILR_TestSuite
             _chromeOptions.AddArguments("--ignore-certificate-errors");
             _driver = new ChromeDriver("C:/Code/bin", _chromeOptions);
 
-            _test_data_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
-            _test_results_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestResults.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
-            _screenShotFolder = $@"C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\New Business\​{ScreenShotDailyFolderName()}​\";
+            _test_data_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            _test_results_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestResults.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            _screenShotFolder = $@"C:\Users\E697642\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\New Business\​{ScreenShotDailyFolderName()}​\";
 
 
             new DirectoryInfo(_screenShotFolder).Create();
@@ -154,7 +154,7 @@ namespace ILR_TestSuite
                 System.Threading.Thread.Sleep(3000);
                _driver.SwitchTo().DefaultContent();
 
-                Delay(30);
+                Delay(15);
 
 
                 //create pin
@@ -298,7 +298,7 @@ namespace ILR_TestSuite
         }
 
 
-        public void writeResultsToExcell(string results, string sheet, string function)
+        public void writeResultsToExcell(string results, string sheet, string scenario)
         {
             using (OleDbConnection conn = new OleDbConnection(_test_data_connString))
             {
@@ -312,9 +312,9 @@ namespace ILR_TestSuite
                     var testDate = DateTime.Now.ToString();
 
                     //Test_Date
-                    cmd.CommandText = $"UPDATE [{sheet}$] SET Test_Date = '{testDate}' WHERE Function = '{function}';";
+                    cmd.CommandText = $"UPDATE [{sheet}$] SET Test_Date = '{testDate}' WHERE Scenario_ID = '{scenario}';";
                     cmd.ExecuteNonQuery();
-                    cmd.CommandText = $"UPDATE [{sheet}$] SET Test_Results  = '{results}' WHERE Function = '{function}';";
+                    cmd.CommandText = $"UPDATE [{sheet}$] SET Test_Results  = '{results}' WHERE Scenario_ID = '{scenario}';";
                     cmd.ExecuteNonQuery();
 
                 }
@@ -328,34 +328,30 @@ namespace ILR_TestSuite
                     conn.Dispose();
                 }
             }
-
-
-
-
         }
-
-        public IDictionary<string, string> getPolicyHolderDetails(string scenario_id)
+        public Dictionary<string, List<Dictionary<string, string>>> getRolePlayers(string id)
         {
-            //Variables to store policy holder data
-            IDictionary<string, string> policyHolderData = new Dictionary<string, string>();
-            string[] keys = {"town","WorkSite", "employemnt", "first_name", "maiden", "surname", "idNo", "ethnicity", "material_status" , "cellphone_number", "email","nationality", "countryOBirth", "countryOfResidence", "grossMonthlyIncome", "permanently_employed", "salary_frequency", "gender", "DOB",
-                "net_salary", "additional_income", "existing_financial_cover", "school_fees", "food", "retail_accounts", "cellphone", "debt",
-                "mortage", "transport", "entertainment_other"};
-
-            //Sheets in the test data file that we want to access to extract Policy holder data
+ 
+           Dictionary < string, List<Dictionary<string,string>>> roleplayersData = new Dictionary<string, List<Dictionary<string,string>>>();
             var sheets = new List<string>();
-            sheets.Add("PolicyHolder_Details");
-            sheets.Add("Affordability_Check");
-
-            //Extracting data from every sheet 
+            sheets.Add("PLA");
+            sheets.Add("Extended");
+            sheets.Add("Parents");
+            sheets.Add("Children");
+            sheets.Add("spouse");
+            sheets.Add("PolicyPayer");
+            sheets.Add("Beneficiaries");
 
             foreach (var sheet in sheets)
             {
+                List<Dictionary<string, string>> roleplyers = new List<Dictionary<string, string>>();
+                List<string> keys = new List<string>();
+                //Loop through every row of that sheet and get data of all the players with the scenario id given
+                _test_data_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=NO'";
                 using (OleDbConnection conn = new OleDbConnection(_test_data_connString))
                 {
                     try
                     {
-
                         // Open connection
                         conn.Open();
                         string cmdQuery = "SELECT * FROM [" + sheet + "$]";
@@ -373,40 +369,45 @@ namespace ILR_TestSuite
                         // Fill the DataSet from the data extracted from the worksheet.
                         oleda.Fill(ds, "PolicyHolderData");
 
-
+                        var count = 0;
+                        
+                        int noColumn = ds.Tables[0].Columns.Count;
+                        //Loop throgh every row
                         foreach (var row in ds.Tables[0].DefaultView)
                         {
-
-                            var scenarioID = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
-
-                            if (scenarioID == scenario_id)
+                            if (count == 0)
                             {
-                                if (sheet == "PolicyHolder_Details")
+                                for (int i = 1; i < noColumn; i++)
                                 {
-                                    var keysLen = keys.Length - 11;
-                                    for (int i = 0; i < keysLen; i++)
-                                    {
-                                        policyHolderData.Add(keys[i], ((System.Data.DataRowView)row).Row.ItemArray[i + 1].ToString());
-                                    }
+
+                                    keys.Add(((System.Data.DataRowView)row).Row.ItemArray[i].ToString());
 
                                 }
-                                else if (sheet == "Affordability_Check")
+
+                            }
+                            else
+                            {
+                                var scenarioID = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+
+
+                                if (scenarioID == id)
                                 {
-                                    var keysLen = keys.Length;
-                                    int counter = 1;
-                                    for (int i = 19; i < keysLen; i++)
-                                    {
-                                        policyHolderData.Add(keys[i], ((System.Data.DataRowView)row).Row.ItemArray[counter].ToString());
-                                        counter++;
-                                    }
+
+                                    var column = 1;
+                                    Dictionary<string, string> rowData = new Dictionary<string, string>();
+
+                                    foreach (string key in keys)
+                                   {
+                                        rowData.Add(key, ((System.Data.DataRowView)row).Row.ItemArray[column].ToString());
+                                       column++;
+                                   }
+                                    roleplyers.Add(rowData);
 
                                 }
                             }
+                            count++;
+
                         }
-
-
-
-
                     }
                     catch (Exception ex)
                     {
@@ -420,6 +421,102 @@ namespace ILR_TestSuite
                         conn.Dispose();
                     }
                 }
+                roleplayersData.Add(sheet, roleplyers);
+            }
+
+            return roleplayersData;
+
+        }
+        public Dictionary<string, string> getPolicyHolderDetails(string scenario_id)
+        {
+            _test_data_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=NO'";
+            //Variables to store policy holder data
+            Dictionary<string, string> policyHolderData = new Dictionary<string, string>();
+       
+        
+            //Sheets in the test data file that we want to access to extract Policy holder data
+            var sheets = new List<string>();
+            sheets.Add("PolicyHolder_Details");
+            sheets.Add("Affordability_Check");
+            sheets.Add("BankDetails");
+            sheets.Add("PhysicalAddress");
+            //Extracting data from every sheet 
+
+            foreach (var sheet in sheets)
+            {
+               
+                using (OleDbConnection conn = new OleDbConnection(_test_data_connString))
+                {
+                    try
+                    {
+                        // Open connection
+                        conn.Open();
+                        string cmdQuery = "SELECT * FROM [" + sheet + "$]";
+
+                        OleDbCommand cmd = new OleDbCommand(cmdQuery, conn);
+
+                        // Create new OleDbDataAdapter
+                        OleDbDataAdapter oleda = new OleDbDataAdapter();
+
+                        oleda.SelectCommand = cmd;
+
+                        // Create a DataSet which will hold the data extracted from the worksheet.
+                        DataSet ds = new DataSet();
+
+                        // Fill the DataSet from the data extracted from the worksheet.
+                        oleda.Fill(ds, "PolicyHolderData");
+
+                        var count = 0;
+                        List<string> keys = new List<string>();
+                        int noColumn = ds.Tables[0].Columns.Count;
+                        foreach (var row in ds.Tables[0].DefaultView)
+                        {
+                           
+                            if (count == 0)
+                            {
+                                for (int i = 1; i < noColumn ; i++)
+                                {
+                                    
+                                        keys.Add(((System.Data.DataRowView)row).Row.ItemArray[i].ToString());
+                              
+                                }
+
+                            }
+                            else
+                            {
+                                var scenarioID = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+
+
+                                if (scenarioID == scenario_id)
+                                {
+                                   
+                                    var column = 1;
+
+
+                                    foreach (string key in keys)
+                                    {
+                                        policyHolderData.Add(key, ((System.Data.DataRowView)row).Row.ItemArray[column].ToString());
+                                        column++;
+                                    }
+
+                                }
+                            }
+                            count++;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    finally
+                    {
+                        conn.Close();
+
+
+                        conn.Dispose();
+                    }
+                }
+
             }
 
             return policyHolderData;
