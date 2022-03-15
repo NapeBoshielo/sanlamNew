@@ -19,8 +19,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
     public class SalesApp : TestBase_NB
 
     {
-       /// IWebElement main_="",spouce_,child_="",parent_="",extended_="";
-      //  string main1_="";
+      
         [SetUp]
             public void startBrowser()
 
@@ -31,68 +30,55 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             }
 
-
-
             [Test, Order(1)]
             public void RunTest()
             {
                 Delay(15);
-
-
-            using (OleDbConnection conn = new OleDbConnection(_test_data_connString))
-            {
-                try
+                using (OleDbConnection conn = new OleDbConnection(_test_data_connString))
                 {
-                    var sheet = "Scenarios";
-                    var results ="";
-                    // Open connection
-                    conn.Open();
-                    string cmdQuery = "SELECT * FROM ["+ sheet + "$]";
-
-                    OleDbCommand cmd = new OleDbCommand(cmdQuery, conn);
-
-                    // Create new OleDbDataAdapter
-                    OleDbDataAdapter oleda = new OleDbDataAdapter();
-
-                    oleda.SelectCommand = cmd;
-
-                    // Create a DataSet which will hold the data extracted from the worksheet.
-                    DataSet ds = new DataSet();
-
-                    // Fill the DataSet from the data extracted from the worksheet.
-                    oleda.Fill(ds, "Policies");
-
-
-                    //addMainLife();
-                    foreach (var row in ds.Tables[0].DefaultView)
+                    try
                     {
-                        var Scenario_ID = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
-                        var result = PositiveTestProcess(Scenario_ID);
-                        writeResultsToExcell(results, sheet,Scenario_ID);
-                        
+                        var sheet = "Scenarios";
+                        var results ="";
+                        // Open connection
+                        conn.Open();
+                        string cmdQuery = "SELECT * FROM ["+ sheet + "$]";
+
+                        OleDbCommand cmd = new OleDbCommand(cmdQuery, conn);
+
+                        // Create new OleDbDataAdapter
+                        OleDbDataAdapter oleda = new OleDbDataAdapter();
+
+                        oleda.SelectCommand = cmd;
+
+                        // Create a DataSet which will hold the data extracted from the worksheet.
+                        DataSet ds = new DataSet();
+
+                        // Fill the DataSet from the data extracted from the worksheet.
+                        oleda.Fill(ds, "Policies");
 
 
+                        //addMainLife();
+                        foreach (var row in ds.Tables[0].DefaultView)
+                        {
+                            var Scenario_ID = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+                            var result = PositiveTestProcess(Scenario_ID);
+                            writeResultsToExcell(results, "Scenarios",Scenario_ID);
+
+                        }
                     }
-                    
-
-
-
+                    finally
+                    {
+                        conn.Close();
+                        conn.Dispose();
+                    }
                 }
-                finally
-                {
-                    conn.Close();
-                    conn.Dispose();
-                }
+
             }
-
-
-
-
-
-        }
   
-        public void createNewClient(string scenario_ID)
+        public Dictionary<string, string> createNewClient(string scenario_ID)
         {
+
             string results = "";
             //get policy holder data
             var policyHolderData = getPolicyHolderDetails(scenario_ID);
@@ -262,14 +248,17 @@ namespace ILR_TestSuite.New_Business.Sales_App
             //click next
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a[2]")).Click();
+
+            return policyHolderData;
         }
         public string PositiveTestProcess(string scenario_ID)
         {
-            createNewClient(scenario_ID);
+            var upload_file = "C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg";
+            var plaData = createNewClient(scenario_ID);
             string results="";
             var policyplayers = getRolePlayers(scenario_ID);
             List<string> keys = new List<string>();
-            keys.Add("PLA");
+            keys.Add("PolicyHolder_Details");
             keys.Add("spouse");
             keys.Add("Children");
             keys.Add("Parents");
@@ -307,7 +296,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
                 {
                      if(item.Count > 0)
                     {
-                        if (key == "PLA")
+                        if (key == "PolicyHolder_Details")
                         {
                             if (item["Covered"] == "Yes")
                             {
@@ -368,7 +357,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             Delay(1);
    
             //Click next
-            Delay(1);
+            Delay(3);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a[2]")).Click();
 
 
@@ -433,12 +422,8 @@ namespace ILR_TestSuite.New_Business.Sales_App
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div/a[2]")).Click();
 
-
-
-
-
             /////////Payment Details
-            string Bank = "";
+            string bank = plaData["Bank"];
 
             //policy payer
             Delay(1);
@@ -447,52 +432,13 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //bank details
             //Bank Selction
-            var value = "";
-            switch (Bank)
-            {
-                case "ABSA BANK":
-                    value = "ABSA BANK";
-                    break;
-                case "AFRICAN BANK":
-                    value = "AFRICAN BANK";
-                    break;
-
-                case "BIDVEST BANK":
-                    value = "BIDVEST BANK";
-                    break;
-
-                case "CAPITEC BANK":
-                    value = "CAPITEC BANK";
-                    break;
-                case "DISCOVERY BANK LIMITED":
-                    value = "DISCOVERY BANK LIMITED";
-                    break;
-
-                case "FIRST NATIONAL BANK":
-                    value = "FIRST NATIONAL BANK";
-                    break;
-
-                case "STANDARD BANK S.A.":
-                    value = "STANDARD BANK S.A.";
-                    break;
-                case "NEDBANK LIMITED":
-                    value = "NEDBANK LIMITED";
-                    break;
-
-                case "TYME BANK":
-                    value = "TYME BANK";
-                    break;
-
-                default:
-                    break;
-            }
-
+      
             SelectElement oSelect1 = new SelectElement(_driver.FindElement(By.Name("/bank-select")));
-            oSelect1.SelectByValue("FIRST NATIONAL BANK");
+            oSelect1.SelectByValue(bank);
 
             //Account Number
             Delay(1);
-            _driver.FindElement(By.Name("/account-number")).SendKeys("62429363625");
+            _driver.FindElement(By.Name("/account-number")).SendKeys(plaData["Account_Number"]);
 
 
             //Account Type
@@ -500,45 +446,13 @@ namespace ILR_TestSuite.New_Business.Sales_App
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[1]/div[2]/div[4]/div/label[2]")).Click();
 
 
-
-            //Bank Selction
-            var value1 = "";
-            switch (Bank)
-            {
-                case "1st":
-                    value1 = "1";
-                    break;
-                case "15th":
-                    value1 = "15";
-                    break;
-
-                case "20th":
-                    value1 = "20";
-                    break;
-
-                case "25th":
-                    value1 = "25";
-                    break;
-                case "30th":
-                    value1 = "30";
-                    break;
-
-                case "Last day of the month":
-                    value1 = "31";
-                    break;
-
-                default:
-                    break;
-            }
-
             ///debit - order - date / debit - order - date
             SelectElement oSelect = new SelectElement(_driver.FindElement(By.Name("/debit-order-date")));
-            oSelect.SelectByValue("25");
+            oSelect.SelectByValue(plaData["Debit_Order_Day"]);
 
             //salarypaydate
             Delay(1);
-            _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/form/section[1]/div[2]/div[6]/input")).SendKeys("25");
-
+            _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/form/section[1]/div[2]/div[6]/input")).SendKeys(plaData["Salary_Date"]);
 
             //click tickbox
             Delay(1);
@@ -615,21 +529,21 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //Building
             Delay(1);
-            _driver.FindElement(By.Name("/physical-address-building")).SendKeys("27 Beacon Avenue");
+            _driver.FindElement(By.Name("/physical-address-building")).SendKeys(plaData["Building"]);
             //Street
             Delay(1);
-            _driver.FindElement(By.Name("/physical-address-street")).SendKeys("27 Beacon Avenue");
+            _driver.FindElement(By.Name("/physical-address-street")).SendKeys(plaData["Street"]);
 
             //Town
             Delay(1);
-            _driver.FindElement(By.Name("/physical-address-town")).SendKeys("Linbro Park");
+            _driver.FindElement(By.Name("/physical-address-town")).SendKeys(plaData["City"]);
 
             //Suburb
             Delay(1);
-            _driver.FindElement(By.Name("/physical-address-suburb")).SendKeys("Sandton");
+            _driver.FindElement(By.Name("/physical-address-suburb")).SendKeys(plaData["Suburb"]);
 
             //CodeField 
-            _driver.FindElement(By.Name("/physical-address-code")).SendKeys("2090");
+            _driver.FindElement(By.Name("/physical-address-code")).SendKeys(plaData["Code"]);
 
 
 
@@ -647,7 +561,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //reference no 
             Delay(1);
-            _driver.FindElement(By.Name("/call-reference-number")).SendKeys("09876566");
+            _driver.FindElement(By.Name("/call-reference-number")).SendKeys(plaData["Call_Ref_Number"]);
 
             //click next 
             Delay(1);
@@ -667,14 +581,14 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             Delay(2);
             //upload1
-            _driver.FindElement(By.Id("/identification")).SendKeys("C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
+            _driver.FindElement(By.Id("/identification")).SendKeys(upload_file);
 
             //upload2
             Delay(2);
-            _driver.FindElement(By.Id("/q-link")).SendKeys("C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
+            _driver.FindElement(By.Id("/q-link")).SendKeys(upload_file);
             //upload3
             Delay(1);
-            _driver.FindElement(By.Id("/proof-of-income")).SendKeys("C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg");
+            _driver.FindElement(By.Id("/proof-of-income")).SendKeys(upload_file);
 
 
             //click next
@@ -684,7 +598,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //Card number
             Delay(4);
-            _driver.FindElement(By.Id("/card-number")).SendKeys("10017408");
+            _driver.FindElement(By.Id("/card-number")).SendKeys(plaData["Card_Number"]);
 
             //next
             Delay(2);
