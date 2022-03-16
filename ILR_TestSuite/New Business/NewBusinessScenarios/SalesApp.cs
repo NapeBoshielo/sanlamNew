@@ -305,7 +305,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
                                 Delay(1);
                                 _driver.FindElement(By.XPath($"//*[@id='gatsby-focus-wrapper']/article/form/section[{section}]/div[2]/div[1]/div/label[{label}]")).Click();
                                 //Cover Amount
-                                SlideBar("Myself");
+                                SlideBar(scenario_ID,"Myself");
                                 section++;
                                 lifeAsuredCounter++;
                                 break;
@@ -625,10 +625,11 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
         }
 
-        public void SlideBar(string roles)
+        public void SlideBar(string scenario_ID, string roles)
         {
+            string Amount = "";
+            var player = getPolicyHolderDetails(scenario_ID);
 
-          string Amount = "";
 
             using (OleDbConnection con = new OleDbConnection(base._test_data_connString))
             {
@@ -648,16 +649,17 @@ namespace ILR_TestSuite.New_Business.Sales_App
                     foreach (var row in ds.Tables[0].DefaultView)
                     {
 
-                    var  role = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
-                        
-                        if (role==roles) {
-                        
-                        roles = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+                        var role = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+
+                        if (role == roles)
+                        {
+
+                            roles = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
                             Amount = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
                             break;
                         }
 
-                       
+
                     }
 
                 }
@@ -671,7 +673,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
                 con.Dispose();
 
             }
-            if (roles == "Myself" || roles == "Child" || roles == "Spouce" )
+            if (player["Cover_Amount"] == Amount && roles == "Myself" || roles == "Child" || roles == "Spouce")
             {
 
                 var V_Position = "";
@@ -679,44 +681,53 @@ namespace ILR_TestSuite.New_Business.Sales_App
                 {
 
                     case "5000":
-                        V_Position = "0";
+                        V_Position = "-500";
                         break;
                     case "7000":
-                        V_Position = "12.5";
+                        V_Position = "-400";
                         break;
                     case "10000":
-                        V_Position = "25";
+                        V_Position = "-300";
                         break;
                     case "15000":
-                        V_Position = "37.5";
+                        V_Position = "-200";
                         break;
                     case "20000":
                         V_Position = "50";
                         break;
 
                     case "30000":
-                        V_Position = "62.5";
+                        V_Position = "200";
                         break;
                     case "40000":
-                        V_Position = "75";
+                        V_Position = "300";
                         break;
                     case "50000":
-                        V_Position = "87.5";
+                        V_Position = "400";
                         break;
                     case "60000":
-                        V_Position = "100";
+                        V_Position = "500";
                         break;
 
                 }
 
-                IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
+                IWebElement sliderbar = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[3]/div[4]/div[1]"));
+
                 int widthslider = sliderbar.Size.Width;
                 Delay(1);
                 IWebElement slider = _driver.FindElement(By.ClassName("slider"));
                 Actions slideraction = new Actions(_driver);
                 slideraction.ClickAndHold(slider);
-                slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
+                Delay(1);
+                //decimal v = (decimal)Convert.ToDouble(V_Position);
+                //int val = Convert.ToInt32(v);
 
+                // slideraction.MoveByOffset(Convert.ToInt32(V_Position+".5"), 0).Build().Perform();
+
+                // slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
+                //f = Mathf.Round(f * 100.0f) * 0.01f;
+                //slideraction.DragAndDropToOffset(slider,Convert.ToInt32(V_Position), 0).Perform();
+                slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
 
             }
             else if (roles == "Parent")
@@ -727,19 +738,19 @@ namespace ILR_TestSuite.New_Business.Sales_App
                 {
 
                     case "5000":
-                        V_Position = "0";
+                        V_Position = "-500";
                         break;
                     case "7500":
-                        V_Position = "25";
+                        V_Position = "-400";
                         break;
                     case "10000":
-                        V_Position = "50";
+                        V_Position = "-300";
                         break;
                     case "15000":
-                        V_Position = "75";
+                        V_Position = "-200";
                         break;
                     case "20000":
-                        V_Position = "100";
+                        V_Position = "50";
                         break;
 
                 }
@@ -755,28 +766,29 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
 
             }
-            else {
+            else
+            {
                 var V_Position = "";
                 switch (Amount)
                 {
 
                     case "5000":
-                        V_Position = "0";
+                        V_Position = "-500";
                         break;
                     case "7500":
-                        V_Position = "20";
+                        V_Position = "-400";
                         break;
                     case "10000":
-                        V_Position = "40";
+                        V_Position = "-300";
                         break;
                     case "15000":
-                        V_Position = "60";
+                        V_Position = "-200";
                         break;
                     case "20000":
-                        V_Position = "80";
+                        V_Position = "50";
                         break;
                     case "30000":
-                        V_Position = "80";
+                        V_Position = "200";
                         break;
                 }
                 IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
