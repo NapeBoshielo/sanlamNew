@@ -329,7 +329,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
                                 Delay(1);
                                 _driver.FindElement(By.XPath($"//*[@id='gatsby-focus-wrapper']/article/form/section[{section}]/div[2]/div[1]/div/label[{label}]")).Click();
                                 //Cover Amount
-                                SlideBar(scenario_ID,"Myself");
+                                SlideBar(scenario_ID, "Myself", lifeAsuredCounter);
                                 section++;
                                 lifeAsuredCounter++;
                                 break;
@@ -364,6 +364,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
                         Delay(2);
                         _driver.FindElement(By.Name($"/cover-details[{lifeAsuredCounter}].contact-number")).SendKeys(item["Cellphone"]);
 
+                        SlideBar(scenario_ID, key, lifeAsuredCounter);
                         section++;
                         lifeAsuredCounter++;
                     }
@@ -651,59 +652,18 @@ namespace ILR_TestSuite.New_Business.Sales_App
             ;
         }
 
-        public void SlideBar(string scenario_ID, string roles)
+        public void SlideBar(string scenario_ID, string key, int counts)
         {
-            string Amount = "";
+            
             var player = getPolicyHolderDetails(scenario_ID);
+            var roles = getRolePlayers(scenario_ID);
 
 
-            using (OleDbConnection con = new OleDbConnection(base._test_data_connString))
-            {
-                try
-                {
-                    con.Open();
-
-                    String command = "SELECT * FROM [CoverAmount$]";
-
-                    OleDbCommand cmd = new OleDbCommand(command, con);
-
-                    OleDbDataAdapter adapt = new OleDbDataAdapter();
-                    adapt.SelectCommand = cmd;
-
-                    DataSet ds = new DataSet("policies");
-                    adapt.Fill(ds);
-                    foreach (var row in ds.Tables[0].DefaultView)
-                    {
-
-                        var role = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
-
-                        if (role == roles)
-                        {
-
-                            roles = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
-                            Amount = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
-                            break;
-                        }
-
-
-                    }
-
-                }
-                catch (Exception ex)
-
-                {
-                    throw ex;
-
-                }
-                con.Close();
-                con.Dispose();
-
-            }
-            if (player["Cover_Amount"] == Amount && roles == "Myself" || roles == "Child" || roles == "Spouce")
+            if (key == "Myself")
             {
 
                 var V_Position = "";
-                switch (Amount)
+                switch (player["Cover_Amount"])
                 {
 
                     case "5000":
@@ -736,12 +696,12 @@ namespace ILR_TestSuite.New_Business.Sales_App
                         break;
 
                 }
-
                 IWebElement sliderbar = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[3]/div[4]/div[1]"));
 
                 int widthslider = sliderbar.Size.Width;
                 Delay(1);
-                IWebElement slider = _driver.FindElement(By.ClassName("slider"));
+                IWebElement slider = _driver.FindElement(By.XPath($"//*[@id='/cover-details[{counts}].cover-amount']"));
+
                 Actions slideraction = new Actions(_driver);
                 slideraction.ClickAndHold(slider);
                 Delay(1);
@@ -749,86 +709,148 @@ namespace ILR_TestSuite.New_Business.Sales_App
                 slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
 
             }
-            else if (roles == "Parent")
+
+
+            if (key == "Children" || key == "spouse")
             {
 
-                var V_Position = "";
-                switch (Amount)
+                foreach (var item in roles[key])
                 {
+                    var V1_Position = "";
+                    switch (item["Cover_Amount"])
+                    {
 
-                    case "5000":
-                        V_Position = "-500";
-                        break;
-                    case "7500":
-                        V_Position = "-400";
-                        break;
-                    case "10000":
-                        V_Position = "-300";
-                        break;
-                    case "15000":
-                        V_Position = "-200";
-                        break;
-                    case "20000":
-                        V_Position = "50";
-                        break;
+                        case "5000":
+                            V1_Position = "-500";
+                            break;
+                        case "7500":
+                            V1_Position = "-400";
+                            break;
+                        case "10000":
+                            V1_Position = "-300";
+                            break;
+                        case "15000":
+                            V1_Position = "-200";
+                            break;
+                        case "20000":
+                            V1_Position = "50";
+                            break;
+
+                        case "30000":
+                            V1_Position = "200";
+                            break;
+                        case "40000":
+                            V1_Position = "300";
+                            break;
+                        case "50000":
+                            V1_Position = "400";
+                            break;
+                        case "60000":
+                            V1_Position = "500";
+                            break;
+                    }
+                    IWebElement sliderbar = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[3]/div[4]/div[1]"));
+
+                    int widthslider = sliderbar.Size.Width;
+                    Delay(1);
+                    IWebElement slider = _driver.FindElement(By.XPath($"//*[@id='/cover-details[{counts}].cover-amount']"));
+                    Actions slideraction = new Actions(_driver);
+                    slideraction.ClickAndHold(slider);
+                    Delay(1);
+                    //f = Mathf.Round(f * 100.0f) * 0.01f;
+                    slideraction.MoveByOffset(Convert.ToInt32(V1_Position), 0).Build().Perform();
+
+                    break;
+                }
+
+
+            }
+            if (key == "Parents")
+            {
+                foreach (var item in roles[key])
+                {
+                    var V2_Position = "";
+                    switch (item["Cover_Amount"])
+                    {
+
+                        case "5000":
+                            V2_Position = "-500";
+                            break;
+                        case "7500":
+                            V2_Position = "-400";
+                            break;
+                        case "10000":
+                            V2_Position = "-300";
+                            break;
+                        case "15000":
+                            V2_Position = "-200";
+                            break;
+                        case "20000":
+                            V2_Position = "50";
+                            break;
+
+                    }
+
+                    IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
+                    int widthslider = sliderbar.Size.Width;
+                    Delay(1);
+                    IWebElement slider = _driver.FindElement(By.XPath($"//*[@id='/cover-details[{counts}].cover-amount']"));
+                    Actions slideraction = new Actions(_driver);
+                    slideraction.ClickAndHold(slider);
+                    slideraction.MoveByOffset(Convert.ToInt32(V2_Position), 0).Build().Perform();
+
+
 
                 }
 
-                IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
-                int widthslider = sliderbar.Size.Width;
-                Delay(1);
-                IWebElement slider = _driver.FindElement(By.ClassName("slider"));
-                Actions slideraction = new Actions(_driver);
-                slideraction.ClickAndHold(slider);
-                slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
+                if (key == "Extended")
+                {
+                    foreach (var item in roles[key])
+                    {
+                        var V3_Position = "";
+                        switch (player["Cover_Amount"])
+                        {
+
+                            case "5000":
+                                V3_Position = "-500";
+                                break;
+                            case "7500":
+                                V3_Position = "-400";
+                                break;
+                            case "10000":
+                                V3_Position = "-300";
+                                break;
+                            case "15000":
+                                V3_Position = "-200";
+                                break;
+                            case "20000":
+                                V3_Position = "50";
+                                break;
+                            case "30000":
+                                V3_Position = "200";
+                                break;
+                        }
+                        IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
+                        int widthslider = sliderbar.Size.Width;
+                        Delay(1);
+                        IWebElement slider = _driver.FindElement(By.XPath($"//*[@id='/cover-details[{counts}].cover-amount']"));
+                        Actions slideraction = new Actions(_driver);
+                        slideraction.ClickAndHold(slider);
+                        slideraction.MoveByOffset(Convert.ToInt32(V3_Position), 0).Build().Perform();
+
+
+
+                    }
+
+                }
+
 
 
 
             }
-            else
-            {
-                var V_Position = "";
-                switch (Amount)
-                {
-
-                    case "5000":
-                        V_Position = "-500";
-                        break;
-                    case "7500":
-                        V_Position = "-400";
-                        break;
-                    case "10000":
-                        V_Position = "-300";
-                        break;
-                    case "15000":
-                        V_Position = "-200";
-                        break;
-                    case "20000":
-                        V_Position = "50";
-                        break;
-                    case "30000":
-                        V_Position = "200";
-                        break;
-                }
-                IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
-                int widthslider = sliderbar.Size.Width;
-                Delay(1);
-                IWebElement slider = _driver.FindElement(By.ClassName("slider"));
-                Actions slideraction = new Actions(_driver);
-                slideraction.ClickAndHold(slider);
-                slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
-
-
-
-            }
-
-
-
-
         }
 
-
-        [TearDown]
+            [TearDown]
         public void closeBrowser()
         {
             base.DisconnectBrowser();
