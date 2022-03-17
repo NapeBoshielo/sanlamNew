@@ -39,7 +39,6 @@ namespace ILR_TestSuite.New_Business.Sales_App
                     try
                     {
                         var sheet = "Scenarios";
-                        var results ="";
                         // Open connection
                         conn.Open();
                         string cmdQuery = "SELECT * FROM ["+ sheet + "$]";
@@ -62,7 +61,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
                         foreach (var row in ds.Tables[0].DefaultView)
                         {
                             var Scenario_ID = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
-                            var result = PositiveTestProcess(Scenario_ID);
+                            var results = PositiveTestProcess(Scenario_ID);
                             writeResultsToExcell(results, "Scenarios",Scenario_ID);
 
                         }
@@ -75,11 +74,13 @@ namespace ILR_TestSuite.New_Business.Sales_App
                 }
 
             }
-  
-        public Dictionary<string, string> createNewClient(string scenario_ID)
-        {
 
-            string results = "";
+        public Tuple<string, string> PositiveTestProcess(string scenario_ID)
+        {
+            var upload_file = "C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg";
+            Delay(10);
+            string results = "", comment = "";
+
             //get policy holder data
             var policyHolderData = getPolicyHolderDetails(scenario_ID);
             _driver.SwitchTo().ActiveElement();
@@ -88,7 +89,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             IWebElement new_client = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/div[2]/div[1]/button"));
             new_client.Click();
             //  Actions action = new Actions(_driver);
-            // action.MoveToElement(new_client).Perform();
+            // action.MoveToElement(new_client).Perform()
             Delay(2);
             IWebElement town = _driver.FindElement(By.XPath("//*[@id='downshift-0-input']"));
             town.SendKeys(policyHolderData["Town"]);
@@ -117,7 +118,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             Delay(2);
             IWebElement cont = _driver.FindElement(By.XPath(" /html/body/reach-portal/div/div/div/div[5]/button[2]"));
             cont.Click();
-            Delay(2);
+            Delay(4);
             IWebElement agree = _driver.FindElement(By.XPath(" /html/body/reach-portal/div/div/div/div[2]/button"));
             agree.Click();
             //Personal Details
@@ -179,8 +180,35 @@ namespace ILR_TestSuite.New_Business.Sales_App
                     _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/section/form/div/div[17]/div/label[2]")).Click();
                     break;
             }
+
+
+            //click next 
             Delay(2);
-            _driver.FindElement(By.XPath(" //*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a")).Click();
+            try
+            {
+                _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/div[2]/div[1]/a")).Click();
+
+            }
+            catch
+            {
+                //Age validarion 
+                _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/div[2]/div[1]/button")).Click();
+
+                String ValidationMsg = _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/section/form/div/div[8]/span/span")).Text;
+                comment = ValidationMsg;
+                if (ValidationMsg.Contains("Must be at least 18 years old.") || ValidationMsg.Contains("Must not be older than 74 years of age."))
+                {
+                    results = "Failed";
+                    TakeScreenshot(_driver, $@"{_screenShotFolder}\Validations\", "MainLife_Age");
+
+                    return Tuple.Create(results, comment);
+
+                }
+
+
+            }
+
+
             //occupation
             Delay(3);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/form/section/div/div[1]/label")).Click();
@@ -249,13 +277,9 @@ namespace ILR_TestSuite.New_Business.Sales_App
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a[2]")).Click();
 
-            return policyHolderData;
-        }
-        public string PositiveTestProcess(string scenario_ID)
-        {
-            var upload_file = "C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg";
-            var plaData = createNewClient(scenario_ID);
-            string results="";
+
+
+
             var policyplayers = getRolePlayers(scenario_ID);
             List<string> keys = new List<string>();
             keys.Add("PolicyHolder_Details");
@@ -285,16 +309,16 @@ namespace ILR_TestSuite.New_Business.Sales_App
             //click on 5%
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[2]/div/div[2]/div/div/label[1]")).Click();
-           //Add Provided LAs
+            //Add Provided LAs
             var lifeAsuredCounter = 0;
             var label = 1;
             var section = 3;
-            foreach (var key in keys) 
+            foreach (var key in keys)
             {
 
                 foreach (var item in policyplayers[key])
                 {
-                     if(item.Count > 0)
+                    if (item.Count > 0)
                     {
                         if (key == "PolicyHolder_Details")
                         {
@@ -348,14 +372,14 @@ namespace ILR_TestSuite.New_Business.Sales_App
                         break;
                     }
                 }
-            
+
                 label++;
-                
+
             }
 
 
             Delay(1);
-   
+
             //Click next
             Delay(3);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a[2]")).Click();
@@ -417,13 +441,13 @@ namespace ILR_TestSuite.New_Business.Sales_App
             Delay(3);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/div[2]/form/div[2]/div/label[2]")).Click();
 
-           
+            //*[@id="gatsby-focus-wrapper"]/article/section/div[2]/form/div[2]/div/label[2]
             //go to payment 
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div/a[2]")).Click();
 
             /////////Payment Details
-            string bank = plaData["Bank"];
+            string bank = policyHolderData["Bank"];
 
             //policy payer
             Delay(1);
@@ -432,13 +456,13 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //bank details
             //Bank Selction
-      
+
             SelectElement oSelect1 = new SelectElement(_driver.FindElement(By.Name("/bank-select")));
             oSelect1.SelectByValue(bank);
 
             //Account Number
             Delay(1);
-            _driver.FindElement(By.Name("/account-number")).SendKeys(plaData["Account_Number"]);
+            _driver.FindElement(By.Name("/account-number")).SendKeys(policyHolderData["Account_Number"]);
 
 
             //Account Type
@@ -448,11 +472,11 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             ///debit - order - date / debit - order - date
             SelectElement oSelect = new SelectElement(_driver.FindElement(By.Name("/debit-order-date")));
-            oSelect.SelectByValue(plaData["Debit_Order_Day"]);
+            oSelect.SelectByValue(policyHolderData["Debit_Order_Day"]);
 
             //salarypaydate
             Delay(1);
-            _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/form/section[1]/div[2]/div[6]/input")).SendKeys(plaData["Salary_Date"]);
+            _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/form/section[1]/div[2]/div[6]/input")).SendKeys(policyHolderData["Salary_Date"]);
 
             //click tickbox
             Delay(1);
@@ -490,7 +514,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             if (Errormessage == "DebiCheck accepted by customer")
             {
 
-            
+
 
                 Delay(1);
                 //Click next
@@ -501,7 +525,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             }
             else
             {
-                
+
                 //Click next
                 _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div/button")).Click();
 
@@ -529,21 +553,21 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //Building
             Delay(1);
-            _driver.FindElement(By.Name("/physical-address-building")).SendKeys(plaData["Building"]);
+            _driver.FindElement(By.Name("/physical-address-building")).SendKeys(policyHolderData["Building"]);
             //Street
             Delay(1);
-            _driver.FindElement(By.Name("/physical-address-street")).SendKeys(plaData["Street"]);
+            _driver.FindElement(By.Name("/physical-address-street")).SendKeys(policyHolderData["Street"]);
 
             //Town
             Delay(1);
-            _driver.FindElement(By.Name("/physical-address-town")).SendKeys(plaData["City"]);
+            _driver.FindElement(By.Name("/physical-address-town")).SendKeys(policyHolderData["City"]);
 
             //Suburb
             Delay(1);
-            _driver.FindElement(By.Name("/physical-address-suburb")).SendKeys(plaData["Suburb"]);
+            _driver.FindElement(By.Name("/physical-address-suburb")).SendKeys(policyHolderData["Suburb"]);
 
             //CodeField 
-            _driver.FindElement(By.Name("/physical-address-code")).SendKeys(plaData["Code"]);
+            _driver.FindElement(By.Name("/physical-address-code")).SendKeys(policyHolderData["Code"]);
 
 
 
@@ -561,13 +585,13 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //reference no 
             Delay(1);
-            _driver.FindElement(By.Name("/call-reference-number")).SendKeys(plaData["Call_Ref_Number"]);
+            _driver.FindElement(By.Name("/call-reference-number")).SendKeys(policyHolderData["Call_Ref_Number"]);
 
             //click next 
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a[2]")).Click();
 
-            
+
             ///click tickbox 
             Delay(1);
             _driver.FindElement(By.Name("/popia-consent-datetime")).Click();
@@ -592,13 +616,15 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
 
             //click next
-            Delay(4);
+            Delay(8);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div/a[2]")).Click();
+
+
 
 
             //Card number
             Delay(4);
-            _driver.FindElement(By.Id("/card-number")).SendKeys(plaData["Card_Number"]);
+            _driver.FindElement(By.Id("/card-number")).SendKeys(policyHolderData["Card_Number"]);
 
             //next
             Delay(2);
@@ -621,8 +647,8 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
 
 
-            return results;
-
+            return Tuple.Create(results, comment);
+            ;
         }
 
         public void SlideBar(string scenario_ID, string roles)

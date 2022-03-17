@@ -55,9 +55,9 @@ namespace ILR_TestSuite
             _chromeOptions.AddArguments("--ignore-certificate-errors");
             _driver = new ChromeDriver("C:/Code/bin", _chromeOptions);
 
-            _test_data_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
-            _test_results_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestResults.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
-            _screenShotFolder = $@"C:\Users\E697642\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\New Business\​{ScreenShotDailyFolderName()}​\";
+            _test_data_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            _test_results_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestResults.xlsx" + ";Extended Properties='Excel 8.0;HDR=Yes'";
+            _screenShotFolder = $@"C:\Users\G992107\Documents\GitHub\ILR_TestSuite\ILR_TestSuite\New Business\​{ScreenShotDailyFolderName()}​\";
 
 
             new DirectoryInfo(_screenShotFolder).Create();
@@ -296,7 +296,7 @@ namespace ILR_TestSuite
 
 
         }
-        public void writeResultsToExcell(string results, string sheet, string scenario)
+        public void writeResultsToExcell(Tuple<string,string> results, string sheet, string scenario)
         {
             using (OleDbConnection conn = new OleDbConnection(_test_data_connString))
             {
@@ -312,7 +312,9 @@ namespace ILR_TestSuite
                     //Test_Date
                     cmd.CommandText = $"UPDATE [{sheet}$] SET Test_Date = '{testDate}' WHERE Scenario_ID = '{scenario}';";
                     cmd.ExecuteNonQuery();
-                    cmd.CommandText = $"UPDATE [{sheet}$] SET Test_Results  = '{results}' WHERE Scenario_ID = '{scenario}';";
+                    cmd.CommandText = $"UPDATE [{sheet}$] SET Test_Results  = '{results.Item1}' WHERE Scenario_ID = '{scenario}';";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = $"UPDATE [{sheet}$] SET Comment  = '{results.Item2}' WHERE Scenario_ID = '{scenario}';";
                     cmd.ExecuteNonQuery();
 
                 }
@@ -345,7 +347,7 @@ namespace ILR_TestSuite
                 List<Dictionary<string, string>> roleplyers = new List<Dictionary<string, string>>();
                 List<string> keys = new List<string>();
                 //Loop through every row of that sheet and get data of all the players with the scenario id given
-                _test_data_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=NO'";
+                _test_data_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=NO'";
                 using (OleDbConnection conn = new OleDbConnection(_test_data_connString))
                 {
                     try
@@ -427,7 +429,7 @@ namespace ILR_TestSuite
         }
         public Dictionary<string, string> getPolicyHolderDetails(string scenario_id)
         {
-            _test_data_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=NO'";
+            _test_data_connString = "Provider= Microsoft.ACE.OLEDB.12.0;" + "Data Source=C:/Users/G992107/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/SalesAppBase/TestData.xlsx" + ";Extended Properties='Excel 8.0;HDR=NO'";
             //Variables to store policy holder data
             Dictionary<string, string> policyHolderData = new Dictionary<string, string>();
        
