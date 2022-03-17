@@ -88,7 +88,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             IWebElement new_client = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/div[2]/div[1]/button"));
             new_client.Click();
             //  Actions action = new Actions(_driver);
-            // action.MoveToElement(new_client).Perform()
+            // action.MoveToElement(new_client).Perform();
             Delay(2);
             IWebElement town = _driver.FindElement(By.XPath("//*[@id='downshift-0-input']"));
             town.SendKeys(policyHolderData["Town"]);
@@ -417,7 +417,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             Delay(3);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/div[2]/form/div[2]/div/label[2]")).Click();
 
-            //*[@id="gatsby-focus-wrapper"]/article/section/div[2]/form/div[2]/div/label[2]
+           
             //go to payment 
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div/a[2]")).Click();
@@ -683,7 +683,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
                     case "5000":
                         V_Position = "-500";
                         break;
-                    case "7000":
+                    case "7500":
                         V_Position = "-400";
                         break;
                     case "10000":
@@ -719,14 +719,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
                 Actions slideraction = new Actions(_driver);
                 slideraction.ClickAndHold(slider);
                 Delay(1);
-                //decimal v = (decimal)Convert.ToDouble(V_Position);
-                //int val = Convert.ToInt32(v);
-
-                // slideraction.MoveByOffset(Convert.ToInt32(V_Position+".5"), 0).Build().Perform();
-
-                // slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
                 //f = Mathf.Round(f * 100.0f) * 0.01f;
-                //slideraction.DragAndDropToOffset(slider,Convert.ToInt32(V_Position), 0).Perform();
                 slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
 
             }
