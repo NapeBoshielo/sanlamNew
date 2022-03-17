@@ -19,63 +19,63 @@ namespace ILR_TestSuite.New_Business.Sales_App
     public class SalesApp : TestBase_NB
 
     {
-      
+
         [SetUp]
-            public void startBrowser()
+        public void startBrowser()
 
+        {
+
+            _driver = base.SiteConnection();
+
+
+        }
+
+        [Test, Order(1)]
+        public void RunTest()
+        {
+            Delay(15);
+            using (OleDbConnection conn = new OleDbConnection(_test_data_connString))
             {
-
-                _driver = base.SiteConnection();
-           
-
-            }
-
-            [Test, Order(1)]
-            public void RunTest()
-            {
-                Delay(15);
-                using (OleDbConnection conn = new OleDbConnection(_test_data_connString))
+                try
                 {
-                    try
+                    var sheet = "Scenarios";
+                    var results = "";
+                    // Open connection
+                    conn.Open();
+                    string cmdQuery = "SELECT * FROM [" + sheet + "$]";
+
+                    OleDbCommand cmd = new OleDbCommand(cmdQuery, conn);
+
+                    // Create new OleDbDataAdapter
+                    OleDbDataAdapter oleda = new OleDbDataAdapter();
+
+                    oleda.SelectCommand = cmd;
+
+                    // Create a DataSet which will hold the data extracted from the worksheet.
+                    DataSet ds = new DataSet();
+
+                    // Fill the DataSet from the data extracted from the worksheet.
+                    oleda.Fill(ds, "Policies");
+
+
+                    //addMainLife();
+                    foreach (var row in ds.Tables[0].DefaultView)
                     {
-                        var sheet = "Scenarios";
-                        var results ="";
-                        // Open connection
-                        conn.Open();
-                        string cmdQuery = "SELECT * FROM ["+ sheet + "$]";
+                        var Scenario_ID = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+                        var result = PositiveTestProcess(Scenario_ID);
+                        writeResultsToExcell(results, "Scenarios", Scenario_ID);
 
-                        OleDbCommand cmd = new OleDbCommand(cmdQuery, conn);
-
-                        // Create new OleDbDataAdapter
-                        OleDbDataAdapter oleda = new OleDbDataAdapter();
-
-                        oleda.SelectCommand = cmd;
-
-                        // Create a DataSet which will hold the data extracted from the worksheet.
-                        DataSet ds = new DataSet();
-
-                        // Fill the DataSet from the data extracted from the worksheet.
-                        oleda.Fill(ds, "Policies");
-
-
-                        //addMainLife();
-                        foreach (var row in ds.Tables[0].DefaultView)
-                        {
-                            var Scenario_ID = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
-                            var result = PositiveTestProcess(Scenario_ID);
-                            writeResultsToExcell(results, "Scenarios",Scenario_ID);
-
-                        }
-                    }
-                    finally
-                    {
-                        conn.Close();
-                        conn.Dispose();
                     }
                 }
-
+                finally
+                {
+                    conn.Close();
+                    conn.Dispose();
+                }
             }
-  
+
+        }
+
         public Dictionary<string, string> createNewClient(string scenario_ID)
         {
 
@@ -252,10 +252,11 @@ namespace ILR_TestSuite.New_Business.Sales_App
             return policyHolderData;
         }
         public string PositiveTestProcess(string scenario_ID)
-        {
-            var upload_file = "C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg";
+   {
+            var upload_file = "C:/Users/E697642/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg";
             var plaData = createNewClient(scenario_ID);
-            string results="";
+            string results = "";
+           
             var policyplayers = getRolePlayers(scenario_ID);
             List<string> keys = new List<string>();
             keys.Add("PolicyHolder_Details");
@@ -285,16 +286,16 @@ namespace ILR_TestSuite.New_Business.Sales_App
             //click on 5%
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[2]/div/div[2]/div/div/label[1]")).Click();
-           //Add Provided LAs
+            //Add Provided LAs
             var lifeAsuredCounter = 0;
             var label = 1;
             var section = 3;
-            foreach (var key in keys) 
+            foreach (var key in keys)
             {
 
                 foreach (var item in policyplayers[key])
                 {
-                     if(item.Count > 0)
+                    if (item.Count > 0)
                     {
                         if (key == "PolicyHolder_Details")
                         {
@@ -305,7 +306,8 @@ namespace ILR_TestSuite.New_Business.Sales_App
                                 Delay(1);
                                 _driver.FindElement(By.XPath($"//*[@id='gatsby-focus-wrapper']/article/form/section[{section}]/div[2]/div[1]/div/label[{label}]")).Click();
                                 //Cover Amount
-                                SlideBar(scenario_ID,"Myself");
+                                
+                                SlideBar(scenario_ID, "Myself", lifeAsuredCounter);
                                 section++;
                                 lifeAsuredCounter++;
                                 break;
@@ -340,6 +342,8 @@ namespace ILR_TestSuite.New_Business.Sales_App
                         Delay(2);
                         _driver.FindElement(By.Name($"/cover-details[{lifeAsuredCounter}].contact-number")).SendKeys(item["Cellphone"]);
 
+                        
+                        SlideBar(scenario_ID, key, lifeAsuredCounter);
                         section++;
                         lifeAsuredCounter++;
                     }
@@ -348,14 +352,14 @@ namespace ILR_TestSuite.New_Business.Sales_App
                         break;
                     }
                 }
-            
+
                 label++;
-                
+
             }
 
 
             Delay(1);
-   
+
             //Click next
             Delay(3);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a[2]")).Click();
@@ -417,7 +421,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             Delay(3);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/section/div[2]/form/div[2]/div/label[2]")).Click();
 
-           
+
             //go to payment 
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div/a[2]")).Click();
@@ -432,7 +436,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //bank details
             //Bank Selction
-      
+
             SelectElement oSelect1 = new SelectElement(_driver.FindElement(By.Name("/bank-select")));
             oSelect1.SelectByValue(bank);
 
@@ -490,7 +494,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             if (Errormessage == "DebiCheck accepted by customer")
             {
 
-            
+
 
                 Delay(1);
                 //Click next
@@ -501,7 +505,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             }
             else
             {
-                
+
                 //Click next
                 _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div/button")).Click();
 
@@ -567,7 +571,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a[2]")).Click();
 
-            
+
             ///click tickbox 
             Delay(1);
             _driver.FindElement(By.Name("/popia-consent-datetime")).Click();
@@ -625,188 +629,208 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
         }
 
-        public void SlideBar(string scenario_ID, string roles)
+        public void SlideBar(string scenario_ID, string key,int counts)
         {
             string Amount = "";
             var player = getPolicyHolderDetails(scenario_ID);
+            var roles = getRolePlayers(scenario_ID);
+            
 
-
-            using (OleDbConnection con = new OleDbConnection(base._test_data_connString))
-            {
-                try
+            if (key == "Myself" )
                 {
-                    con.Open();
 
-                    String command = "SELECT * FROM [CoverAmount$]";
-
-                    OleDbCommand cmd = new OleDbCommand(command, con);
-
-                    OleDbDataAdapter adapt = new OleDbDataAdapter();
-                    adapt.SelectCommand = cmd;
-
-                    DataSet ds = new DataSet("policies");
-                    adapt.Fill(ds);
-                    foreach (var row in ds.Tables[0].DefaultView)
+                    var V_Position = "";
+                    switch (player["Cover_Amount"])
                     {
 
-                        var role = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+                        case "5000":
+                            V_Position = "-500";
+                            break;
+                        case "7500":
+                            V_Position = "-400";
+                            break;
+                        case "10000":
+                            V_Position = "-300";
+                            break;
+                        case "15000":
+                            V_Position = "-200";
+                            break;
+                        case "20000":
+                            V_Position = "50";
+                            break;
 
-                        if (role == roles)
+                        case "30000":
+                            V_Position = "200";
+                            break;
+                        case "40000":
+                            V_Position = "300";
+                            break;
+                        case "50000":
+                            V_Position = "400";
+                            break;
+                        case "60000":
+                            V_Position = "500";
+                            break;
+
+                    }
+                    IWebElement sliderbar = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[3]/div[4]/div[1]"));
+
+                    int widthslider = sliderbar.Size.Width;
+                    Delay(1);
+                    IWebElement slider = _driver.FindElement(By.XPath($"//*[@id='/cover-details[{counts}].cover-amount']"));
+                
+                Actions slideraction = new Actions(_driver);
+                    slideraction.ClickAndHold(slider);
+                    Delay(1);
+                    //f = Mathf.Round(f * 100.0f) * 0.01f;
+                    slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
+                
+            }
+          
+
+            if ( key == "Children" || key == "spouse")
+            {
+             
+                foreach (var item in roles[key])
+                {
+                    var V1_Position = "";
+                    switch (item["Cover_Amount"])
+                    {
+
+                        case "5000":
+                            V1_Position = "-500";
+                            break;
+                        case "7500":
+                            V1_Position = "-400";
+                            break;
+                        case "10000":
+                            V1_Position = "-300";
+                            break;
+                        case "15000":
+                            V1_Position = "-200";
+                            break;
+                        case "20000":
+                            V1_Position = "50";
+                            break;
+
+                        case "30000":
+                            V1_Position = "200";
+                            break;
+                        case "40000":
+                            V1_Position = "300";
+                            break;
+                        case "50000":
+                            V1_Position = "400";
+                            break;
+                        case "60000":
+                            V1_Position = "500";
+                            break;
+                    }
+                    IWebElement sliderbar = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[3]/div[4]/div[1]"));
+
+                    int widthslider = sliderbar.Size.Width;
+                    Delay(1);
+                    IWebElement slider = _driver.FindElement(By.XPath($"//*[@id='/cover-details[{counts}].cover-amount']"));
+                    Actions slideraction = new Actions(_driver);
+                    slideraction.ClickAndHold(slider);
+                    Delay(1);
+                    //f = Mathf.Round(f * 100.0f) * 0.01f;
+                    slideraction.MoveByOffset(Convert.ToInt32(V1_Position), 0).Build().Perform();
+
+                    break;
+                }
+
+              
+            }
+                 if (key == "Parents")
+                {
+                foreach (var item in roles[key]) { 
+                    var V2_Position = "";
+                    switch (item["Cover_Amount"])
+                    {
+
+                        case "5000":
+                            V2_Position = "-500";
+                            break;
+                        case "7500":
+                            V2_Position = "-400";
+                            break;
+                        case "10000":
+                            V2_Position = "-300";
+                            break;
+                        case "15000":
+                            V2_Position = "-200";
+                            break;
+                        case "20000":
+                            V2_Position = "50";
+                            break;
+
+                    }
+
+                    IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
+                    int widthslider = sliderbar.Size.Width;
+                    Delay(1);
+                    IWebElement slider = _driver.FindElement(By.XPath($"//*[@id='/cover-details[{counts}].cover-amount']"));
+                    Actions slideraction = new Actions(_driver);
+                    slideraction.ClickAndHold(slider);
+                    slideraction.MoveByOffset(Convert.ToInt32(V2_Position), 0).Build().Perform();
+
+
+
+                }
+             
+                if (key=="Extended")
+                {
+                    foreach (var item in roles[key])
+                    {
+                        var V3_Position = "";
+                        switch (player["Cover_Amount"])
                         {
 
-                            roles = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
-                            Amount = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
-                            break;
+                            case "5000":
+                                V3_Position = "-500";
+                                break;
+                            case "7500":
+                                V3_Position = "-400";
+                                break;
+                            case "10000":
+                                V3_Position = "-300";
+                                break;
+                            case "15000":
+                                V3_Position = "-200";
+                                break;
+                            case "20000":
+                                V3_Position = "50";
+                                break;
+                            case "30000":
+                                V3_Position = "200";
+                                break;
                         }
+                        IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
+                        int widthslider = sliderbar.Size.Width;
+                        Delay(1);
+                        IWebElement slider = _driver.FindElement(By.XPath($"//*[@id='/cover-details[{counts}].cover-amount']"));
+                        Actions slideraction = new Actions(_driver);
+                        slideraction.ClickAndHold(slider);
+                        slideraction.MoveByOffset(Convert.ToInt32(V3_Position), 0).Build().Perform();
 
+                       
 
                     }
 
                 }
-                catch (Exception ex)
 
-                {
-                    throw ex;
-
-                }
-                con.Close();
-                con.Dispose();
-
-            }
-            if (player["Cover_Amount"] == Amount && roles == "Myself" || roles == "Child" || roles == "Spouce")
-            {
-
-                var V_Position = "";
-                switch (Amount)
-                {
-
-                    case "5000":
-                        V_Position = "-500";
-                        break;
-                    case "7500":
-                        V_Position = "-400";
-                        break;
-                    case "10000":
-                        V_Position = "-300";
-                        break;
-                    case "15000":
-                        V_Position = "-200";
-                        break;
-                    case "20000":
-                        V_Position = "50";
-                        break;
-
-                    case "30000":
-                        V_Position = "200";
-                        break;
-                    case "40000":
-                        V_Position = "300";
-                        break;
-                    case "50000":
-                        V_Position = "400";
-                        break;
-                    case "60000":
-                        V_Position = "500";
-                        break;
-
-                }
-
-                IWebElement sliderbar = _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[3]/div[4]/div[1]"));
-
-                int widthslider = sliderbar.Size.Width;
-                Delay(1);
-                IWebElement slider = _driver.FindElement(By.ClassName("slider"));
-                Actions slideraction = new Actions(_driver);
-                slideraction.ClickAndHold(slider);
-                Delay(1);
-                //f = Mathf.Round(f * 100.0f) * 0.01f;
-                slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
-
-            }
-            else if (roles == "Parent")
-            {
-
-                var V_Position = "";
-                switch (Amount)
-                {
-
-                    case "5000":
-                        V_Position = "-500";
-                        break;
-                    case "7500":
-                        V_Position = "-400";
-                        break;
-                    case "10000":
-                        V_Position = "-300";
-                        break;
-                    case "15000":
-                        V_Position = "-200";
-                        break;
-                    case "20000":
-                        V_Position = "50";
-                        break;
-
-                }
-
-                IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
-                int widthslider = sliderbar.Size.Width;
-                Delay(1);
-                IWebElement slider = _driver.FindElement(By.ClassName("slider"));
-                Actions slideraction = new Actions(_driver);
-                slideraction.ClickAndHold(slider);
-                slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
-
-
-
-            }
-            else
-            {
-                var V_Position = "";
-                switch (Amount)
-                {
-
-                    case "5000":
-                        V_Position = "-500";
-                        break;
-                    case "7500":
-                        V_Position = "-400";
-                        break;
-                    case "10000":
-                        V_Position = "-300";
-                        break;
-                    case "15000":
-                        V_Position = "-200";
-                        break;
-                    case "20000":
-                        V_Position = "50";
-                        break;
-                    case "30000":
-                        V_Position = "200";
-                        break;
-                }
-                IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
-                int widthslider = sliderbar.Size.Width;
-                Delay(1);
-                IWebElement slider = _driver.FindElement(By.ClassName("slider"));
-                Actions slideraction = new Actions(_driver);
-                slideraction.ClickAndHold(slider);
-                slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
 
 
 
             }
 
 
+                //[TearDown]
+                //public void closeBrowser()
+                //{
+                //    base.DisconnectBrowser();
+                //}
 
-
-        }
-
-
-        [TearDown]
-        public void closeBrowser()
-        {
-            base.DisconnectBrowser();
-        }
-
-    }
-}
+            }
+        } } 
