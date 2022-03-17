@@ -6041,23 +6041,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\G992127\\.nuget\\packages\\": {},
+    "C:\\Users\\G992107\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\G992127\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj",
+      "projectUniqueName": "C:\\Users\\G992107\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj",
       "projectName": "ILR_TestSuite",
-      "projectPath": "C:\\Users\\G992127\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj",
-      "packagesPath": "C:\\Users\\G992127\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\G992127\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\obj\\",
+      "projectPath": "C:\\Users\\G992107\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\ILR_TestSuite.csproj",
+      "packagesPath": "C:\\Users\\G992107\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\G992107\\Documents\\GitHub\\ILR_TestSuite\\ILR_TestSuite\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\G992127\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\G992107\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],

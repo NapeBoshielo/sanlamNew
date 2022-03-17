@@ -19,66 +19,66 @@ namespace ILR_TestSuite.New_Business.Sales_App
     public class SalesApp : TestBase_NB
 
     {
-      
+
         [SetUp]
-            public void startBrowser()
+        public void startBrowser()
 
-            {
-
-                _driver = base.SiteConnection();
-           
-
-            }
-
-            [Test, Order(1)]
-            public void RunTest()
-            {
-                Delay(15);
-                using (OleDbConnection conn = new OleDbConnection(_test_data_connString))
-                {
-                    try
-                    {
-                        var sheet = "Scenarios";
-                        var results ="";
-                        // Open connection
-                        conn.Open();
-                        string cmdQuery = "SELECT * FROM ["+ sheet + "$]";
-
-                        OleDbCommand cmd = new OleDbCommand(cmdQuery, conn);
-
-                        // Create new OleDbDataAdapter
-                        OleDbDataAdapter oleda = new OleDbDataAdapter();
-
-                        oleda.SelectCommand = cmd;
-
-                        // Create a DataSet which will hold the data extracted from the worksheet.
-                        DataSet ds = new DataSet();
-
-                        // Fill the DataSet from the data extracted from the worksheet.
-                        oleda.Fill(ds, "Policies");
-
-
-                        //addMainLife();
-                        foreach (var row in ds.Tables[0].DefaultView)
-                        {
-                            var Scenario_ID = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
-                            var result = PositiveTestProcess(Scenario_ID);
-                            writeResultsToExcell(results, "Scenarios",Scenario_ID);
-
-                        }
-                    }
-                    finally
-                    {
-                        conn.Close();
-                        conn.Dispose();
-                    }
-                }
-
-            }
-  
-        public Dictionary<string, string> createNewClient(string scenario_ID)
         {
 
+            _driver = base.SiteConnection();
+
+
+        }
+
+        [Test, Order(1)]
+        public void RunTest()
+        {
+            Delay(18);
+            using (OleDbConnection conn = new OleDbConnection(_test_data_connString))
+            {
+                try
+                {
+                    var sheet = "Scenarios";
+                    var results = "";
+                    // Open connection
+                    conn.Open();
+                    string cmdQuery = "SELECT * FROM [" + sheet + "$]";
+
+                    OleDbCommand cmd = new OleDbCommand(cmdQuery, conn);
+
+                    // Create new OleDbDataAdapter
+                    OleDbDataAdapter oleda = new OleDbDataAdapter();
+
+                    oleda.SelectCommand = cmd;
+
+                    // Create a DataSet which will hold the data extracted from the worksheet.
+                    DataSet ds = new DataSet();
+
+                    // Fill the DataSet from the data extracted from the worksheet.
+                    oleda.Fill(ds, "Policies");
+
+
+                    //addMainLife();
+                    foreach (var row in ds.Tables[0].DefaultView)
+                    {
+                        var Scenario_ID = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+                        var result = PositiveTestProcess(Scenario_ID);
+                        writeResultsToExcell(results, "Scenarios", Scenario_ID);
+
+                    }
+                }
+                finally
+                {
+                    conn.Close();
+                    conn.Dispose();
+                }
+            }
+
+        }
+
+        public Dictionary<string, string> createNewClient(string scenario_ID)
+        {
+            Delay(10);
             string results = "";
             //get policy holder data
             var policyHolderData = getPolicyHolderDetails(scenario_ID);
@@ -255,7 +255,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
         {
             var upload_file = "C:/Users/G992127/Documents/GitHub/ILR_TestSuite/ILR_TestSuite/New Business/upload/download.jpg";
             var plaData = createNewClient(scenario_ID);
-            string results="";
+            string results = "";
             var policyplayers = getRolePlayers(scenario_ID);
             List<string> keys = new List<string>();
             keys.Add("PolicyHolder_Details");
@@ -285,16 +285,16 @@ namespace ILR_TestSuite.New_Business.Sales_App
             //click on 5%
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/article/form/section[2]/div/div[2]/div/div/label[1]")).Click();
-           //Add Provided LAs
+            //Add Provided LAs
             var lifeAsuredCounter = 0;
             var label = 1;
             var section = 3;
-            foreach (var key in keys) 
+            foreach (var key in keys)
             {
 
                 foreach (var item in policyplayers[key])
                 {
-                     if(item.Count > 0)
+                    if (item.Count > 0)
                     {
                         if (key == "PolicyHolder_Details")
                         {
@@ -305,7 +305,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
                                 Delay(1);
                                 _driver.FindElement(By.XPath($"//*[@id='gatsby-focus-wrapper']/article/form/section[{section}]/div[2]/div[1]/div/label[{label}]")).Click();
                                 //Cover Amount
-                                SlideBar("Myself");
+                                SlideBar();
                                 section++;
                                 lifeAsuredCounter++;
                                 break;
@@ -348,14 +348,14 @@ namespace ILR_TestSuite.New_Business.Sales_App
                         break;
                     }
                 }
-            
+
                 label++;
-                
+
             }
 
 
             Delay(1);
-   
+
             //Click next
             Delay(3);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a[2]")).Click();
@@ -432,7 +432,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
             //bank details
             //Bank Selction
-      
+
             SelectElement oSelect1 = new SelectElement(_driver.FindElement(By.Name("/bank-select")));
             oSelect1.SelectByValue(bank);
 
@@ -490,7 +490,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             if (Errormessage == "DebiCheck accepted by customer")
             {
 
-            
+
 
                 Delay(1);
                 //Click next
@@ -501,7 +501,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             }
             else
             {
-                
+
                 //Click next
                 _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div/button")).Click();
 
@@ -567,7 +567,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
             Delay(1);
             _driver.FindElement(By.XPath("//*[@id='gatsby-focus-wrapper']/div[2]/div[1]/a[2]")).Click();
 
-            
+
             ///click tickbox 
             Delay(1);
             _driver.FindElement(By.Name("/popia-consent-datetime")).Click();
@@ -625,10 +625,10 @@ namespace ILR_TestSuite.New_Business.Sales_App
 
         }
 
-        public void SlideBar(string roles)
+        public void SlideBar()
         {
-
-          string Amount = "";
+            string results = "";
+            string Scenario_ID = "", ID_number = "";
 
             using (OleDbConnection con = new OleDbConnection(base._test_data_connString))
             {
@@ -636,7 +636,7 @@ namespace ILR_TestSuite.New_Business.Sales_App
                 {
                     con.Open();
 
-                    String command = "SELECT * FROM [CoverAmount$]";
+                    String command = "SELECT * FROM [PolicyHolder_Details$]";
 
                     OleDbCommand cmd = new OleDbCommand(command, con);
 
@@ -647,17 +647,10 @@ namespace ILR_TestSuite.New_Business.Sales_App
                     adapt.Fill(ds);
                     foreach (var row in ds.Tables[0].DefaultView)
                     {
+                        Scenario_ID = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
+                        ID_number = ((System.Data.DataRowView)row).Row.ItemArray[7].ToString();    
 
-                    var  role = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
-                        
-                        if (role==roles) {
-                        
-                        roles = ((System.Data.DataRowView)row).Row.ItemArray[0].ToString();
-                            Amount = ((System.Data.DataRowView)row).Row.ItemArray[1].ToString();
-                            break;
-                        }
 
-                       
                     }
 
                 }
@@ -671,137 +664,56 @@ namespace ILR_TestSuite.New_Business.Sales_App
                 con.Dispose();
 
             }
-            if (roles == "Myself" || roles == "Child" || roles == "Spouce" )
+
+            //calulate age 
+            var idNo = (ID_number.Split(" ")[ID_number.Split(" ").Length - 1]).ToString();
+            var birthYear = idNo.Substring(0,2);
+
+            birthYear = "19" + birthYear;
+            var age = (DateTime.Now.Year - Convert.ToInt32(birthYear)).ToString();
+            Delay(2);
+
+
+            var Mincoverlimit = _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/form/section[3]/div[4]/div[1]/div[2]/span[1]")).Text;
+            var Maxcoverlimit = _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/form/section[3]/div[4]/div[1]/div[2]/span[2]")).Text;
+            var currentcoveramount = _driver.FindElement(By.XPath("/html/body/div[1]/div[1]/article/form/section[3]/div[4]/div[1]/div[2]/span[2]")).Text;
+
+
+
+            if (Convert.ToDecimal(age) >= 18 && Convert.ToDecimal(age) <= 75 && Maxcoverlimit == "R60 000" && Mincoverlimit == "R5 000")
+                {
+
+                    results = "Passed";
+                TakeScreenshot(_driver, $@"{_screenShotFolder}\passed_Scenarios\", "MinMax_Validations");
+
+            }
+                else  
+                {
+                    Delay(1);
+                    results = "Failed";
+                    TakeScreenshot(_driver, $@"{_screenShotFolder}\Failed_Scenarios\", "Cover_Validations");
+                }
+
+           
             {
 
-                var V_Position = "";
-                switch (Amount)
-                {
-
-                    case "5000":
-                        V_Position = "0";
-                        break;
-                    case "7000":
-                        V_Position = "12.5";
-                        break;
-                    case "10000":
-                        V_Position = "25";
-                        break;
-                    case "15000":
-                        V_Position = "37.5";
-                        break;
-                    case "20000":
-                        V_Position = "50";
-                        break;
-
-                    case "30000":
-                        V_Position = "62.5";
-                        break;
-                    case "40000":
-                        V_Position = "75";
-                        break;
-                    case "50000":
-                        V_Position = "87.5";
-                        break;
-                    case "60000":
-                        V_Position = "100";
-                        break;
-
-                }
-
-                IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
-                int widthslider = sliderbar.Size.Width;
-                Delay(1);
-                IWebElement slider = _driver.FindElement(By.ClassName("slider"));
-                Actions slideraction = new Actions(_driver);
-                slideraction.ClickAndHold(slider);
-                slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
-
 
             }
-            else if (roles == "Parent")
-            {
-
-                var V_Position = "";
-                switch (Amount)
-                {
-
-                    case "5000":
-                        V_Position = "0";
-                        break;
-                    case "7500":
-                        V_Position = "25";
-                        break;
-                    case "10000":
-                        V_Position = "50";
-                        break;
-                    case "15000":
-                        V_Position = "75";
-                        break;
-                    case "20000":
-                        V_Position = "100";
-                        break;
-
-                }
-
-                IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
-                int widthslider = sliderbar.Size.Width;
-                Delay(1);
-                IWebElement slider = _driver.FindElement(By.ClassName("slider"));
-                Actions slideraction = new Actions(_driver);
-                slideraction.ClickAndHold(slider);
-                slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
-
-
-
-            }
-            else {
-                var V_Position = "";
-                switch (Amount)
-                {
-
-                    case "5000":
-                        V_Position = "0";
-                        break;
-                    case "7500":
-                        V_Position = "20";
-                        break;
-                    case "10000":
-                        V_Position = "40";
-                        break;
-                    case "15000":
-                        V_Position = "60";
-                        break;
-                    case "20000":
-                        V_Position = "80";
-                        break;
-                    case "30000":
-                        V_Position = "80";
-                        break;
-                }
-                IWebElement sliderbar = _driver.FindElement(By.ClassName("slider"));
-                int widthslider = sliderbar.Size.Width;
-                Delay(1);
-                IWebElement slider = _driver.FindElement(By.ClassName("slider"));
-                Actions slideraction = new Actions(_driver);
-                slideraction.ClickAndHold(slider);
-                slideraction.MoveByOffset(Convert.ToInt32(V_Position), 0).Build().Perform();
-
-
-
-            }
-
-
 
 
         }
-
-
         [TearDown]
+
         public void closeBrowser()
+
         {
+
             base.DisconnectBrowser();
+
         }
+
+
 
     }
+
 }
